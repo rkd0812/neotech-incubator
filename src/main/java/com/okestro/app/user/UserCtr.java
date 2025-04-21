@@ -12,7 +12,7 @@ public class UserCtr {
     @Resource(name="userSvc")
     UserSvc userSvc;
 
-    @GetMapping("/user/list")
+    @GetMapping("/user/list.do")
     public String retrieveUserList() {
         List<UserVo> userList = userSvc.retrieveUserList();
         return "user/userList";
