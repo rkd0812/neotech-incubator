@@ -1,6 +1,6 @@
 package com.okestro.framework.config;
 
-import org.springframework.context.ApplicationContext;
+import com.okestro.framework.context.EgovWebServletContextListener;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.XmlWebApplicationContext;
@@ -19,7 +19,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
     @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
 
-        servletContext.addListener(new ContextLoaderListener()); // 스프링 기본 컨텍스트 리스너
+        servletContext.addListener(new EgovWebServletContextListener()); // 스프링 기본 컨텍스트 리스너
 
         FilterRegistration.Dynamic characterEncoding = servletContext.addFilter(ConfigConst.ENCODING_FILTER, new CharacterEncodingFilter());
         characterEncoding.setInitParameter(ConfigConst.ENCODING, StandardCharsets.UTF_8.toString());
@@ -36,8 +36,10 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 
         // servlet context 설정
         XmlWebApplicationContext webServletContext = new XmlWebApplicationContext();
-        webServletContext.setConfigLocations("/WEB-INF/config/egov/springmvc/egov-com-*.xml");
+        webServletContext.setConfigLocation("/WEB-INF/config/egov-com-*.xml");
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet(ConfigConst.DISPATCHER, new DispatcherServlet(webServletContext));
+        dispatcher.addMapping("/");
+        dispatcher.setLoadOnStartup(1);
 
         // multipart filter
         MultipartFilter springMultipartFilter = new MultipartFilter();

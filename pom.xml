@@ -5,7 +5,7 @@
   <groupId>com.okestro</groupId>
   <artifactId>neotech-incubator</artifactId>
   <version>1.0</version>
-  <packaging>jar</packaging>
+  <packaging>war</packaging>
 
   <name>neotech-incubator</name>
   <url>http://maven.apache.org</url>
