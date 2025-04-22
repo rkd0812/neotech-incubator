@@ -8,7 +8,8 @@
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
     <mvc:annotation-driven />
-    <mvc:default-servlet-handler />
+    <mvc:resources mapping="/assets/**" location="/assets/" />
+    <mvc:resources mapping="/app/**" location="/app/" />
 
     <context:component-scan base-package="com.okestro.app">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>

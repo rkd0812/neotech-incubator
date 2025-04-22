@@ -8,5 +8,4 @@
 
 <script src="<c:url value="/assets/lib/jquery/jquery-3.7.1.min.js" />"></script>
 <script src="<c:url value="/assets/lib/bootstrap-5.3.5-dist/js/bootstrap.bundle.min.js" />"></script>
-<script src="<c:url value="/assets/lib/bootstrap-5.3.5-dist/js/bootstrap.esm.min.js" />"></script>
 <script src="<c:url value="/assets/lib/bootstrap-5.3.5-dist/js/bootstrap.min.js" />"></script>
