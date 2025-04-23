@@ -14,6 +14,52 @@
     <script src="<c:url value="/app/js/user/userList.js"/>" ></script>
 </head>
 <body>
-유저 리스트
+    <form action="<c:url value="/user/detail.do"/>">
+        <h4>사용자 목록조회</h4>
+        <div class="wrap" style="vertical-align: middle;">
+            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center; ">
+                <colgroup>
+                    <col style="width: 30%;">
+                    <col style="width: auto;">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>이메일</th>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <td>권한</td>
+                        <td><input type="text" /></td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td><button style="float: right;">검색</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+                <colgroup>
+                    <col style="width: 20%;">
+                    <col style="width: 60%;">
+                    <col style="width: auto;">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>이메일</th>
+                        <th>권한</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1<input type="hidden" value="id" name="userId"></td>
+                        <td>test@test.com</td>
+                        <td>권한</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit">상세</button>
+        </div>
+    </form>
 </body>
 </html>
