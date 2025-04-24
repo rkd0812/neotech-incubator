@@ -15,4 +15,6 @@ public class UserVo {
     private String frstRgsrDtlDttm;
     private String lastChngId;
     private String lastChngDtlDttm;
+
+    private String codeKr;
 }

@@ -26,10 +26,14 @@ public class UserCtr {
     public String retrieveUserList(HttpServletRequest request, Model model) {
 
         String inputEmail = request.getParameter("inputEmail");
-        String inputRole = request.getParameter("inputRole");
+        String userRole = request.getParameter("userRole");
+
+        request.setAttribute("inputEmail", inputEmail);
+        request.setAttribute("userRole", userRole);
+
         UserVo userVo = new UserVo();
         userVo.setUserEmail(inputEmail);
-        userVo.setRoleCd(inputRole);
+        userVo.setRoleCd(userRole);
 
         // 사용자 목록조회
         List<UserVo> userList = userSvc.retrieveUserList(userVo);
@@ -54,6 +58,13 @@ public class UserCtr {
 
         UserVo userDetail = userSvc.retrieveUserDetail(param);
         model.addAttribute("userDetail", userDetail);
+
+        // 사용자 권한 조회 (ROLE)
+        CodeVo codeVo = new CodeVo();
+        codeVo.setCodeName("ROLE");
+        List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
+        model.addAttribute("codeList", codeList);
+
         return "user/userDetail";
     }
 

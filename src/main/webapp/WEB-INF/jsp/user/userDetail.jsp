@@ -20,15 +20,23 @@
             <tbody>
                 <tr>
                     <th>이메일</th>
-                    <td>${userDetail.userEmail}</td>
+                    <td><input type="text" id="userEmail" value="${userDetail.userEmail}" /t></td>
                 </tr>
                 <tr>
                     <th>비밀번호</th>
-                    <td>${userDetail.userPassword}</td>
+                    <td><input type="text" id="userPassword" value="${userDetail.userPassword}" /></td>
                 </tr>
                 <tr>
                     <th>권한</th>
-                    <td>${userDetail.roleCd}</td>
+<%--                    <td>${userDetail.roleCd}</td>--%>
+                    <td>
+                        <select name="userRole">
+                            <option value="All">전체</option>
+                            <c:forEach var="role" items="#{codeList}" varStatus="status">
+                                <option value="${role.codeVal}" <c:if test="${userDetail.roleCd eq role.codeVal}">selected</c:if> >${role.codeKr}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
                 </tr>
             </tbody>
         </table>

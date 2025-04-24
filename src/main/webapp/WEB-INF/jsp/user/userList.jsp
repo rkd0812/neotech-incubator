@@ -25,24 +25,22 @@
                 <tbody>
                     <tr>
                         <th>이메일</th>
-                        <td><input type="text" name="inputEmail" /></td>
+                        <td><input type="text" name="inputEmail" value="${requestScope.inputEmail}" /></td>
                     </tr>
                     <tr>
                         <th>권한</th>
                         <td>
-
+                            <input type="radio" name="userRole" id="All" value="All" checked="checked" /> 전체 &nbsp;
                             <c:forEach var="role" items="#{codeList}" varStatus="status">
-                                <input type="radio" name="role" id="${role.codeVal}">${role.codeKr} &nbsp;
+                            <input type="radio" id="${role.codeVal}" name="userRole" value="${role.codeVal}" <c:if test="${requestScope.userRole eq role.codeVal}">checked</c:if > > ${role.codeKr} &nbsp;
                             </c:forEach>
                         </td>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <td><button id="searchBtn" style="float: right;">검색</button></td>
                     </tr>
                 </tbody>
             </table>
         </form>
+        <button id="initBtn">초기화</button>
+        <button id="searchBtn">검색</button>
         <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
             <colgroup>
                 <col style="width: 20%;">
@@ -70,7 +68,7 @@
                     <td>
                         <a href="/user/detail.do?userEmail=${user.userEmail}" class="userEmail">${user.userEmail}</a>
                     </td>
-                        <td>${user.roleCd}</td>
+                        <td>${user.codeKr}</td>
                     </tr>
                 </c:forEach>
             </tbody>
