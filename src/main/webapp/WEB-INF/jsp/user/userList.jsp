@@ -11,12 +11,12 @@
 <head>
     <title>사용자 목록</title>
     <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="<c:url value="/app/js/user/userList.js"/>" ></script>
+    <script src="/app/js/user/userList.js"></script>
 </head>
 <body>
-    <form action="<c:url value="/user/detail.do"/>">
-        <h4>사용자 목록조회</h4>
-        <div class="wrap" style="vertical-align: middle;">
+    <h4>사용자 목록조회</h4>
+    <div class="wrap" style="text-align: center;">
+        <form id="userDetailForm">
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center; ">
                 <colgroup>
                     <col style="width: 30%;">
@@ -25,41 +25,56 @@
                 <tbody>
                     <tr>
                         <th>이메일</th>
-                        <td><input type="text" /></td>
+                        <td><input type="text" name="inputEmail" /></td>
                     </tr>
                     <tr>
-                        <td>권한</td>
-                        <td><input type="text" /></td>
+                        <th>권한</th>
+                        <td>
+
+                            <c:forEach var="role" items="#{codeList}" varStatus="status">
+                                <input type="radio" name="role" id="${role.codeVal}">${role.codeKr} &nbsp;
+                            </c:forEach>
+                        </td>
                     </tr>
                     <tr>
                         <th></th>
-                        <td><button style="float: right;">검색</button></td>
+                        <td><button id="searchBtn" style="float: right;">검색</button></td>
                     </tr>
                 </tbody>
             </table>
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
-                <colgroup>
-                    <col style="width: 20%;">
-                    <col style="width: 60%;">
-                    <col style="width: auto;">
-                </colgroup>
-                <thead>
+        </form>
+        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <colgroup>
+                <col style="width: 20%;">
+                <col style="width: 60%;">
+                <col style="width: auto;">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>이메일</th>
+                    <th>권한</th>
+                </tr>
+            </thead>
+            <tbody>
+            <c:if test="${userList.size() eq 0}">
+                <tr>
+                    <td colspan="3">
+                        조회된 데이터가 없습니다
+                    </td>
+                </tr>
+            </c:if>
+                <c:forEach var="user" items="${userList}" varStatus="status">
                     <tr>
-                        <th>No</th>
-                        <th>이메일</th>
-                        <th>권한</th>
+                        <td>${status.count}</td>
+                    <td>
+                        <a href="/user/detail.do?userEmail=${user.userEmail}" class="userEmail">${user.userEmail}</a>
+                    </td>
+                        <td>${user.roleCd}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1<input type="hidden" value="id" name="userId"></td>
-                        <td>test@test.com</td>
-                        <td>권한</td>
-                    </tr>
-                </tbody>
-            </table>
-            <button type="submit">상세</button>
-        </div>
-    </form>
+                </c:forEach>
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

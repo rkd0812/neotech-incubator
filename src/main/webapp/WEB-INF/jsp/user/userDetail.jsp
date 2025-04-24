@@ -11,48 +11,30 @@
 <head>
     <title>사용자 목록</title>
     <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="<c:url value="/app/js/user/userList.js"/>" ></script>
+    <script src="/app/js/user/userDetail.js"></script>
 </head>
 <body>
     <h4>사용자 상세조회</h4>
-    <div class="wrap" style="vertical-align: middle;">
-        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center; ">
-            <colgroup>
-                <col style="width: 30%;">
-                <col style="width: auto;">
-            </colgroup>
-            <tbody>
-                <tr>
-                    <th>이메일</th>
-                    <td><input type="text" /></td>
-                </tr>
-                <tr>
-                    <th></th>
-                    <td><button style="float: right;">검색</button></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="wrap" style="text-align: center;">
         <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
-            <colgroup>
-                <col style="width: 20%;">
-                <col style="width: 60%;">
-                <col style="width: auto;">
-            </colgroup>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>이메일</th>
-                    <th>권한</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr>
-                    <td>${userDetail.userId}</td>
-                    <td>test@test.com</td>
-                    <td>권한</td>
+                    <th>이메일</th>
+                    <td>${userDetail.userEmail}</td>
+                </tr>
+                <tr>
+                    <th>비밀번호</th>
+                    <td>${userDetail.userPassword}</td>
+                </tr>
+                <tr>
+                    <th>권한</th>
+                    <td>${userDetail.roleCd}</td>
                 </tr>
             </tbody>
         </table>
+        <button id="listBtn" onclick=location.href="/user/list.do">목록</button>
+        <button id="updateBtn" onclick=location.href="">수정</button>
+        <button id="deleteBtn" onclick=location.href="">삭제</button>
     </div>
 </body>
 </html>

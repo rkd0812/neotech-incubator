@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="code">
+    <!--코드 조회-->
+    <select id="retrieveCodeList" parameterType="com.okestro.app.code.CodeVo" resultType="com.okestro.app.code.CodeVo">
+        SELECT *
+        FROM SCH_INCU.CODE
+        WHERE 1=1
+        <if test="codeName != null and codeName != ''">
+            AND CODE_NAME LIKE '%' || #{codeName} || '%'
+        </if>
+    </select>
+
+
+</mapper>

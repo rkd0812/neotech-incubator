@@ -3,13 +3,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user">
     <!--사용자 목록조회-->
-    <select id="retrieveUserList" resultType="com.okestro.app.user.UserVo">
-        SELECT 1
+    <select id="retrieveUserList" parameterType="com.okestro.app.user.UserVo" resultType="com.okestro.app.user.UserVo">
+        SELECT *
+        FROM SCH_INCU.USER
+        WHERE 1=1
+        <if test="userEmail != null and userEmail != ''">
+            AND USER_EMAIL LIKE '%' || #{userEmail} || '%'
+        </if>
+        <if test="roleCd != null and roleCd != ''">
+            AND ROLE_CD LIKE '%' || #{roleCd} || '%'
+        </if>
     </select>
 
     <!--사용자 상세조회-->
     <select id="retrieveUserDetail" parameterType="com.okestro.app.user.UserVo" resultType="com.okestro.app.user.UserVo">
-        SELECT 'idid' AS USER_ID
+        SELECT *
+        FROM SCH_INCU.USER
+        WHERE 1=1
+        AND USER_EMAIL = #{userEmail}
     </select>
 
 
