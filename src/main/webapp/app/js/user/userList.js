@@ -4,10 +4,8 @@ $(function() {
 
     // 검색 폼
     searchBtn.on('click', function() {
-        const userDetailForm = $('#userDetailForm');
-
-        userDetailForm.action = "/user/list.do";
-        userDetailForm.submit();
+        const searchForm = $('#searchForm');
+        searchForm.submit();
     })
 
     const initBtn = $('#initBtn');
@@ -16,6 +14,10 @@ $(function() {
         $('input[name="inputEmail"]').val("");
         $('#All').prop('checked', true);
 
+    })
+
+    $('#registBtn').on('click', () => {
+        location.href = '/user/openRegist.do';
     })
 
 })

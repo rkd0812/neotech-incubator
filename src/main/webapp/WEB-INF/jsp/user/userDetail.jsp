@@ -16,33 +16,33 @@
 <body>
     <h4>사용자 상세조회</h4>
     <div class="wrap" style="text-align: center;">
-        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
-            <tbody>
-                <tr>
-                    <th>이메일</th>
-                    <td><input type="text" id="userEmail" value="${userDetail.userEmail}" /t></td>
-                </tr>
-                <tr>
-                    <th>비밀번호</th>
-                    <td><input type="text" id="userPassword" value="${userDetail.userPassword}" /></td>
-                </tr>
-                <tr>
-                    <th>권한</th>
-<%--                    <td>${userDetail.roleCd}</td>--%>
-                    <td>
-                        <select name="userRole">
-                            <option value="All">전체</option>
-                            <c:forEach var="role" items="#{codeList}" varStatus="status">
-                                <option value="${role.codeVal}" <c:if test="${userDetail.roleCd eq role.codeVal}">selected</c:if> >${role.codeKr}</option>
-                            </c:forEach>
-                        </select>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <form id="detailForm" name="detailForm" action="/user/update.do" method="post">
+            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+                <tbody>
+                    <tr>
+                        <th>이메일</th>
+                        <td><input type="text" id="userEmail" name="userEmail" value="${userDetail.userEmail}" readonly /></td>
+                    </tr>
+                    <tr>
+                        <th>비밀번호</th>
+                        <td><input type="text" id="userPassword" name="userPassword" value="${userDetail.userPassword}" /></td>
+                    </tr>
+                    <tr>
+                        <th>권한</th>
+                        <td>
+                            <select id="roleCd" name="roleCd">
+                                <c:forEach var="role" items="#{codeList}" varStatus="status">
+                                    <option value="${role.codeVal}" <c:if test="${userDetail.roleCd eq role.codeVal}">selected</c:if> >${role.codeKr}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
         <button id="listBtn" onclick=location.href="/user/list.do">목록</button>
-        <button id="updateBtn" onclick=location.href="">수정</button>
-        <button id="deleteBtn" onclick=location.href="">삭제</button>
+        <button id="updateBtn">수정</button>
+        <button id="deleteBtn">삭제</button>
     </div>
 </body>
 </html>
