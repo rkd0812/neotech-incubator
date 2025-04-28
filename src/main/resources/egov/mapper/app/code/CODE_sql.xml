@@ -2,15 +2,69 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="code">
-    <!--코드 조회-->
+
+    <!-- 코드 등록 -->
+    <insert id="registCode" parameterType="com.okestro.app.code.CodeVo">
+        INSERT INTO SCH_INCU.CODE
+        VALUES (
+                #{codeName},
+                #{codeVal},
+                #{codeKr},
+                'N',
+                'SYSTEM',
+                CURRENT_TIMESTAMP,
+                'SYSTEM',
+                CURRENT_TIMESTAMP
+               )
+    </insert>
+
+    <!--코드 목록조회 -->
     <select id="retrieveCodeList" parameterType="com.okestro.app.code.CodeVo" resultType="com.okestro.app.code.CodeVo">
         SELECT *
         FROM SCH_INCU.CODE
         WHERE 1=1
+        AND DEL_YN = 'N'
         <if test="codeName != null and codeName != ''">
             AND CODE_NAME LIKE '%' || #{codeName} || '%'
         </if>
+        ORDER BY CODE_NAME, CODE_VAL
     </select>
+
+    <!-- 코드 상세조회 -->
+    <select id="retrieveCodeDetail" parameterType="com.okestro.app.code.CodeVo" resultType="com.okestro.app.code.CodeVo">
+        SELECT *
+        FROM SCH_INCU.CODE
+        WHERE 1=1
+        AND DEL_YN = 'N'
+        <if test="codeName != null and codeName != ''">
+            AND CODE_NAME LIKE '%' || #{codeName} || '%'
+        </if>
+        <if test="codeVal != null and codeVal != ''">
+            AND CODE_VAL LIKE '%' || #{codeVal} || '%'
+        </if>
+    </select>
+
+    <!-- 코드 수정 -->
+    <update id="updateCode" parameterType="com.okestro.app.code.CodeVo">
+        UPDATE SCH_INCU.CODE
+        SET CODE_NAME = #{codeName},
+            CODE_VAL = #{codeVal},
+            CODE_KR = #{codeKr},
+            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
+        WHERE 1=1
+        AND CODE_NAME = #{codeName}
+        AND CODE_VAL = #{codeVal}
+    </update>
+
+    <!-- 코드 삭제 -->
+    <update id="deleteCode" parameterType="com.okestro.app.code.CodeVo">
+    UPDATE SCH_INCU.CODE
+    SET DEL_YN = 'Y'
+    WHERE 1=1
+    AND CODE_NAME = #{codeName}
+    AND CODE_VAL = #{codeVal}
+    </update>
+
 
 
 </mapper>

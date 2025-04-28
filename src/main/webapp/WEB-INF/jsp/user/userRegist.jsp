@@ -14,9 +14,9 @@
     <script src="/app/js/user/userRegist.js"></script>
 </head>
 <body>
+<h4>사용자 등록</h4>
 <div class="wrap" style="text-align: center;">
-
-    <form id="registForm" name="detailForm" action="/user/regist.do" method="post">
+    <form id="registForm" name="registForm" action="/user/regist.do" method="post">
         <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
             <tbody>
                 <tr>

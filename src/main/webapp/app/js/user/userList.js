@@ -13,7 +13,6 @@ $(function() {
     initBtn.on('click', function() {
         $('input[name="inputEmail"]').val("");
         $('#All').prop('checked', true);
-
     })
 
     $('#registBtn').on('click', () => {

@@ -43,13 +43,13 @@ public class UserCtr {
 
     // 사용자 상세조회
     @GetMapping("/user/detail.do")
-    public String detailUser(HttpServletRequest request, Model model) {
+//    public String detailUser(HttpServletRequest request, Model model) {
+    public String detailUser(@RequestParam String userEmail, Model model) {
 
-        String userEmail = request.getParameter("userEmail");
-        UserVo param = new UserVo();
-        param.setUserEmail(userEmail);
+        UserVo user = new UserVo();
+        user.setUserEmail(userEmail);
 
-        UserVo userDetail = userSvc.retrieveUserDetail(param);
+        UserVo userDetail = userSvc.retrieveUserDetail(user);
         model.addAttribute("userDetail", userDetail);
 
         // 사용자 권한 조회 (ROLE)
@@ -69,7 +69,7 @@ public class UserCtr {
     }
 
     @GetMapping("/user/openRegist.do")
-    public String registerUser(Model model) {
+    public String openRegistUser(Model model) {
         // 사용자 권한 조회 (ROLE)
         CodeVo codeVo = new CodeVo();
         codeVo.setCodeName("ROLE");

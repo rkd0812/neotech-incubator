@@ -1,4 +1,4 @@
-package com.okestro.app.user;
+package com.okestro.app.menu;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,16 +6,14 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter
-public class UserVo {
+public class MenuVo {
 
-    private String userEmail;
-    private String userPassword;
-    private String roleCd;
+    private String menuId;
+    private String menuName;
+    private int menuLevel;
     private String delYn;
     private String frstRgsrId;
     private Date frstRgsrDtlDttm;
     private String lastChngId;
     private Date lastChngDtlDttm;
-
-    private String codeKr;
 }
