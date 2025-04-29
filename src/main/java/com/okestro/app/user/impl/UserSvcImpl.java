@@ -24,4 +24,20 @@ public class UserSvcImpl extends EgovAccessServiceImpl implements UserSvc {
     public UserVo retrieveUserDetail(UserVo userVo) {
         return dao.selectOne("user.retrieveUserDetail", userVo);
     }
+
+    @Override
+    public int updateUser(UserVo userVo) {
+        return dao.update("user.updateUser", userVo);
+    }
+
+    @Override
+    public int registUser(UserVo userVo) {
+        return dao.insert("user.registUser", userVo);
+    }
+
+    @Override
+    public int deleteUser(String userEmail) {
+        return dao.delete("user.deleteUser", userEmail);
+    }
+
 }

@@ -16,7 +16,7 @@
 <body>
     <h4>사용자 목록조회</h4>
     <div class="wrap" style="text-align: center;">
-        <form id="userDetailForm">
+        <form id="searchForm" name="searchForm" action="/user/list.do">
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center; ">
                 <colgroup>
                     <col style="width: 30%;">
@@ -25,14 +25,14 @@
                 <tbody>
                     <tr>
                         <th>이메일</th>
-                        <td><input type="text" name="inputEmail" value="${requestScope.inputEmail}" /></td>
+                        <td><input type="text" name="userEmail" value="${userVo.userEmail}" /></td>
                     </tr>
                     <tr>
                         <th>권한</th>
                         <td>
-                            <input type="radio" name="userRole" id="All" value="All" checked="checked" /> 전체 &nbsp;
+                            <input type="radio" name="roleCd" id="All" value="All" checked="checked" /> 전체 &nbsp;
                             <c:forEach var="role" items="#{codeList}" varStatus="status">
-                            <input type="radio" id="${role.codeVal}" name="userRole" value="${role.codeVal}" <c:if test="${requestScope.userRole eq role.codeVal}">checked</c:if > > ${role.codeKr} &nbsp;
+                            <input type="radio" id="${role.codeVal}" name="roleCd" value="${role.codeVal}" <c:if test="${userVo.roleCd eq role.codeVal}">checked</c:if > > ${role.codeKr} &nbsp;
                             </c:forEach>
                         </td>
                     </tr>
@@ -73,6 +73,7 @@
                 </c:forEach>
             </tbody>
         </table>
+        <button id="registBtn">등록</button>
     </div>
 </body>
 </html>
