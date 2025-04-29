@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace = 테이블 이름-->
+<mapper namespace="projectdetail">
+    <select id="retrieveProjectDetail" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
+        SELECT
+            *
+        FROM sch_incu.project_detail
+        WHERE 1=1
+        AND project_id = #{projectId}
+    </select>
+
+    <update id="updateProjectDetail" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE sch_incu.project_detail
+        SET
+            project_detail = #{projectDetail},
+            url = #{url},
+            attachment_id = #{attachmentId}
+        WHERE
+            1=1
+        AND project_id = #{projectId}
+    </update>
+
+<!--    <delete id="deleteProjectDetail" parameterType="com.okestro.app.project.ProjectVo">-->
+<!--        DELETE FROM sch_incu.project_detail-->
+<!--        WHERE-->
+<!--            1=1-->
+<!--        AND project_id = #{projectId}-->
+<!--    </delete>-->
+
+    <update id="delYnConfirmProjectDetail" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE sch_incu.project_detail
+        SET
+            del_yn = 'Y'
+        WHERE
+            1=1
+          AND project_id = #{projectId}
+    </update>
+
+</mapper>

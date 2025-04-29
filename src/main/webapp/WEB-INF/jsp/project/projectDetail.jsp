@@ -24,20 +24,20 @@
             <tbody>
             <tr>
                 <th>심사 결과</th>
-                <td>골드/9점</td>
+<%--                <td>${project.scoreFin}</td>--%>
                 <th>심사 상태</th>
-                <td>심사 완료</td>
+<%--                <td>${project.evaCd}</td>--%>
             </tr>
             <tr>
                 <th>프로젝트 명</th>
                 <td>
-                    <input type="text" id="pro_name">
+<%--                    <input type="text" id="pro_name" value=${projectDetail.projectName}>--%>
                 </td>
             </tr>
             <tr>
                 <th>팀 구성원</th>
                 <td>
-
+                    ${projectDetail.groupId}
                 </td>
                 <td>
                     <button type="button" id="team_add_btn">추가</button>
@@ -46,19 +46,22 @@
             <tr>
                 <th>설명</th>
                 <td>
-                    <input type="text" id="explain">
+                    <input type="text" id="explain" value=${projectDetail.projectDetail}>
                 </td>
             </tr>
             <tr>
                 <th>Demo(url/lib)</th>
                 <td>
-                    <input type="text"><button type="button" id="demo_btn">추가</button>
+                    <input type="text" id="url" value=${projectDetail.url}>
+                    <button type="button" id="demo_btn">추가</button>
                 </td>
             </tr>
             <tr>
                 <th>첨부파일</th>
                 <td>
-                    <input type="text"><button type="button" id="file_upload">첨부파일</button><button type="button" id="file_download">다운로드</button>
+                    <input type="text" id='attachment' value=${projectDetail.attachmentId}>
+                    <button type="button" id="file_upload">첨부파일</button>
+                    <button type="button" id="file_download">다운로드</button>
                 </td>
             </tr>
             </tbody>
@@ -82,7 +85,9 @@
 
     <!-- 버튼 -->
     <div id="pro_detail_btns">
-        <button type="button" id="pro_modify">수정</button><button type="button" id="pro_delete">삭제</button><button type="button" id="pro_eva">심사요청</button>
+        <button type="button" id="pro_modify">수정</button>
+        <button type="button" id="pro_delete">삭제</button>
+        <button type="button" id="pro_eva">심사요청</button>
     </div>
 </div>
 </body>

@@ -21,7 +21,7 @@
     <!-- 검색 영역 -->
     <div id="search">
         <!-- 검색 영역 -->
-        <from>
+        <form>
             <p>기간
                 <input type="date" name="startdate" id="startdate">
                 ~
@@ -41,7 +41,7 @@
             <p>
                 <button type="button" id="search_btn">조회</button>
             </p>
-        </from>
+        </form>
     </div>
     <!-- 테이블 영역 -->
     <div id="projectlist">
@@ -58,7 +58,9 @@
             <c:forEach var="project" items="${projectList}">
                 <tr>
                     <td>${project.projectId}</td>
-                    <td>${project.projectName}</td>
+                    <td>
+                        <a href="/project/projectDetail.do?projectId=${project.projectId}">${project.projectName}</a>
+                    </td>
                     <td>${project.evastartDt}</td>
                     <td>${project.evaCd}</td>
                 </tr>

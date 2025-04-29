@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper의 namespace는?? → 어떤것과 관련이 있는지를 (한식 또는 이탈리안 요리) 같은 요리들의 그룹-->
+<mapper namespace="userinfo">
+    <!--  id  → 실제로 이게 무엇인지 (김치째개 또는 피자 같은 실제 요리)  -->
+    <!--사용자 전체 목록조회-->
+    <select id="retrieveAllUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
+        SELECT
+            *
+        FROM SCH_INCU.USER
+    </select>
+
+    <!-- 사용자 등록 insert   -->
+    <insert id="insertUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
+        INSERT INTO SCH_INCU.USER (
+            USER_EMAIL,
+            USER_PASSWORD,
+            ROLE_CD,
+            DEL_YN,
+            FRST_RGSR_ID,
+            FRST_RGSR_DTL_DTTM,
+            LAST_CHNG_ID,
+            LAST_CHNG_DTL_DTTM
+        ) VALUES (#{userEmail},
+                  #{userPassword},
+                  #{roleCd},
+                  'N',
+                  'SYSTEM',
+                  NOW(),
+                  'SYSYTEM',
+                  NOW()
+                         )
+    </insert>
+
+    <!-- 사용자 권한, 권한명 목록 조회   -->
+    <select id="retrieveUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
+        SELECT
+            a.USER_EMAIL,
+            a.USER_PASSWORD,
+            a.ROLE_CD,
+            b.CODE_KR
+        FROM SCH_INCU.USER a
+        LEFT JOIN SCH_INCU.CODE b
+        ON
+        a.ROLE_CD = b.CODE_VAL AND b.CODE_NAME = 'ROLE'
+    </select>
+
+
+    <!-- 이메일 중복 확인 SQL   -->
+    <select id="checkUserDuplicate" parameterType="String" resultType="int">
+        SELECT
+            COUNT(1)
+        FROM SCH_INCU.USER
+        WHERE USER_EMAIL = #{userEmail}
+    </select>
+
+
+    <!-- 사용자 상세 정보 조회   -->
+    <select id="userDetail" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
+        SELECT a.USER_EMAIL AS userEmail,
+               a.USER_PASSWORD AS userPassword,
+               a.ROLE_CD AS roleCd,
+               b.CODE_KR AS codeKr
+        FROM SCH_INCU.USER a
+        LEFT JOIN SCH_INCU.CODE b
+        ON a.ROLE_CD = b.code_Val
+        WHERE a.user_email = #{userEmail}
+    </select>
+
+
+    <!--  사용자 정보 수정  -->
+    <update id="updateUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
+        UPDATE SCH_INCU.USER
+        SET USER_PASSWORD = #{userPassword},
+            ROLE_CD = #{roleCd}
+        WHERE USER_EMAIL = #{userEmail}
+    </update>
+
+
+    <!-- 사용자 정보 삭제   -->
+    <delete id="deleteUserInfo" parameterType="String">
+        DELETE FROM SCH_INCU.USER
+        WHERE USER_EMAIL = #{userEmail}
+    </delete>
+</mapper>
