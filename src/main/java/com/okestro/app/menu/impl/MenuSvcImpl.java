@@ -40,4 +40,9 @@ public class MenuSvcImpl extends EgovAccessServiceImpl implements MenuSvc {
         return dao.delete("deleteMenu", menuId);
     }
 
+    @Override
+    public String getmenuIndex() {
+        return dao.selectOne("getmenuIndex");
+    }
+
 }

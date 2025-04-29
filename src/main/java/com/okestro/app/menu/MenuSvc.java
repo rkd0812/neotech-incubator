@@ -14,4 +14,6 @@ public interface MenuSvc {
     public int updateMenu(MenuVo menuVo);
     // 메뉴 삭제
     public int deleteMenu(String menuId);
+    // 메뉴 인덱스
+    String getmenuIndex();
 }

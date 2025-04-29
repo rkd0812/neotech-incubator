@@ -7,7 +7,7 @@
     <insert id="registMenu" parameterType="com.okestro.app.menu.MenuVo">
         INSERT INTO SCH_INCU.MENU
         VALUES (
-                   'MENU',
+                   #{menuId},
                    #{menuName},
                    #{menuLevel},
                    'N',
@@ -60,6 +60,15 @@
         WHERE 1=1
         AND MENU_ID = #{menuId}
     </delete>
+
+    <!-- 메뉴 인덱스 -->
+    <select id="getmenuIndex" resultType="string">
+        SELECT LPAD(CAST(MAX AS VARCHAR), 3, '0') AS INDEX
+        FROM (
+                 SELECT CAST(MAX(SUBSTR(MENU_ID, 5)) AS INTEGER) + 1 AS MAX
+                 FROM SCH_INCU.MENU
+             ) A
+    </select>
 
 
 </mapper>

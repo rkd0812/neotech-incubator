@@ -26,6 +26,9 @@ public class MenuCtr {
     // 메뉴 등록
     @PostMapping("/menu/regist.do")
     public String registMenu(@ModelAttribute MenuVo menuVo, Model model) {
+        String menuId = "MENU" + menuSvc.getmenuIndex();
+        menuVo.setMenuId(menuId);
+
         int cnt = menuSvc.registMenu(menuVo);
 
         return "redirect:/menu/list.do";
