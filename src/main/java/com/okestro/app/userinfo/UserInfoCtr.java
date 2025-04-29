@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -72,7 +73,6 @@ public class UserInfoCtr {
     @PostMapping("/userinfo/updateUserInfo.do")
     public String updateUserInfo(UserInfoVo userInfoVo, RedirectAttributes redirectAttr) {
         userinfoSvc.updateUserInfo(userInfoVo);
-        redirectAttr.addFlashAttribute("message", "수정이 완료되었습니다.");
         return "redirect:/userinfo/userinfoList.do";
     }
     
@@ -80,7 +80,55 @@ public class UserInfoCtr {
     @PostMapping("/userinfo/deleteUserInfo.do")
     public String deleteUserInfo(@RequestParam("userEmail") String userEmail, RedirectAttributes redirectAttr) {
         userinfoSvc.deleteUserInfo(userEmail);
-        redirectAttr.addFlashAttribute("message", "삭제가 완료되었습니다.");
         return "redirect:/userinfo/userinfoList.do";
+    }
+
+    // 로그인 페이지 표시
+    @GetMapping("/userinfo/loginForm.do")
+    public String loginForm() {
+        return "userinfo/userinfoLogin";  // userinfoLogin.jsp 페이지로 이동
+    }
+
+    // 로그인 처리
+    @PostMapping("/userinfo/login.do")
+    public String login(
+            @RequestParam(value="userEmail", required=false) String userEmail,
+            @RequestParam(value="userPassword", required=false) String userPassword,
+            HttpSession session,
+            RedirectAttributes redirectAttr) {
+
+        System.out.println("로그인 시도 - 이메일: " + userEmail); // 디버깅용 로그
+
+        // 파라미터 누락 체크
+        if(userEmail == null || userEmail.isEmpty() || userPassword == null || userPassword.isEmpty()) {
+            // 파라미터가 없으면 로그인 폼으로 이동
+            return "redirect:/userinfo/loginForm.do?empty=true";
+        }
+
+        try {
+            // 서비스 호출하여 로그인 처리
+            UserInfoVo userInfoVo = userinfoSvc.userLogin(userEmail, userPassword);
+            // 로그인 성공/실패 처리
+            if (userInfoVo != null) {
+                // 로그인 성공: 세션에 사용자 정보 저장
+                session.setAttribute("loginUser", userInfoVo);
+                session.setAttribute("userEmail", userInfoVo.getUserEmail());
+                session.setAttribute("roleCd", userInfoVo.getRoleCd());
+
+                // 리다이렉트로 목록 페이지로 이동
+                redirectAttr.addFlashAttribute("message", "로그인이 완료되었습니다.");
+                return "redirect:/userinfo/userinfoList.do";
+            } else {
+                // 로그인 실패: 로그인 페이지로 다시 이동하며 오류 파라미터 추가
+                return "redirect:/userinfo/loginForm.do?error=true&userEmail=" + userEmail;
+            }
+        } catch (Exception e) {
+            // 예외 발생 시 로그 출력
+            System.out.println("로그인 처리 중 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+
+            // 오류 메시지와 함께 로그인 페이지로 이동
+            return "redirect:/userinfo/loginForm.do?error=system";
+        }
     }
 }

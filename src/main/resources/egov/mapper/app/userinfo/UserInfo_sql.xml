@@ -5,6 +5,7 @@
 <mapper namespace="userinfo">
     <!--  id  → 실제로 이게 무엇인지 (김치째개 또는 피자 같은 실제 요리)  -->
     <!--사용자 전체 목록조회-->
+    <!--  조건 없이 모든 유저의 정보를 UserInfoVo 타입으로 가져옴  -->
     <select id="retrieveAllUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
         SELECT
             *
@@ -12,6 +13,7 @@
     </select>
 
     <!-- 사용자 등록 insert   -->
+    <!--  해당하는 조건의 유저 정보만 찾아서 가져옴  -->
     <insert id="insertUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
         INSERT INTO SCH_INCU.USER (
             USER_EMAIL,
@@ -83,4 +85,21 @@
         DELETE FROM SCH_INCU.USER
         WHERE USER_EMAIL = #{userEmail}
     </delete>
+
+    <!-- 로그인 처리  -->
+    <select id="userLogin" parameterType="com.okestro.app.userinfo.UserInfoVo" resultType="com.okestro.app.userinfo.UserInfoVo">
+        SELECT
+            a.USER_EMAIL AS userEmail,
+            a.USER_PASSWORD AS userPassword,
+            a.ROLE_CD AS roleCd,
+            b.CODE_KR AS codeKr
+        FROM SCH_INCU.USER a
+        LEFT JOIN SCH_INCU.CODE b
+            ON a.ROLE_CD = b.CODE_VAL
+           AND b.CODE_NAME = 'ROLE'
+        WHERE
+            a.USER_EMAIL = #{userEmail}
+        AND a.USER_PASSWORD = #{userPassword}
+        AND a.DEL_YN = 'N'
+    </select>
 </mapper>

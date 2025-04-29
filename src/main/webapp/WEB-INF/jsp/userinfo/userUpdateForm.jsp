@@ -38,7 +38,7 @@
             <tr>
                 <td>권한:</td>
                 <td>
-                    <select name="roleCd">
+                    <select name="roleCd" id="roleCd">
                         <option value="A" ${userInfo.roleCd eq 'A' ? 'selected' : ''}>A (일반)</option>
                         <option value="B" ${userInfo.roleCd eq 'B' ? 'selected' : ''}>B (심사자)</option>
                         <option value="C" ${userInfo.roleCd eq 'C' ? 'selected' : ''}>C (심사장)</option>

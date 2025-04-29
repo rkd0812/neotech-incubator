@@ -32,6 +32,8 @@ $(function() {
 
         // 수정 확인
         if (confirm("수정을 하시겠습니까?")) {
+            console.log("비밀번호 : " +password)
+            console.log("권한코드 : " +$("select[name='roleCd']").val())
             $("#updateForm").submit();
             alert("수정이 완료되었습니다.");
         } else {

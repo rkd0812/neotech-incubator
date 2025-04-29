@@ -14,7 +14,7 @@
     <script src="/app/js/userinfo/registForm.js"></script>
 
 <body>
-<h1>회원 등록</h1>
+<h1>로고</h1>
 
 <form id="userForm" action="/userinfo/registerUserInfo.do" method="post">
     <table>

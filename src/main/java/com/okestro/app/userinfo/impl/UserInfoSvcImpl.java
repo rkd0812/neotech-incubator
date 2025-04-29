@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 @Service("userinfoSvc")
 public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSvc {
@@ -17,18 +18,14 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
 
     @Override
     public List<UserInfoVo> retrieveUserInfoList(UserInfoVo userinfoVo) {
-        // 매개변수가 있는 메서드 구현
         return dao.selectList("userinfo.retrieveUserInfoList", userinfoVo);
     }
 
     @Override
     public void insertUserInfo(UserInfoVo userInfoVo) {
         if(userInfoVo.getRoleCd() == null || userInfoVo.getRoleCd().isEmpty()) {
-            userInfoVo.setRoleCd("a");
-        } else {
-            userInfoVo.setRoleCd(userInfoVo.getRoleCd().toUpperCase());
+            userInfoVo.setRoleCd("A");
         }
-        // DAO를 통해 DB에 저장
         dao.insert("userinfo.insertUserInfo", userInfoVo);
     }
 
@@ -55,4 +52,18 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
     public void deleteUserInfo(String userEmail) {
         dao.delete(("userinfo.deleteUserInfo"), userEmail);
     }
+
+    @Override
+    public UserInfoVo userLogin(String userEmail, String userPassword) {
+
+        UserInfoVo loginVo = new UserInfoVo();
+        loginVo.setUserEmail(userEmail);
+        loginVo.setUserPassword(userPassword);
+
+        // SQL 실행하여 사용자 정보 조회
+        UserInfoVo userInfo = (UserInfoVo) dao.selectOne("userinfo.userLogin", loginVo);
+
+
+        return userInfo;
+        }
 }
