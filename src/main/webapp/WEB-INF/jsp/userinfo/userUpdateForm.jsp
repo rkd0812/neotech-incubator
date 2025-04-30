@@ -42,7 +42,7 @@
                         <option value="A" ${userInfo.roleCd eq 'A' ? 'selected' : ''}>A (일반)</option>
                         <option value="B" ${userInfo.roleCd eq 'B' ? 'selected' : ''}>B (심사자)</option>
                         <option value="C" ${userInfo.roleCd eq 'C' ? 'selected' : ''}>C (심사장)</option>
-                        <option value="ZZ" ${userInfo.roleCd eq 'ZZ' ? 'selected' : ''}>ZZ (시스템)</option>
+                        <option value="Z" ${userInfo.roleCd eq 'Z' ? 'selected' : ''}>Z (시스템)</option>
                     </select>
                 </td>
             </tr>

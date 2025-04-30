@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menu">
+
+    <!-- 메뉴 등록-->
+    <insert id="registMenu" parameterType="com.okestro.app.admin.menu.MenuVo">
+        INSERT INTO SCH_INCU.MENU
+        VALUES (
+                   #{menuId},
+                   #{menuName},
+                   #{menuLevel},
+                   'N',
+                   'SYSTEM',
+                   CURRENT_TIMESTAMP,
+                   'SYSTEM',
+                   CURRENT_TIMESTAMP
+               )
+    </insert>
+
+    <!--메뉴 목록조회-->
+    <select id="retrieveMenuList" parameterType="com.okestro.app.admin.menu.MenuVo" resultType="com.okestro.app.admin.menu.MenuVo">
+        SELECT *
+        FROM SCH_INCU.MENU
+        WHERE 1=1
+        AND DEL_YN = 'N'
+        <if test="menuName != null and menuName != ''">
+        AND MENU_NAME LIKE '%' || #{menuName} || '%'
+        </if>
+        ORDER BY MENU_ID
+    </select>
+
+    <!-- 메뉴 상세조회-->
+    <select id="retrieveMenuDetail" parameterType="com.okestro.app.admin.menu.MenuVo" resultType="com.okestro.app.admin.menu.MenuVo">
+        SELECT *
+        FROM SCH_INCU.MENU
+        WHERE 1=1
+        AND DEL_YN = 'N'
+        <if test="menuId != null and menuId != ''">
+        AND MENU_ID = #{menuId}
+        </if>
+    </select>
+
+    <!--메뉴 수정-->
+    <update id="updateMenu" parameterType="com.okestro.app.admin.menu.MenuVo">
+        UPDATE SCH_INCU.MENU
+        SET MENU_NAME = #{menuName},
+            MENU_LEVEL = #{menuLevel},
+            DEL_YN = 'N',
+            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
+        WHERE 1=1
+        AND MENU_ID = #{menuId}
+    </update>
+
+    <!-- 메뉴 삭제-->
+    <delete id="deleteMenu" parameterType="string">
+        UPDATE SCH_INCU.MENU
+        SET DEL_YN = 'Y',
+            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
+        WHERE 1=1
+        AND MENU_ID = #{menuId}
+    </delete>
+
+    <!-- 메뉴 인덱스 -->
+    <select id="getmenuIndex" resultType="string">
+        SELECT LPAD(CAST(MAX AS VARCHAR), 3, '0') AS INDEX
+        FROM (
+                 SELECT CAST(MAX(SUBSTR(MENU_ID, 5)) AS INTEGER) + 1 AS MAX
+                 FROM SCH_INCU.MENU
+             ) A
+    </select>
+
+
+</mapper>
