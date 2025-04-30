@@ -241,13 +241,13 @@
                 <a href="#" class="waves-effect waves-dark"><i class="fa fa-sitemap"></i>관리자<span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level">
                     <li>
-                        <a href="/user/list.do">사용자 관리</a>
+                        <a href="/admin/user/list.do">사용자 관리</a>
                     </li>
                     <li>
-                        <a href="/menu/list.do">메뉴 관리</a>
+                        <a href="/admin/menu/list.do">메뉴 관리</a>
                     </li>
                     <li>
-                        <a href="/code/list.do">코드 관리</a>
+                        <a href="/admin/code/list.do">코드 관리</a>
                     </li>
 <%--                    <li>--%>
 <%--                        <a href="#">Second Level Link<span class="fa arrow"></span></a>--%>
