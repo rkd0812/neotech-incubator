@@ -21,7 +21,7 @@
         <table>
             <tr>
                 <td>이메일 : </td>
-                <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요" required></td>
+                <td><input type="email" id="userEmail" name="userEmail" value="${userEmail}" placeholder="이메일을 입력하세요" required></td>
             </tr>
             <tr>
                 <td>비밀번호 : </td>

@@ -54,8 +54,9 @@ public class UserInfoCtr {
     }
 
     // 사용자 상세 정보 조회
-    @GetMapping("/userinfo/userDetail.do")
-    public String userDetail(@RequestParam("userEmail") String userEmail, Model model) {
+    @PostMapping("/userinfo/userDetail.do")
+    public String userDetail(@RequestParam("userEmail") String userEmail, Model model, HttpSession session) {
+        session.setAttribute("viewUserEmail", userEmail);
         UserInfoVo userInfo = userinfoSvc.userDetail(userEmail);
         model.addAttribute("userInfo", userInfo);
         return "userinfo/userDetail";
@@ -65,6 +66,12 @@ public class UserInfoCtr {
     @GetMapping("/userinfo/updateForm.do")
     public String updateForm(@RequestParam("userEmail") String userEmail, Model model) {
         UserInfoVo userInfo = userinfoSvc.userDetail(userEmail);
+
+        // userInfo가 null인지 확인
+        if(userInfo == null) {
+            System.out.println("해당 이메일의 사용자 정보를 찾을 수 없음: " + userEmail);
+            return "redirect:/userinfo/userinfoList.do";
+        }
         model.addAttribute("userInfo", userInfo);
         return "userinfo/userUpdateForm";
     }
@@ -72,7 +79,14 @@ public class UserInfoCtr {
     // 사용자 정보 수정 처리
     @PostMapping("/userinfo/updateUserInfo.do")
     public String updateUserInfo(UserInfoVo userInfoVo, RedirectAttributes redirectAttr) {
+
+        if(userInfoVo.getUserEmail() == null || userInfoVo.getUserEmail().isEmpty()) {
+            redirectAttr.addFlashAttribute("message", "사용자 정보가 올바르지 않습니다.");
+            return "redirect:/userinfo/userinfoList.do";
+        }
+
         userinfoSvc.updateUserInfo(userInfoVo);
+        redirectAttr.addFlashAttribute("message", "사용자 정보가 수정되었습니다.");
         return "redirect:/userinfo/userinfoList.do";
     }
     
@@ -83,10 +97,30 @@ public class UserInfoCtr {
         return "redirect:/userinfo/userinfoList.do";
     }
 
-    // 로그인 페이지 표시
+    // 로그인  페이지
     @GetMapping("/userinfo/loginForm.do")
-    public String loginForm() {
-        return "userinfo/userinfoLogin";  // userinfoLogin.jsp 페이지로 이동
+    public String loginForm(
+            @RequestParam(value="error", required=false) String error,
+            @RequestParam(value="userEmail", required=false) String userEmail,
+            Model model) {
+
+        if (error != null) {
+            if ("password".equals(error)) {
+                model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+            } else if ("email".equals(error)) {
+                model.addAttribute("errorMessage", "존재하지 않는 이메일입니다.");
+            } else if ("empty".equals(error)) {
+                model.addAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
+            } else if ("system".equals(error)) {
+                model.addAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+            }
+        }
+
+        if (userEmail != null) {
+            model.addAttribute("userEmail", userEmail);
+        }
+
+        return "userinfo/userinfoLogin";
     }
 
     // 로그인 처리
@@ -97,37 +131,36 @@ public class UserInfoCtr {
             HttpSession session,
             RedirectAttributes redirectAttr) {
 
-        System.out.println("로그인 시도 - 이메일: " + userEmail); // 디버깅용 로그
 
-        // 파라미터 누락 체크
         if(userEmail == null || userEmail.isEmpty() || userPassword == null || userPassword.isEmpty()) {
-            // 파라미터가 없으면 로그인 폼으로 이동
-            return "redirect:/userinfo/loginForm.do?empty=true";
+            redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
+            return "redirect:/userinfo/loginForm.do?error=empty";
         }
 
         try {
-            // 서비스 호출하여 로그인 처리
-            UserInfoVo userInfoVo = userinfoSvc.userLogin(userEmail, userPassword);
-            // 로그인 성공/실패 처리
-            if (userInfoVo != null) {
-                // 로그인 성공: 세션에 사용자 정보 저장
-                session.setAttribute("loginUser", userInfoVo);
-                session.setAttribute("userEmail", userInfoVo.getUserEmail());
-                session.setAttribute("roleCd", userInfoVo.getRoleCd());
+            int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
 
-                // 리다이렉트로 목록 페이지로 이동
-                redirectAttr.addFlashAttribute("message", "로그인이 완료되었습니다.");
+
+            if (loginResult == 0) {
+
+                UserInfoVo userInfo = userinfoSvc.retrieveUserInfoForLogin(userEmail);
+
+                // 세션에 사용자 정보 저장
+                session.setAttribute("loginUser", userInfo);
+                session.setAttribute("userEmail", userInfo.getUserEmail());
+                session.setAttribute("roleCd", userInfo.getRoleCd());
+
+                // 성공 메시지와 함께 목록 페이지로 리다이렉트
                 return "redirect:/userinfo/userinfoList.do";
+            } else if (loginResult == 1) {
+                return "redirect:/userinfo/loginForm.do";
             } else {
-                // 로그인 실패: 로그인 페이지로 다시 이동하며 오류 파라미터 추가
-                return "redirect:/userinfo/loginForm.do?error=true&userEmail=" + userEmail;
+                return "redirect:/userinfo/loginForm.do?error=email";
             }
         } catch (Exception e) {
-            // 예외 발생 시 로그 출력
-            System.out.println("로그인 처리 중 오류 발생: " + e.getMessage());
+
             e.printStackTrace();
 
-            // 오류 메시지와 함께 로그인 페이지로 이동
             return "redirect:/userinfo/loginForm.do?error=system";
         }
     }

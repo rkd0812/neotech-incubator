@@ -15,17 +15,18 @@
 </head>
 <body>
 <div>
+    <h2>사용자 상세 정보</h2>
     <table border="1">
         <tr>
             <td>이메일</td>
-            <td>${userInfo.userEmail}</td>
+            <td id="displayEmail">${userInfo.userEmail}</td>
         </tr>
         <tr>
             <td>비밀번호</td>
             <td>${userInfo.userPassword}</td>
         </tr>
         <tr>
-            <td>권한코드</td>
+            <td>권한코드</td>te
             <td>${userInfo.roleCd}</td>
         </tr>
         <tr>
@@ -35,16 +36,12 @@
     </table>
 </div>
 <div>
-    <button id="updateBtn">수정</button>
+    <button id="updateBtn" data-email="${userInfo.userEmail}">수정</button>
     <button id="deleteBtn">삭제</button>
     <button id="listBtn">목록</button>
 </div>
-    <form id="deleteForm" action="/userinfo/deleteUserInfo.do" method="post">
-        <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
-    </form>
-<div>
-
-
-</div>
+<form id="deleteForm" action="/userinfo/deleteUserInfo.do" method="post">
+    <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
+</form>
 </body>
 </html>

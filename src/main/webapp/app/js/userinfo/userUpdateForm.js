@@ -1,6 +1,7 @@
 $(function() {
     // 수정 버튼 클릭 시
     $("#updateSubmitBtn").click(function() {
+        var userEmail = $("#hiddenUserEmail").val();
         var password = $("#userPassword").val();
         var passwordConfirm = $("#passwordConfirm").val();
 

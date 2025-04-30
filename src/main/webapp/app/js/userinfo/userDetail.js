@@ -1,8 +1,8 @@
 $(function() {
-
     // 수정 버튼 클릭 시
     $("#updateBtn").click(function() {
-        location.href = "/userinfo/updateForm.do?userEmail=" + encodeURIComponent("${userInfo.userEmail}");
+        var userEmail = "${userInfo.userEmail}";
+        location.href = "/userinfo/updateForm.do?userEmail=" + encodeURIComponent(userEmail);
     });
 
     // 삭제 버튼 클릭 시

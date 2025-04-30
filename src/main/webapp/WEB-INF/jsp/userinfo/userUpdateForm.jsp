@@ -53,8 +53,8 @@
                 </td>
             </tr>
         </table>
-        <!-- 이메일은 변경할 수 없으므로 hidden으로 처리 -->
-        <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
+        <!-- 이메일은 변경할 수 없으므로 hidden으로 처리하고 id 추가 -->
+        <input type="hidden" id="hiddenUserEmail" name="userEmail" value="${userInfo.userEmail}">
     </form>
 </div>
 </body>

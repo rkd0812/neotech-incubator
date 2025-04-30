@@ -30,7 +30,12 @@
     <tbody id="alluserinfo">
     <c:forEach items="${userinfoList}" var="user">
         <tr>
-            <td><a href="/userinfo/userDetail.do?userEmail=${user.userEmail}">${user.userEmail}</a></td>
+            <td>
+                <form method="post" action="/userinfo/userDetail.do" style="display:inline;">
+                    <input type="hidden" name="userEmail" value="${user.userEmail}">
+                    <a href="#" onclick="this.parentNode.submit(); return false;">${user.userEmail}</a>
+                </form>
+            </td>
             <td>${user.userPassword}</td>
             <td>${user.roleCd}</td>
             <td>${user.codeKr}</td>

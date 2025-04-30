@@ -24,6 +24,9 @@ public interface UserInfoSvc {
     // 사용자 정보 삭제
     void deleteUserInfo(String userEmail);
 
-    // 로그인 처리
-    UserInfoVo userLogin (String userEmail, String userPassword);
+
+    int userLoginCheck(String userEmail, String userPassword);
+
+    // 로그인 성공 시 사용자 정보 조회
+    UserInfoVo retrieveUserInfoForLogin(String userEmail);
 }
