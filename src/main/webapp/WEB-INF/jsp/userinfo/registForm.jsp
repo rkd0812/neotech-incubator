@@ -20,36 +20,31 @@
     <table>
         <tr>
             <td>이메일 : </td>
-            <td><input type="email" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요." required></td>
-            <button type="button" id="checkemailBtn">중복확인</button>
+            <td><input type="text" id="userEmail"  placeholder="이메일을 입력하세요.">
+            <span>@</span>
+                <input type="text" id="userDomain" name="userDomain">
+                <select id="domainList">
+                    <option value="">직접 입렵</option>
+                    <option value="naver.com">naver.com</option>
+                    <option value="googel.com">googel.com</option>
+                    <option value="kakao.com">kakao.com</option>
+                    <option value="daum.net">daum.net</option>
+                </select>
+                <input type="hidden" id="dbEmail" name="userEmail">
+                <button type="button" id="checkemailBtn">중복확인</button>
+            </td>
         </tr>
         <tr>
             <td>비밀번호 : </td>
-            <td><input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요." required></td>
+            <td><input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요."></td>
         </tr>
         <tr>
             <td>비밀번호 확인 : </td>
-            <td><input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 입력하세요."  required></td>
+            <td><input type="password" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 입력하세요."></td>
         </tr>
         <tr>
             <td colspan="2">
                 * 10~16자리 영문/숫자 또는 영문/숫자/특수문자[!@#$%^&*()]혼용
-            </td>
-        </tr>
-        <tr>
-<%--            <td>권한:</td>--%>
-<%--            <td>--%>
-<%--                <select name="roleCd">--%>
-<%--                    <option value="a">A (일반)</option>--%>
-<%--                    <option value="b">B (심사자)</option>--%>
-<%--                    <option value="c">C (심사장)</option>--%>
-<%--                    <option value="zz">ZZ (시스템)</option>--%>
-<%--                </select>--%>
-<%--                <select name="codeKr">--%>
-<%--                    <c:forEach items="${roleList} var=role">--%>
-<%--                        <option value="${role.codeCd}">${role.codeCd} (${role.codeKr}</option>--%>
-<%--                    </c:forEach>--%>
-<%--                </select>--%>
             </td>
         </tr>
         <tr>

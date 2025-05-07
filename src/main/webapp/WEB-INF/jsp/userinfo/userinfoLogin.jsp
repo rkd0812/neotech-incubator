@@ -17,15 +17,16 @@
 <h1>로고</h1>
 
 <div>
+    <input type="hidden" id="errorMessage" value="${errorMessage}">
     <form id="userLogin" action="/userinfo/login.do" method="post">
         <table>
             <tr>
                 <td>이메일 : </td>
-                <td><input type="email" id="userEmail" name="userEmail" value="${userEmail}" placeholder="이메일을 입력하세요" required></td>
+                <td><input type="text" id="userEmail" name="userEmail" placeholder="이메일을 입력하세요"></td>
             </tr>
             <tr>
                 <td>비밀번호 : </td>
-                <td><input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요" required></td>
+                <td><input type="password" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요"></td>
             </tr>
             <tr>
                 <td colspan="2">

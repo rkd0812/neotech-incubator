@@ -108,7 +108,7 @@ public class UserInfoCtr {
             if ("password".equals(error)) {
                 model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
             } else if ("email".equals(error)) {
-                model.addAttribute("errorMessage", "존재하지 않는 이메일입니다.");
+                model.addAttribute("errorMessage", "존재하지 않는 사용자입니다.");
             } else if ("empty".equals(error)) {
                 model.addAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
             } else if ("system".equals(error)) {
@@ -116,14 +116,10 @@ public class UserInfoCtr {
             }
         }
 
-        if (userEmail != null) {
-            model.addAttribute("userEmail", userEmail);
-        }
-
         return "userinfo/userinfoLogin";
     }
 
-    // 로그인 처리
+//     로그인 처리
     @PostMapping("/userinfo/login.do")
     public String login(
             @RequestParam(value="userEmail", required=false) String userEmail,
@@ -134,7 +130,7 @@ public class UserInfoCtr {
 
         if(userEmail == null || userEmail.isEmpty() || userPassword == null || userPassword.isEmpty()) {
             redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
-            return "redirect:/userinfo/loginForm.do?error=empty";
+            return "redirect:/userinfo/loginForm.do";
         }
 
         try {
@@ -153,15 +149,17 @@ public class UserInfoCtr {
                 // 성공 메시지와 함께 목록 페이지로 리다이렉트
                 return "redirect:/userinfo/userinfoList.do";
             } else if (loginResult == 1) {
+                redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
                 return "redirect:/userinfo/loginForm.do";
             } else {
-                return "redirect:/userinfo/loginForm.do?error=email";
+                redirectAttr.addFlashAttribute("errorMessage", "존재하지 않는 사용자입니다.");
+                return "redirect:/userinfo/loginForm.do";
             }
         } catch (Exception e) {
 
             e.printStackTrace();
-
-            return "redirect:/userinfo/loginForm.do?error=system";
+            redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+            return "redirect:/userinfo/loginForm.do";
         }
     }
 }

@@ -1,23 +1,23 @@
 $(function() {
-    var errorCode = $("#errorCode").val();
+    var errorMessage = $("#errorMessage").val();
 
-    if(errorCode) {
-        if(errorCode === "empty") {
-            alert("이메일과 비밀번호를 입력해주세요.");
-        } else if(errorCode === "password") {
-            alert("비밀번호가 일치하지 않습니다.");
-        } else if(errorCode === "email") {
-            alert("존재하지 않는 이메일입니다.");
-        } else if(errorCode === "system") {
-            alert("시스템 오류가 발생했습니다. 관리자에게 문의하세요.");
-        }
+    if(errorMessage && errorMessage.trim() !== "") {
+        alert(errorMessage);
     }
 
     $("#userLogin").submit(function(event) {
         // 이메일, 비밀번호 입력 확인
-        var userEmail = $("#userEmail").val();
-        var userPassword = $("#userPassword").val();
+        var userEmail = $("#userEmail").val().trim();
+        var userPassword = $("#userPassword").val().trim();
 
+        if(userEmail === "" && userPassword === "") {
+            alert("이메일과 비밀번호를 입력하지 않았습니다.");
+            $("#userEmail").focus();
+            event.preventDefault();
+            return false;
+        }
+
+        // 그 다음에 개별 필드 체크
         if(userEmail === "") {
             alert("이메일을 입력해주세요.");
             $("#userEmail").focus();
