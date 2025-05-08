@@ -20,19 +20,37 @@
 
     <!--코드 목록조회 -->
     <select id="retrieveCodeList" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
-        SELECT *
+        SELECT CODE_NAME
+             , CODE_VAL
+             , CODE_KR
+             , DEL_YN
+             , FRST_RGSR_ID
+             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+             , LAST_CHNG_ID
+             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
         FROM SCH_INCU.CODE
         WHERE 1=1
         AND DEL_YN = 'N'
         <if test="codeName != null and codeName != ''">
             AND CODE_NAME LIKE '%' || #{codeName} || '%'
         </if>
+        <if test="startDate != null and startDate != ' and endDate != null and endDate != '">
+            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+        </if>
         ORDER BY CODE_NAME, CODE_VAL
     </select>
 
     <!-- 코드 상세조회 -->
     <select id="retrieveCodeDetail" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
-        SELECT *
+        SELECT CODE_NAME
+             , CODE_VAL
+             , CODE_KR
+             , DEL_YN
+             , FRST_RGSR_ID
+             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+             , LAST_CHNG_ID
+             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
         FROM SCH_INCU.CODE
         WHERE 1=1
         AND DEL_YN = 'N'
@@ -52,7 +70,7 @@
             CODE_KR = #{codeKr},
             LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
-        AND CODE_NAME = #{codeName}
+        AND CODE_NAME = #{preCodeName}
         AND CODE_VAL = #{preCodeVal}
     </update>
 
@@ -60,10 +78,18 @@
     <update id="deleteCode" parameterType="com.okestro.app.admin.code.CodeVo">
     UPDATE SCH_INCU.CODE
     SET DEL_YN = 'Y'
+    AND LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
     WHERE 1=1
     AND CODE_NAME = #{codeName}
     AND CODE_VAL = #{codeVal}
     </update>
+
+    <!-- 코드 분류 조회-->
+    <select id="retrieveCodeGroupList" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
+        SELECT DISTINCT CODE_NAME AS CODE_NAME
+        FROM SCH_INCU.CODE
+        ORDER BY CODE_NAME
+    </select>
 
 
 

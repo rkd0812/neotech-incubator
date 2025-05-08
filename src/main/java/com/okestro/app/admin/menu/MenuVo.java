@@ -13,7 +13,9 @@ public class MenuVo {
     private int menuLevel;
     private String delYn;
     private String frstRgsrId;
-    private Date frstRgsrDtlDttm;
+    private String frstRgsrDtlDttm;
     private String lastChngId;
-    private Date lastChngDtlDttm;
+    private String lastChngDtlDttm;
+    private String startDate;
+    private String endDate;
 }

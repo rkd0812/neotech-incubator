@@ -14,7 +14,7 @@
     <script src="/app/js/admin/code/codeRegist.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
 
 <div id="page-wrapper">
     <div class="header">
@@ -25,18 +25,18 @@
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
                 <colgroup></colgroup>
                 <tbody>
-                      <tr>
-                          <th>코드명</th>
-                          <td><input type="text" id="codeKr" name="codeKr" /></td>
-                      </tr>
-                      <tr>
-                          <th>코드값</th>
-                          <td><input type="text" id="codeVal" name="codeVal" /></td>
-                      </tr>
-                      <tr>
-                          <th>코드값설명</th>
-                          <td><input type="text" id="codeName" name="codeName" /></td>
-                      </tr>
+                    <tr>
+                        <th>코드분류</th>
+                        <td><input type="text" id="codeName" name="codeName" /></td>
+                    </tr>
+                    <tr>
+                        <th>코드값</th>
+                        <td><input type="text" id="codeVal" name="codeVal" /></td>
+                    </tr>
+                    <tr>
+                        <th>코드명</th>
+                        <td><input type="text" id="codeKr" name="codeKr" /></td>
+                    </tr>
                 </tbody>
             </table>
         </form>

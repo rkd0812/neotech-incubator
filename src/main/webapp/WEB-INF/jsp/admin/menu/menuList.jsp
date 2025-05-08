@@ -9,13 +9,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>메뉴 관리</title>
+    <title>메뉴 목록</title>
     <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
     <script src="/app/js/admin/menu/menuList.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
-
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script>
+    const msg = "${msg}";
+    if(msg != '') {
+        alert(msg);
+    }
+</script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">메뉴 목록조회</h1>
@@ -24,11 +29,16 @@
         <form id="searchForm" name="searchForm" action="/admin/menu/list.do" >
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
                 <colgroup>
-
+                    <col style="width: 30%;"/>
+                    <col style="width: auto;" />
                 </colgroup>
                 <tbody>
                     <tr>
-                        <th>메뉴</th>
+                        <th>기간</th>
+                        <td><input type="date" id="startDate" name="startDate" value="${menuVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${menuVo.endDate}"></td>
+                    </tr>
+                    <tr>
+                        <th>메뉴명</th>
                         <td><input type="text" id="menuName" name="menuName" value="${menuVo.menuName}" /></td>
                     </tr>
                 </tbody>
@@ -41,8 +51,10 @@
             </colgroup>
             <thead>
                 <tr>
+                    <th>No</th>
                     <th>메뉴명</th>
                     <th>메뉴레벨</th>
+                    <th>등록일자</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,8 +67,10 @@
             </c:if>
                 <c:forEach var="menu" items="#{menuList}" varStatus="status">
                     <tr>
+                        <td>${status.count}</td>
                         <td><a href="/admin/menu/detail.do?menuId=${menu.menuId}">${menu.menuName}</a></td>
                         <td>${menu.menuLevel}</td>
+                        <td>${menu.frstRgsrDtlDttm}</td>
                     </tr>
                 </c:forEach>
             </tbody>

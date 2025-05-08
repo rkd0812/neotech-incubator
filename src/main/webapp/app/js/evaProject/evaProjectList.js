@@ -13,13 +13,13 @@ $(function() {
         setMonth();
     }
 
-    // 초기화
+    // 초기화 버튼
     $('#initBtn').click(function() {
         setMonth();
-        $('#codeName').val("");
+        $('#menuName').val('');
     })
 
-    // 검색
+    // 검색 버튼
     $('#searchBtn').click(function() {
         const startDate = $('#startDate').val().replaceAll('-', '');
         const endDate = $('#endDate').val().replaceAll('-', '');
@@ -31,16 +31,10 @@ $(function() {
         }
     })
 
-    // 등록
-    $('#registBtn').click(function() {
-        location.href = "/admin/code/openRegist.do";
-    })
-
 })
 
 const setMonth = function() {
     const now = new Date();
-
     $('#endDate').val(now.toISOString().substring(0, 10));
     $('#startDate').val(new Date(now.setMonth(now.getMonth() - 1)).toISOString().substring(0, 10));
 }

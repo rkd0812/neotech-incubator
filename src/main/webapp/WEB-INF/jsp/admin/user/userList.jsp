@@ -14,9 +14,14 @@
     <script src="<c:url value="/app/js/admin/user/userList.js"/>"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
-
-<div id="page-wrapper">
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script>
+    const msg = "${msg}";
+    if(msg != '') {
+        alert(msg);
+    }
+</script>
+<div id="container-fluid">
     <div class="header">
         <h1 class="page-header">
             사용자 목록조회
@@ -30,6 +35,10 @@
                         <col style="width: auto;">
                     </colgroup>
                     <tbody>
+                        <tr>
+                            <th>기간</th>
+                            <td><input type="date" id="startDate" name="startDate" value="${userVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${userVo.endDate}"></td>
+                        </tr>
                         <tr>
                             <th>이메일</th>
                             <td><input type="text" name="userEmail" value="${userVo.userEmail}" /></td>
@@ -50,15 +59,13 @@
             <button id="searchBtn">검색</button>
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
                 <colgroup>
-                    <col style="width: 20%;">
-                    <col style="width: 60%;">
-                    <col style="width: auto;">
                 </colgroup>
                 <thead>
                     <tr>
                         <th>No</th>
                         <th>이메일</th>
                         <th>권한</th>
+                        <th>등록일자</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -72,10 +79,11 @@
                     <c:forEach var="user" items="${userList}" varStatus="status">
                         <tr>
                             <td>${status.count}</td>
-                        <td>
-                            <a href="/admin/user/detail.do?userEmail=${user.userEmail}" class="userEmail">${user.userEmail}</a>
-                        </td>
+                            <td>
+                                <a href="/admin/user/detail.do?userEmail=${user.userEmail}" class="userEmail">${user.userEmail}</a>
+                            </td>
                             <td>${user.codeKr}</td>
+                            <td>${user.frstRgsrDtlDttm}</td>
                         </tr>
                     </c:forEach>
                 </tbody>

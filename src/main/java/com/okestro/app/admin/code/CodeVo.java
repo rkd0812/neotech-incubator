@@ -3,8 +3,6 @@ package com.okestro.app.admin.code;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter @Setter
 public class CodeVo {
 
@@ -13,10 +11,13 @@ public class CodeVo {
     private String codeKr;
     private String delYn;
     private String frstRgsrId;
-    private Date frstRgsrDtlDttm;
+    private String frstRgsrDtlDttm;
     private String lastChngId;
-    private Date lastChngDtlDttm;
-
+    private String lastChngDtlDttm;
+    private String startDate;
+    private String endDate;
     private String preCodeVal;
+    private String preCodeName;
 
 }
+

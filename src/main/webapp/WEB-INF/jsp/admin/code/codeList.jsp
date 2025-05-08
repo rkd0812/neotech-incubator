@@ -15,7 +15,13 @@
     <script src="/app/js/admin/code/codeList.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script>
+    const msg = "${msg}";
+    if(msg != '') {
+        alert(msg);
+    }
+</script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">코드 목록조회</h1>
@@ -23,8 +29,14 @@
                 <form id="searchForm" name="searchForm" action="/admin/code/list.do">
                     <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
                         <colgroup>
+                            <col style="width: 30%;" />
+                            <col style="width: auto;" />
                         </colgroup>
                         <tbody>
+                            <tr>
+                                <th>기간</th>
+                                <td><input type="date" id="startDate" name="startDate" value="${codeVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${codeVo.endDate}"></td>
+                            </tr>
                             <tr>
                                 <th>코드분류</th>
                                 <td><input type="text" id="codeName" name="codeName" value="${codeVo.codeName}" /></td>
@@ -60,7 +72,8 @@
                                 <td>${code.codeName}</td>
                                 <td><a href="/admin/code/detail.do?codeName=${code.codeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
                                 <td>${code.codeKr}</td>
-                                <td><fmt:formatDate value="${code.frstRgsrDtlDttm}" pattern="y-MM-d" type="date"/></td>
+<%--                                <td><fmt:formatDate value="${code.frstRgsrDtlDttm}" pattern="y-MM-dd" type="date"/></td>--%>
+                                <td>${code.frstRgsrDtlDttm}</td>
                             </tr></a>
                         </c:forEach>
                     </tbody>

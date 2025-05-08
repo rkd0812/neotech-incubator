@@ -13,4 +13,6 @@ public interface CodeSvc {
     int updateCode(CodeVo codeVo);
     // 코드 삭제
     int deleteCode(CodeVo codeVo);
+    // 코드 분류 조회
+    List<CodeVo> retrieveCodeGroupList(CodeVo codeVo);
 }
