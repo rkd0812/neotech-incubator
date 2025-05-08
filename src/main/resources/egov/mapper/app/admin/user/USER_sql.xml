@@ -8,9 +8,9 @@
              , A.USER_PASSWORD AS USER_PASSWORD
              , A.ROLE_CD AS ROLE_CD
              , A.DEL_YN AS DEL_YN
-             , A.FRST_RGSR_DTL_DTTM AS FRST_RGSR_DTL_DTTM
+             , TO_CHAR(A.FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
              , A.LAST_CHNG_ID AS LAST_CHNG_ID
-             , A.LAST_CHNG_DTL_DTTM AS LAST_CHNG_DTL_DTTM
+             , TO_CHAR(A.LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
              , B.CODE_KR AS CODE_KR
         FROM SCH_INCU.USER A
         LEFT OUTER JOIN SCH_INCU.CODE B
@@ -23,12 +23,21 @@
         <if test="roleCd != null and roleCd != '' and roleCd != 'All'">
             AND ROLE_CD LIKE '%' || #{roleCd} || '%'
         </if>
+        <if test="startDate != null and startDate != ' and endDate != null and endDate != '">
+            AND TO_CHAR(A.FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+            AND TO_CHAR(A.FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+        </if>
         ORDER BY FRST_RGSR_DTL_DTTM DESC, USER_EMAIL
     </select>
 
     <!--사용자 상세조회-->
     <select id="retrieveUserDetail" parameterType="com.okestro.app.admin.user.UserVo" resultType="com.okestro.app.admin.user.UserVo">
-        SELECT *
+        SELECT USER_EMAIL
+             , USER_PASSWORD
+             , ROLE_CD
+             , DEL_YN
+             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
         FROM SCH_INCU.USER
         WHERE 1=1
         AND USER_EMAIL = #{userEmail}
@@ -38,7 +47,8 @@
     <update id="updateUser" parameterType="com.okestro.app.admin.user.UserVo">
         UPDATE SCH_INCU.USER
         SET USER_PASSWORD = #{userPassword},
-            ROLE_CD = #{roleCd}
+            ROLE_CD = #{roleCd},
+            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
         AND USER_EMAIL = #{userEmail}
     </update>
@@ -61,7 +71,8 @@
     <!-- 사용자 삭제-->
     <delete id="deleteUser" parameterType="string">
         UPDATE SCH_INCU.USER
-        SET DEL_YN = 'Y'
+        SET DEL_YN = 'Y',
+            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
         AND USER_EMAIL = #{userEmail}
     </delete>

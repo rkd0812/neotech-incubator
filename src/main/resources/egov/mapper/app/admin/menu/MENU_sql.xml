@@ -20,19 +20,37 @@
 
     <!--메뉴 목록조회-->
     <select id="retrieveMenuList" parameterType="com.okestro.app.admin.menu.MenuVo" resultType="com.okestro.app.admin.menu.MenuVo">
-        SELECT *
+        SELECT MENU_ID
+             , MENU_NAME
+             , MENU_LEVEL
+             , DEL_YN
+             , FRST_RGSR_ID
+             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+             , LAST_CHNG_ID
+             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
         FROM SCH_INCU.MENU
         WHERE 1=1
         AND DEL_YN = 'N'
         <if test="menuName != null and menuName != ''">
         AND MENU_NAME LIKE '%' || #{menuName} || '%'
         </if>
+        <if test="startDate != null and startDate != ' and endDate != null and endDate != '">
+            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+        </if>
         ORDER BY MENU_ID
     </select>
 
     <!-- 메뉴 상세조회-->
     <select id="retrieveMenuDetail" parameterType="com.okestro.app.admin.menu.MenuVo" resultType="com.okestro.app.admin.menu.MenuVo">
-        SELECT *
+        SELECT MENU_ID
+             , MENU_NAME
+             , MENU_LEVEL
+             , DEL_YN
+             , FRST_RGSR_ID
+             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+             , LAST_CHNG_ID
+             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
         FROM SCH_INCU.MENU
         WHERE 1=1
         AND DEL_YN = 'N'

@@ -14,7 +14,7 @@
     <script src="/app/js/admin/user/userRegist.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
 
 <div id="page-wrapper">
     <div class="header">

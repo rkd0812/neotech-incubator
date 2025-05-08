@@ -1,0 +1,28 @@
+package com.okestro.app.evaProject;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter @Setter
+public class EvaProjectVo {
+
+    private String projectId;
+    private String projectName;
+    private String evaCd;
+    private String evaCdNm;
+    private String scoreFin;
+    private String evaStartDt;
+    private String evaEndDt;
+    private String delYn;
+    private String frstRgsrId;
+    private String frstRgsrDtlDttm;
+    private String lastChngId;
+    private String lastChngDtlDttm;
+    private String startDate;
+    private String endDate;
+    private String groupId;
+    private String groupCd;
+    private String groupCdNm;
+    private String projectDetail;
+    private String url;
+}

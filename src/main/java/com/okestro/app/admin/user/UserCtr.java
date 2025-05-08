@@ -8,8 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -24,6 +27,12 @@ public class UserCtr {
     // 사용자 목록조회
     @GetMapping("/admin/user/list.do")
     public String retrieveUserList(@ModelAttribute UserVo userVo, Model model) {
+
+        if(userVo.getStartDate() == null && userVo.getEndDate() == null) {
+            LocalDate nowDate = LocalDate.now();
+            userVo.setStartDate(nowDate.minusMonths(1).toString());
+            userVo.setEndDate(nowDate.toString());
+        }
 
         model.addAttribute("userVo", userVo);
 
@@ -61,8 +70,14 @@ public class UserCtr {
     }
 
     @PostMapping("/admin/user/update.do")
-    public String updateUser(@ModelAttribute UserVo userVo) {
+    public String updateUser(@ModelAttribute UserVo userVo, RedirectAttributes redirectAttributes) {
         int cnt = userSvc.updateUser(userVo);
+
+        if (cnt > 0) {
+            redirectAttributes.addFlashAttribute("msg", "수정 완료");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "수정 실패");
+        }
 
         return "redirect:/admin/user/detail.do?userEmail=" + userVo.getUserEmail();
     }
@@ -78,15 +93,27 @@ public class UserCtr {
     }
 
     @PostMapping("/admin/user/regist.do")
-    public String registerUser(@ModelAttribute UserVo userVo) {
+    public String registerUser(@ModelAttribute UserVo userVo, RedirectAttributes redirectAttributes) {
         int cnt = userSvc.registUser(userVo);
+
+        if(cnt > 0) {
+            redirectAttributes.addFlashAttribute("msg", "등록 완료");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "등록 실패");
+        }
 
         return "redirect:/admin/user/list.do";
     }
 
     @GetMapping("/admin/user/delete.do")
-    public String deleteUser(@RequestParam("userEmail") String userEmail) {
+    public String deleteUser(@RequestParam("userEmail") String userEmail, RedirectAttributes redirectAttributes) {
         int cnt = userSvc.deleteUser(userEmail);
+
+        if(cnt > 0) {
+            redirectAttributes.addFlashAttribute("msg", "삭제 완료");
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "삭제 실패");
+        }
 
         return "redirect:/admin/user/list.do";
     }

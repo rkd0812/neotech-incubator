@@ -15,8 +15,13 @@
     <script src="<c:url value="/app/js/admin/menu/menuDetail.js"/>"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
-
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script>
+    const msg = "${msg}";
+    if(msg != '') {
+        alert(msg);
+    }
+</script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">메뉴 상세</h1>
@@ -28,12 +33,6 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>메뉴아이디</th>
-                        <td>
-                            <input type="text" id="menuId" name="menuId" value="${menuDetail.menuId}" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
                         <th>메뉴명</th>
                         <td>
                             <input type="text" id="menuName" name="menuName" value="${menuDetail.menuName}">
@@ -42,12 +41,13 @@
                     <tr>
                         <th>메뉴레벨</th>
                         <td>
+                            <input type="hidden" id="menuId" name="menuId" value="${menuDetail.menuId}" />
                             <input type="text" id="menuLevel" name="menuLevel" value="${menuDetail.menuLevel}">
                         </td>
                     </tr>
                     <tr>
                         <th>등록일자</th>
-                        <td><fmt:formatDate value="${menuDetail.frstRgsrDtlDttm}" pattern="y-MM-d" type="date"/></td>
+                        <td>${menuDetail.frstRgsrDtlDttm}</td>
                     </tr>
                 </thead>
             </table>

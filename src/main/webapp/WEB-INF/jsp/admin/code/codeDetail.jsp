@@ -14,8 +14,13 @@
     <script src="/app/js/admin/code/codeDetail.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
-
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script>
+    const msg = "${msg}";
+    if(msg != '') {
+        alert(msg);
+    }
+</script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">코드 상세조회</h1>
@@ -27,7 +32,11 @@
                     <tr>
                         <th>코드분류</th>
                         <td>
-                            <input type="text" id="codeName" name="codeName" value="${codeDetail.codeName}" />
+                            <input type="hidden" name="preCodeName" value="${codeDetail.codeName}">
+                            <select id="codeName" name="codeName">
+                            <c:forEach items="${codeGroupList}" var="grp" varStatus="status">
+                                <option value="${grp.codeName}" <c:if test="${codeDetail.codeName eq grp.codeName}">selected</c:if> >${grp.codeName}</option>
+                            </c:forEach>
                         </td>
                     </tr>
                     <tr>
@@ -41,6 +50,12 @@
                         <th>코드명</th>
                         <td>
                             <input type="text" id="codeKr" name="codeKr" value="${codeDetail.codeKr}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>등록일자</th>
+                        <td>
+                            ${codeDetail.frstRgsrDtlDttm}
                         </td>
                     </tr>
                 </tbody>

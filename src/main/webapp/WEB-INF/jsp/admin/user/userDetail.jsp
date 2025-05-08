@@ -14,8 +14,13 @@
     <script src="/app/js/admin/user/userDetail.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
-
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script>
+    const msg = "${msg}";
+    if(msg != '') {
+        alert(msg);
+    }
+</script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">사용자 상세조회</h1>
@@ -25,7 +30,9 @@
                     <tbody>
                         <tr>
                             <th>이메일</th>
-                            <td><input type="text" id="userEmail" name="userEmail" value="${userDetail.userEmail}" readonly /></td>
+                            <input type="hidden" id="userEmail" name="userEmail" value="${userDetail.userEmail}">
+                            <td>${userDetail.userEmail}</td>
+
                         </tr>
                         <tr>
                             <th>비밀번호</th>
@@ -40,6 +47,10 @@
                                     </c:forEach>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
+                            <th>등록일자</th>
+                            <td>${userDetail.frstRgsrDtlDttm}</td>
                         </tr>
                     </tbody>
                 </table>

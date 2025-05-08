@@ -40,5 +40,9 @@ public class CodeSvcImpl extends EgovAccessServiceImpl implements CodeSvc {
         return dao.delete("code.deleteCode", codeVo);
     }
 
+    @Override
+    public List<CodeVo> retrieveCodeGroupList(CodeVo codeVo) {
+        return dao.selectList("code.retrieveCodeGroupList", codeVo);
+    }
 
 }

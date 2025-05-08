@@ -14,7 +14,7 @@
     <script src="/app/js/admin/menu/menuRegist.js"></script>
 </head>
 <body>
-<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>
+<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">메뉴 등록</h1>
