@@ -62,14 +62,17 @@ public class UserInfoCtr {
         return "userinfo/userDetail";
     }
 
-    // 사용자 정보 수정 폼 표시
+    @GetMapping("/userinfo/userDetail.do")
+    public String userDetailGet(@RequestParam("userEmail") String userEmail, Model model, HttpSession session) {
+        // 기존 메서드 재사용
+        return userDetail(userEmail, model, session);
+    }
+
+    //  사용자 정보 수정 폼 표시
     @GetMapping("/userinfo/updateForm.do")
     public String updateForm(@RequestParam("userEmail") String userEmail, Model model) {
         UserInfoVo userInfo = userinfoSvc.userDetail(userEmail);
-
-        // userInfo가 null인지 확인
         if(userInfo == null) {
-            System.out.println("해당 이메일의 사용자 정보를 찾을 수 없음: " + userEmail);
             return "redirect:/userinfo/userinfoList.do";
         }
         model.addAttribute("userInfo", userInfo);
@@ -79,15 +82,18 @@ public class UserInfoCtr {
     // 사용자 정보 수정 처리
     @PostMapping("/userinfo/updateUserInfo.do")
     public String updateUserInfo(UserInfoVo userInfoVo, RedirectAttributes redirectAttr) {
-
         if(userInfoVo.getUserEmail() == null || userInfoVo.getUserEmail().isEmpty()) {
             redirectAttr.addFlashAttribute("message", "사용자 정보가 올바르지 않습니다.");
             return "redirect:/userinfo/userinfoList.do";
         }
-
-        userinfoSvc.updateUserInfo(userInfoVo);
-        redirectAttr.addFlashAttribute("message", "사용자 정보가 수정되었습니다.");
-        return "redirect:/userinfo/userinfoList.do";
+        try {
+            userinfoSvc.updateUserInfo(userInfoVo);
+            redirectAttr.addFlashAttribute("message", "사용자 정보가 수정되었습니다.");
+            return "redirect:/userinfo/userDetail.do?userEmail=" + userInfoVo.getUserEmail();
+        } catch (Exception e) {
+            redirectAttr.addFlashAttribute("message", "수정 중 오류가 발생했습니다.");
+            return "redirect:/userinfo/userinfoList.do";
+        }
     }
     
     // 사용자 정보 삭제 처리
@@ -126,8 +132,6 @@ public class UserInfoCtr {
             @RequestParam(value="userPassword", required=false) String userPassword,
             HttpSession session,
             RedirectAttributes redirectAttr) {
-
-
         if(userEmail == null || userEmail.isEmpty() || userPassword == null || userPassword.isEmpty()) {
             redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
             return "redirect:/userinfo/loginForm.do";
@@ -135,18 +139,11 @@ public class UserInfoCtr {
 
         try {
             int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
-
-
             if (loginResult == 0) {
-
                 UserInfoVo userInfo = userinfoSvc.retrieveUserInfoForLogin(userEmail);
-
-                // 세션에 사용자 정보 저장
                 session.setAttribute("loginUser", userInfo);
                 session.setAttribute("userEmail", userInfo.getUserEmail());
                 session.setAttribute("roleCd", userInfo.getRoleCd());
-
-                // 성공 메시지와 함께 목록 페이지로 리다이렉트
                 return "redirect:/userinfo/userinfoList.do";
             } else if (loginResult == 1) {
                 redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
@@ -156,8 +153,6 @@ public class UserInfoCtr {
                 return "redirect:/userinfo/loginForm.do";
             }
         } catch (Exception e) {
-
-            e.printStackTrace();
             redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
             return "redirect:/userinfo/loginForm.do";
         }

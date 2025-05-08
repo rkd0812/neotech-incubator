@@ -43,6 +43,7 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
         return (UserInfoVo) dao.selectOne("userinfo.userDetail", userEmail);
     }
 
+
     // DB에 유저 정보를 업데이트 시 사용 (권한코드 대문자로)
     @Override
     public void updateUserInfo(UserInfoVo userInfoVo) {

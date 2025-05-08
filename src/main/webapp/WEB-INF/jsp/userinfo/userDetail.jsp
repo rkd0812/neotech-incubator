@@ -26,7 +26,7 @@
             <td>${userInfo.userPassword}</td>
         </tr>
         <tr>
-            <td>권한코드</td>te
+            <td>권한코드</td>
             <td>${userInfo.roleCd}</td>
         </tr>
         <tr>
@@ -36,9 +36,13 @@
     </table>
 </div>
 <div>
-    <button id="updateBtn" data-email="${userInfo.userEmail}">수정</button>
+    <form id="updateForm" action="/userinfo/updateForm.do" method="get" style="display:inline;">
+        <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
+        <button type="submit">수정</button>
+    </form>
     <button id="deleteBtn">삭제</button>
     <button id="listBtn">목록</button>
+
 </div>
 <form id="deleteForm" action="/userinfo/deleteUserInfo.do" method="post">
     <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
