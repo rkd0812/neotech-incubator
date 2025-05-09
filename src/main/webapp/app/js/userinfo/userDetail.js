@@ -25,6 +25,6 @@ $(function() {
 
     // 목록 버튼 클릭 시
     $("#listBtn").click(function() {
-        location.href = "/userinfo/userinfoList.do";
+        location.href = "/project/projectList.do";
     });
 });

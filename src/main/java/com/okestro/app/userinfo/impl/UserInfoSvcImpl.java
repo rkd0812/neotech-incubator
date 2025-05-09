@@ -16,12 +16,6 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
     @Resource(name="cmmnDao")
     CmmnAbstractDao dao;
 
-    // 유저 전체 DB에서 호출하여 불러옴
-    @Override
-    public List<UserInfoVo> retrieveUserInfoList(UserInfoVo userinfoVo) {
-        return dao.selectList("userinfo.retrieveUserInfoList", userinfoVo);
-    }
-
     // 사용자를 DB에 등록 시 어떻게 할지 (회원가입시 권한은 기본적으로 'A'로 하게끔)
     @Override
     public void insertUserInfo(UserInfoVo userInfoVo) {

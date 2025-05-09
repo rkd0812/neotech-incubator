@@ -41,7 +41,9 @@
         <button type="submit">수정</button>
     </form>
     <button id="deleteBtn">삭제</button>
-    <button id="listBtn">목록</button>
+    <form method="get" action="/project/projectList.do" style="display: inline;">
+        <button type="submit" id="listBtn">목록</button>
+    </form>
 
 </div>
 <form id="deleteForm" action="/userinfo/deleteUserInfo.do" method="post">

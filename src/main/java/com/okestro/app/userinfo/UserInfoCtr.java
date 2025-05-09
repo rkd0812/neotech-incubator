@@ -18,16 +18,16 @@ public class UserInfoCtr {
     @Resource(name="userinfoSvc")
     UserInfoSvc userinfoSvc;
 
-    @GetMapping("/userinfo/userinfoList.do")
-    // [타입 변수명]으로 만들어줌.
-    public String retrieveUserInfoList(Model model) {
-        // 빈 UserInfoVo 객체 생성하여 전달
-        UserInfoVo userInfoVo = new UserInfoVo();
-        List<UserInfoVo> userinfoList = userinfoSvc.retrieveUserInfoList(userInfoVo);
-        model.addAttribute("userinfoList", userinfoList);
-
-        return "userinfo/userinfoList";
-    }
+//    @GetMapping("/userinfo/userinfoList.do")
+//    // [타입 변수명]으로 만들어줌.
+//    public String retrieveUserInfoList(Model model) {
+//        // 빈 UserInfoVo 객체 생성하여 전달
+//        UserInfoVo userInfoVo = new UserInfoVo();
+//        List<UserInfoVo> userinfoList = userinfoSvc.retrieveUserInfoList(userInfoVo);
+//        model.addAttribute("userinfoList", userinfoList);
+//
+//        return "userinfo/userinfoLidst";
+//    }
 
     @GetMapping("/userinfo/registForm.do")
     public String registForm() {
@@ -44,7 +44,7 @@ public class UserInfoCtr {
         redirectAttr.addFlashAttribute("message", "등록이 완료되었습니다.");
 
         // 등록 후 목록 페이지로 리다이렉트
-        return "redirect:/userinfo/userinfoList.do";
+        return "redirect:/userinfo/loginForm.do";
     }
 
     @PostMapping("/userinfo/checkEmailDuplicate.do")
@@ -100,7 +100,7 @@ public class UserInfoCtr {
     @PostMapping("/userinfo/deleteUserInfo.do")
     public String deleteUserInfo(@RequestParam("userEmail") String userEmail, RedirectAttributes redirectAttr) {
         userinfoSvc.deleteUserInfo(userEmail);
-        return "redirect:/userinfo/userinfoList.do";
+        return "redirect:/userinfo/loginForm.do";
     }
 
     // 로그인  페이지
@@ -144,7 +144,7 @@ public class UserInfoCtr {
                 session.setAttribute("loginUser", userInfo);
                 session.setAttribute("userEmail", userInfo.getUserEmail());
                 session.setAttribute("roleCd", userInfo.getRoleCd());
-                return "redirect:/userinfo/userinfoList.do";
+                return "redirect:/project/projectList.do";
             } else if (loginResult == 1) {
                 redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
                 return "redirect:/userinfo/loginForm.do";

@@ -86,6 +86,7 @@ $(function() {
 
         $("#dbEmail").val(email + "@" + domain);
 
+        alert("회원이 완료되었습니다.");
 
         $("#userForm").submit();
     });

@@ -16,66 +16,69 @@
 <body>
 
 <!-- 메인 컨텐츠 -->
-<div id="content_001">
+<div>
+<%--    <button type="button" id="myInfoBtn">내정보</button>--%>
+    <a href="/userinfo/userDetail.do?userEmail=exam250507@naver.com" id="myInfoBtn">내정보</a>
+</div>
 
+<!-- 검색 영역 -->
+<div>
     <!-- 검색 영역 -->
-    <div id="search">
-        <!-- 검색 영역 -->
-        <form>
-            <p>기간
-                <input type="date" name="startdate" id="startdate">
-                ~
-                <input type="date" name="'enddate" id="enddate">
-            </p>
-            <p>검색어
-                <input class="search-txt" tpye="text" id='search-txt' name="" placeholder="검색어를 입력하세요.">
-            </p>
-            <p>상태
-                <select name="eva_state" id="eva_state">
-                    <option value="" selected>--선택--</option>
-                    <option value="before_eva">심사 전</option>
-                    <option value="ing_eva">심사 중</option>
-                    <option value="after_eva">심사 완료</option>
-                </select>
-            </p>
-            <p>
-                <button type="button" id="search_btn">조회</button>
-            </p>
-        </form>
-    </div>
-    <!-- 테이블 영역 -->
-    <div id="projectlist">
-        <!-- 프로젝트 목로 테이블 -->
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>프로젝트 명</th>
-                    <th>작성자</th>
-                    <th>요청일자</th>
-                    <th>심사 상태</th>
-                </tr>
-            </thead>
-            <c:forEach var="project" items="${projectList}">
-                <tr>
-                    <td>${project.projectId}</td>
-                    <td>
-                        <a href="/project/projectDetail.do?projectId=${project.projectId}">${project.projectName}</a>
-                    </td>
-                    <td>${project.evastartDt}</td>
-                    <td>${project.evaCd}</td>
-                </tr>
+    <form>
+        <p>기간
+            <input type="date" name="startdate" id="startdate">
+            ~
+            <input type="date" name="'enddate" id="enddate">
+        </p>
+        <p>검색어
+            <input class="search-txt" tpye="text" id='search-txt' name="" placeholder="검색어를 입력하세요.">
+        </p>
+        <p>상태
+            <select name="eva_state" id="eva_state">
+                <option value="" selected>--선택--</option>
+                <option value="before_eva">심사 전</option>
+                <option value="ing_eva">심사 중</option>
+                <option value="after_eva">심사 완료</option>
+            </select>
+        </p>
+        <p>
+            <button type="button" id="search_btn">조회</button>
+        </p>
+    </form>
+</div>
+<!-- 테이블 영역 -->
+<div>
+    <!-- 프로젝트 목로 테이블 -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>프로젝트 명</th>
+                <th>작성자</th>
+                <th>요청일자</th>
+                <th>심사 상태</th>
+            </tr>
+        </thead>
+        <c:forEach var="project" items="${projectList}">
+            <tr>
+                <td>
+                    <a href="/project/projectDetail.do?projectId=${project.projectId}">${project.projectName}</a>
+                </td>
+                <td>${project.groupId}</td>
+                <td>${project.evastartDt}</td>
+                <td>${project.evaCd}</td>
+            </tr>
 
 
-            </c:forEach>
+        </c:forEach>
 
-        </table>
-        <button type="button"  id="reigester_btn">프로젝트 등록</button>
-    </div>
 
-    <!-- 페이징, 버튼 영역 -->
-    <div id="pagination">
-        <!-- 페이지 링크 -->
-    </div>
+    </table>
+    <button type="button"  id="register_btn">프로젝트 등록</button>
+</div>
+
+<!-- 페이징, 버튼 영역 -->
+<div>
+    <!-- 페이지 링크 -->
 </div>
 </body>
 </html>

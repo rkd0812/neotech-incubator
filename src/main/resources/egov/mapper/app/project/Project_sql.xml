@@ -3,13 +3,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace = 테이블 이름-->
 <mapper namespace="project">
-    <select id="retrieveProjcetList"  resultType="com.okestro.app.project.ProjectVo">
+    <!-- 프로젝트  리스트 전체 리스트 조회  -->
+    <select id="allProjcetList"  resultType="com.okestro.app.project.ProjectVo">
         SELECT
-            *
+            PRJOJECT_ID,
+            PROJECT_NAME,
+            EVA_CD,
+            SCORE_FIN,
+            EVA_START_DT,
+            EVA_END_DT,
+            DEL_YN,
+            FRST_RGSR_ID,
+            FRST_RGSR_DTL_DTTM,
+            LAST_CHNG_ID,
+            LAST_CHNG_DTL_DTTM
         FROM
             sch_incu.project
     </select>
 
+    <select id="retrieveProjcetList" resultType="com.okestro.app.project.ProjectVo">
+        SELECT
+            a.PROJECT_ID AS projectId,
+            a.PROJECT_NAME AS projectName,
+            b.USER_GROUP_ID AS groupId,
+            a.EVA_START_DT AS evastartDt,
+            a.EVA_CD AS evaCd
+        FROM sch_incu.project a
+                 LEFT JOIN sch_incu.project_detail b
+                           ON a.project_id = b.project_id
+        WHERE
+            a.del_yn = 'N'
+        ORDER BY
+            a.eva_start_dt DESC
+    </select>
 
 
 </mapper>

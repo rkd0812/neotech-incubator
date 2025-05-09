@@ -10,7 +10,5 @@ public interface ProjectSvc {
 
     int updateProjectDetail(ProjectVo projectVo);
 
-//    int deleteProjectDetail(ProjectVo projectVo);
-
     int delYnConfirmProjectDetail(ProjectVo projectVo);
 }

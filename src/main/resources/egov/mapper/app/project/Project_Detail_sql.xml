@@ -3,12 +3,42 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace = 테이블 이름-->
 <mapper namespace="projectdetail">
-    <select id="retrieveProjectDetail" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
+<!--  프로젝트 상세 전체 샘플 test  -->
+    <select id="allProjectDetail" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
         SELECT
-            *
+            PRJOJECT_ID,
+            USER_GROUP_ID,
+            PROJECT_DETAIL,
+            URL,
+            ATTACHEMENT_ID,
+            DEL_YN,
+            FRST_RGSR_ID,
+            FRST_RGSR_DTL_DTTM,
+            LAST_CHNG_ID,
+            LAST_CHNG_DTL_DTTM
         FROM sch_incu.project_detail
         WHERE 1=1
         AND project_id = #{projectId}
+    </select>
+
+    <select id="retrieveProjectDetail" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
+        SELECT
+            a.PROJECT_ID AS projectId,
+            a.PROJECT_NAME AS projectName,
+            a.EVA_CD AS evaCd,
+            a.SCORE_FIN AS scoreFin,
+            a.EVA_START_DT AS evastartDt,
+            a.EVA_END_DT AS evaendDt,
+            b.USER_GROUP_ID AS groupId,
+            b.PROJECT_DETAIL AS projectDetail,
+            b.URL AS url,
+            b.ATTACHMENT_ID AS attachmentId
+        FROM sch_incu.project a
+                 LEFT JOIN sch_incu.project_detail b
+                           ON a.project_id = b.project_id
+        WHERE 1=1
+          AND a.project_id = #{projectId}
+          AND a.del_yn = 'N'
     </select>
 
     <update id="updateProjectDetail" parameterType="com.okestro.app.project.ProjectVo">
@@ -22,20 +52,20 @@
         AND project_id = #{projectId}
     </update>
 
-<!--    <delete id="deleteProjectDetail" parameterType="com.okestro.app.project.ProjectVo">-->
-<!--        DELETE FROM sch_incu.project_detail-->
-<!--        WHERE-->
-<!--            1=1-->
-<!--        AND project_id = #{projectId}-->
-<!--    </delete>-->
-
-    <update id="delYnConfirmProjectDetail" parameterType="com.okestro.app.project.ProjectVo">
-        UPDATE sch_incu.project_detail
-        SET
-            del_yn = 'Y'
+    <delete id="deleteProjectDetail" parameterType="com.okestro.app.project.ProjectVo">
+        DELETE FROM sch_incu.project_detail
         WHERE
             1=1
-          AND project_id = #{projectId}
-    </update>
+        AND project_id = #{projectId}
+    </delete>
+
+<!--    <update id="delYnConfirmProjectDetail" parameterType="com.okestro.app.project.ProjectVo">-->
+<!--        UPDATE sch_incu.project_detail-->
+<!--        SET-->
+<!--            del_yn = 'Y'-->
+<!--        WHERE-->
+<!--            1=1-->
+<!--          AND project_id = #{projectId}-->
+<!--    </update>-->
 
 </mapper>
