@@ -25,8 +25,24 @@
                 </colgroup>
                 <tbody>
                     <tr>
-                        <th>기간</th>
-                        <td><input type="date" id="startDate" name="startDate" />~<input type="date" id="endDate" name="endDate" /></td>
+                        <th>심사기간</th>
+                        <td><input type="date" id="startDate" name="startDate" value="${evaProjectVo.startDate}" />~<input type="date" id="endDate" name="endDate" value="${evaProjectVo.endDate}" /></td>
+                    </tr>
+                    <tr>
+                        <th>프로젝트명</th>
+                        <td><input type="text" id="projectName" name="projectName" value="${evaProjectVo.projectName}"></td>
+                    </tr>
+                    <tr>
+                        <th>심사상태</th>
+                        <td>
+                            <input type="radio" name="evaCd" id="All" value="All" checked /> 전체 &nbsp;
+                            <c:forEach var="code" items="${codeList}" varStatus="status">
+                                <c:if test="${code.codeVal ne '00'}">
+                                    <input type="radio" name="evaCd" id="${code.codeVal}" value="${code.codeVal}" <c:if test="${evaProjectVo.evaCd eq code.codeVal}">checked</c:if> > ${code.codeKr} &nbsp;
+                                </c:if>
+
+                            </c:forEach>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -43,7 +59,7 @@
                 <th>심사상태</th>
                 <th>심사시작일자</th>
                 <th>심사종료일자</th>
-                <th>등록일자</th>
+                <th>심사위원단구성</th>
             </tr>
             </thead>
             <tbody>
@@ -61,7 +77,7 @@
                         <td>${evaProj.evaCdNm}</td>
                         <td>${evaProj.evaStartDt}</td>
                         <td>${evaProj.evaEndDt}</td>
-                        <td>${evaProj.frstRgsrDtlDttm}</td>
+                        <td>${evaProj.evaYn}</td>
                     </tr>
                 </c:forEach>
             </tbody>

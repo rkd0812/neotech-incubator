@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comment">
+    <!-- 첨부파일 조회 -->
+    <select id="retrieveCommentList" parameterType="string" resultType="com.okestro.app.comment.CommentVo">
+        SELECT COMMENT_ID
+             , COMMENT_CONTENT
+             , PROJECT_ID
+             , DEL_YN
+             , FRST_RGSR_ID
+             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd hh24:mi') AS FRST_RGSR_DTL_DTTM
+             , LAST_CHNG_ID
+             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd hh24:mi') AS LAST_CHNG_DTL_DTTM
+        FROM SCH_INCU.COMMENT
+        WHERE 1=1
+        AND DEL_YN = 'N'
+        <if test="projectId != null and projectId != ''">
+            AND PROJECT_ID = #{projectId}
+        </if>
+    </select>
+
+</mapper>

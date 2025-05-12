@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attachment">
+    <!-- 첨부파일 조회 -->
+    <select id="retrieveAttachment" parameterType="string" resultType="com.okestro.app.attachment.AttachmentVo">
+        SELECT ATTACHMENT_ID
+             , ATTACHMENT_NAME
+             , DEL_YN
+             , FRST_RGSR_ID
+             , FRST_RGSR_DTL_DTTM
+             , LAST_CHNG_ID
+             , LAST_CHNG_DTL_DTTM
+        FROM SCH_INCU.ATTACHMENT
+        WHERE 1=1
+        <if test="attachmentID != null and attachmentId != ''">
+            AND ATTACHMENT_ID = #{attachmentId}
+        </if>
+    </select>
+
+</mapper>

@@ -16,14 +16,14 @@
 <body>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">메뉴 상세</h1>
+        <h1 class="page-header">심사 프로젝트 상세</h1>
     </div>
     <div class="page-inner" style="text-align: center;">
-        <form id="detailForm" name="detailForm" action="/evaProject/update.do" method="post">
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
-                <colgroup>
-                </colgroup>
-                <tbody>
+        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <colgroup>
+            </colgroup>
+            <tbody>
+                <form id="detailForm" name="detailForm" action="/evaProject/update.do" method="post">
                     <tr>
                         <th>심사상태</th>
                         <td>${evaProjectDetail.evaCdNm}</td>
@@ -38,7 +38,7 @@
                     </tr>
                     <tr>
                         <th>팀 구성원</th>
-                        <td colspan="3">${evaProjectDetail.groupId}</td>
+                        <td colspan="3">${evaProjectDetail.userGroupId}</td>
                     </tr>
                     <tr>
                         <th>프로젝트 설명</th>
@@ -48,15 +48,53 @@
                         <th>url</th>
                         <td colspan="3"><a href="${evaProjectDetail.url}">${evaProjectDetail.url}</td>
                     </tr>
-                    <tr>
-                        <th>첨부파일</th>
-                        <td></td>
-                    </tr>
+                    <c:if test="${attachmentDetailList.size() ne 0}">
+                        <tr>
+                            <th>첨부파일</th>
+                            <td>
+                                <ul style="list-style-type: none;">
+                                    <c:forEach items="${attachmentDetailList}" var="attach" varStatus="status">
+                                        <li>${attach.attachmentName}</li>
+                                    </c:forEach>
+                                </ul>
+                            </td>
+                        </tr>
+                    </c:if>
+                </form>
+                <tr>
+                    <th>심사위원단</th>
+                    <td>
+                        <c:if test="${evaProjectDetail.evaGroupId eq null and evaProjectDetail.evaCd eq '01'}"><button id="evaGroupBtn">구성</button></c:if>
+                        ${evaProjectDetail.evaGroupId}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button id="listBtn" onclick=location.href="/evaProject/list.do">목록</button>
+        <c:if test="${evaProjectDetail.evaYn eq 'Y' and evaProjectDetail.evaCd eq '01'}"><button id="evaBtn">심사하기</button></c:if>
+
+        <c:if test="${commentList ne null}">
+            <h5>댓글</h5>
+            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+                <thead>
+                    <th>No</th>
+                    <th>내용</th>
+                    <th>작성자</th>
+                    <th>시간</th>
+                </thead>
+                <tbody>
+                    <c:forEach items="${commentList}" var="cmt" varStatus="status">
+                        <tr>
+                            <td>${status.count}</td>
+                            <td>${cmt.commentContent}</td>
+                            <td>${cmt.frstRgsrId}</td>
+                            <td>${cmt.frstRgsrDtlDttm}</td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
-        </form>
-        <button id="listBtn" onclick=location.href="/evaProject/list.do">목록</button>
-        <c:if test="${evaProjectDetail.evaCd eq 01}"><button>심사하기</button></c:if>
+        </c:if>
+
     </div>
 </div>
 </body>
