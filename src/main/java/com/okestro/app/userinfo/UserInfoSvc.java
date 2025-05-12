@@ -18,7 +18,7 @@ public interface UserInfoSvc {
     // 사용자 정보 수정
     void updateUserInfo(UserInfoVo userInfoVo);
 
-    // 사용자 정보 삭제
+    // 사용자 정보 삭제(DEL_YN 을 'N'에서 'Y'로 변경
     void deleteUserInfo(String userEmail);
 
 

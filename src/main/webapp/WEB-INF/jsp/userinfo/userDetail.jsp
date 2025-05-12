@@ -40,9 +40,9 @@
         <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
         <button type="submit">수정</button>
     </form>
-    <button id="deleteBtn">삭제</button>
+    <button id="deleteBtn">회원탈퇴</button>
     <form method="get" action="/project/projectList.do" style="display: inline;">
-        <button type="submit" id="listBtn">목록</button>
+        <button type="submit" id="listBtn">HOME</button>
     </form>
 
 </div>

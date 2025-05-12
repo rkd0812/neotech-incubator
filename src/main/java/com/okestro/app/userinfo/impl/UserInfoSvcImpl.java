@@ -50,12 +50,12 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
     // DB 데이터 삭제
     @Override
     public void deleteUserInfo(String userEmail) {
-        dao.delete(("userinfo.deleteUserInfo"), userEmail);
+        dao.update(("userinfo.deleteUserInfo"), userEmail);
     }
 
     // 유저 로그인 시
     @Override
-    public int userLoginCheck(String userEmail, String userPassword) {
+    public int userLoginCheck(String userEmail, String userPassword) { //유저 로그인 시
         UserInfoVo loginVo = new UserInfoVo();
         loginVo.setUserEmail(userEmail);
         loginVo.setUserPassword(userPassword);

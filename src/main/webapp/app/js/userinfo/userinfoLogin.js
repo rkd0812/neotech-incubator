@@ -17,7 +17,6 @@ $(function() {
             return false;
         }
 
-        // 그 다음에 개별 필드 체크
         if(userEmail === "") {
             alert("이메일을 입력해주세요.");
             $("#userEmail").focus();

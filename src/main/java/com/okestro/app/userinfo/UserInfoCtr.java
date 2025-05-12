@@ -105,37 +105,27 @@ public class UserInfoCtr {
 
     // 로그인  페이지
     @GetMapping("/userinfo/loginForm.do")
-    public String loginForm(
-            @RequestParam(value="error", required=false) String error,
-            @RequestParam(value="userEmail", required=false) String userEmail,
-            Model model) {
-
-        if (error != null) {
-            if ("password".equals(error)) {
-                model.addAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-            } else if ("email".equals(error)) {
-                model.addAttribute("errorMessage", "존재하지 않는 사용자입니다.");
-            } else if ("empty".equals(error)) {
-                model.addAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
-            } else if ("system".equals(error)) {
-                model.addAttribute("errorMessage", "시스템 오류가 발생했습니다.");
-            }
-        }
-
+    public String loginForm() {
         return "userinfo/userinfoLogin";
     }
 
 //     로그인 처리
     @PostMapping("/userinfo/login.do")
     public String login(
-            @RequestParam(value="userEmail", required=false) String userEmail,
-            @RequestParam(value="userPassword", required=false) String userPassword,
+            @RequestParam(value="userEmail") String userEmail,
+            @RequestParam(value="userPassword") String userPassword,
             HttpSession session,
             RedirectAttributes redirectAttr) {
         if(userEmail == null || userEmail.isEmpty() || userPassword == null || userPassword.isEmpty()) {
             redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
             return "redirect:/userinfo/loginForm.do";
         }
+//
+//        String  errorMsg = "";
+//
+//        if(userEmail.isEmpty()) {
+//            errorMsg = "이메일 잘못 옴"
+//        }
 
         try {
             int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
@@ -156,5 +146,14 @@ public class UserInfoCtr {
             redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
             return "redirect:/userinfo/loginForm.do";
         }
+    }
+    // 로그아웃
+    @GetMapping("/userinfo/logout.do")
+    public String logout(HttpSession session, RedirectAttributes redirectAttr) {
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+        session.invalidate();
+
+        redirectAttr.addFlashAttribute("message", "로그아웃 되었습니다.");
+        return "redirect:/userinfo/loginForm.do";
     }
 }

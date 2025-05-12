@@ -17,8 +17,7 @@
 
 <!-- 메인 컨텐츠 -->
 <div>
-<%--    <button type="button" id="myInfoBtn">내정보</button>--%>
-    <a href="/userinfo/userDetail.do?userEmail=exam250507@naver.com" id="myInfoBtn">내정보</a>
+    <a href="/userinfo/userDetail.do?userEmail=${loginUser.userEmail}" id="myInfoBtn">내정보</a>
 </div>
 
 <!-- 검색 영역 -->
@@ -51,12 +50,12 @@
     <!-- 프로젝트 목로 테이블 -->
     <table border="1">
         <thead>
-            <tr>
-                <th>프로젝트 명</th>
-                <th>작성자</th>
-                <th>요청일자</th>
-                <th>심사 상태</th>
-            </tr>
+        <tr>
+            <th>프로젝트 명</th>
+            <th>작성자</th>
+            <th>요청일자</th>
+            <th>심사 상태</th>
+        </tr>
         </thead>
         <c:forEach var="project" items="${projectList}">
             <tr>

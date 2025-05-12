@@ -26,13 +26,14 @@
             a.USER_EMAIL,
             a.USER_PASSWORD,
             a.ROLE_CD,
-            b.CODE_KR
+            b.CODE_NAME
         FROM SCH_INCU.USER a
         LEFT JOIN SCH_INCU.CODE b
          ON a.ROLE_CD = b.CODE_VAL
         AND b.CODE_NAME = 'ROLE'
     </select>
 
+    <!-- 로그인 처리 :  0(로그인 성공), 1(비밀번호 불일치), 2(이메일 없음)  -->
     <!-- 로그인 처리 :  0(로그인 성공), 1(비밀번호 불일치), 2(이메일 없음)  -->
     <select id="userLogin" parameterType="com.okestro.app.userinfo.UserInfoVo" resultType="int">
         SELECT
@@ -42,6 +43,19 @@
                 ELSE 0 -- 로그인 성공시
                 END
     </select>
+<!--    SELECT-->
+<!--        USER_EMAIL,-->
+<!--        USER_PASSWORD-->
+<!--    FROM SCH_INCH.USER-->
+<!--    WHERE 1=1-->
+<!--    AND DEL_YN = 'N'-->
+<!--    <if test="userEamil != null and userEmail != ''">-->
+<!--        AND USER_EMAIL = #{userEmail}-->
+<!--        <if test="userPassword != null and userPassword != ''">-->
+<!--            AND USER_PASSWORD = #{userPassword}-->
+<!--        </if>-->
+<!--    </if>-->
+
 
     <!-- 로그인 성공 시 사용자 정보 조회  -->
     <select id="retrieveUserInfoForLogin" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
@@ -49,7 +63,7 @@
             a.USER_EMAIL AS userEmail,
             a.USER_PASSWORD AS userPassword,
             a.ROLE_CD AS roleCd,
-            b.CODE_KR AS codeKr
+            b.CODE_NAME AS codeName
         FROM SCH_INCU.USER a
         LEFT JOIN SCH_INCU.CODE b
          ON a.ROLE_CD = b.CODE_VAL
@@ -98,11 +112,11 @@
         SELECT a.USER_EMAIL AS userEmail,
                a.USER_PASSWORD AS userPassword,
                a.ROLE_CD AS roleCd,
-               b.CODE_KR AS codeKr
+               b.CODE_NAME AS codeName
         FROM SCH_INCU.USER a
         LEFT JOIN SCH_INCU.CODE b
-        ON a.ROLE_CD = b.code_Val
-        WHERE a.user_email = #{userEmail}
+        ON a.ROLE_CD = b.CODE_VAL
+        WHERE a.USER_EMAIL = #{userEmail}
     </select>
 
 
@@ -114,12 +128,10 @@
         WHERE USER_EMAIL = #{userEmail}
     </update>
 
-
-    <!-- 사용자 정보 삭제   -->
-    <delete id="deleteUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
-        DELETE FROM SCH_INCU.USER
+    <update id="deleteUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
+        UPDATE SCH_INCU.USER
+        SET
+            DEL_YN = 'Y'
         WHERE USER_EMAIL = #{userEmail}
-    </delete>
-
-
+    </update>
 </mapper>
