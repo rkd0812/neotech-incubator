@@ -18,7 +18,6 @@
     <div class="header">
         <h1 class="page-header">심사 프로젝트 상세</h1>
     </div>
-    ${evaProjectDetail.projectId}
     <div class="page-inner" style="text-align: center;">
         <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
             <colgroup>
