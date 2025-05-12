@@ -37,10 +37,10 @@ public class EvaProjectCtr {
 
         if(evaProjectVo.getStartDate() == null && evaProjectVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-//            evaProjectVo.setStartDate(LocalDate.now().minusMonths(1).toString());
-//            evaProjectVo.setEndDate(nowDate.toString());
-            evaProjectVo.setStartDate(LocalDate.now().minusMonths(3).toString());
-            evaProjectVo.setEndDate(LocalDate.now().plusMonths(3).toString());
+            evaProjectVo.setStartDate(LocalDate.now().minusMonths(1).toString());
+            evaProjectVo.setEndDate(nowDate.toString());
+//            evaProjectVo.setStartDate(LocalDate.now().minusMonths(3).toString());
+//            evaProjectVo.setEndDate(LocalDate.now().plusMonths(3).toString());
         }
 
         List<EvaProjectVo> eveProjectList = evaProjectSvc.retrieveEvaProjectList(evaProjectVo);
