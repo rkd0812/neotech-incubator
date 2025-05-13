@@ -13,13 +13,13 @@ import java.util.Map;
 @Service("userinfoSvc")
 public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSvc {
 
-    @Resource(name="cmmnDao")
+    @Resource(name = "cmmnDao")
     CmmnAbstractDao dao;
 
     // 사용자를 DB에 등록 시 어떻게 할지 (회원가입시 권한은 기본적으로 'A'로 하게끔)
     @Override
     public void insertUserInfo(UserInfoVo userInfoVo) {
-        if(userInfoVo.getRoleCd() == null || userInfoVo.getRoleCd().isEmpty()) {
+        if (userInfoVo.getRoleCd() == null || userInfoVo.getRoleCd().isEmpty()) {
             userInfoVo.setRoleCd("A");
         }
         dao.insert("userinfo.insertUserInfo", userInfoVo);
@@ -31,6 +31,7 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
         int count = (int) dao.selectOne("userinfo.checkUserDuplicate", userEmail);
         return count > 0;
     }
+
     // DB에서 유저 한 사람의 데이터 확인 (userEmail로 확인
     @Override
     public UserInfoVo userDetail(String userEmail) {
@@ -41,7 +42,7 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
     // DB에 유저 정보를 업데이트 시 사용 (권한코드 대문자로)
     @Override
     public void updateUserInfo(UserInfoVo userInfoVo) {
-        if(userInfoVo.getRoleCd() != null && !userInfoVo.getRoleCd().isEmpty()) {
+        if (userInfoVo.getRoleCd() != null && !userInfoVo.getRoleCd().isEmpty()) {
             userInfoVo.setRoleCd(userInfoVo.getRoleCd().toUpperCase());
         }
         dao.update("userinfo.updateUserInfo", userInfoVo);

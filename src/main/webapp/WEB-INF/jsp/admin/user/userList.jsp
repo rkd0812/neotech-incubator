@@ -48,7 +48,7 @@
                             <td>
                                 <input type="radio" name="roleCd" id="All" value="All" checked="checked" /> 전체 &nbsp;
                                 <c:forEach var="role" items="#{codeList}" varStatus="status">
-                                <input type="radio" id="${role.codeVal}" name="roleCd" value="${role.codeVal}" <c:if test="${userVo.roleCd eq role.codeVal}">checked</c:if > > ${role.codeName} &nbsp;
+                                <input type="radio" id="${role.codeVal}" name="roleCd" value="${role.codeVal}" <c:if test="${userVo.roleCd eq role.codeVal}">checked</c:if > > ${role.codeKr} &nbsp;
                                 </c:forEach>
                             </td>
                         </tr>
@@ -82,7 +82,7 @@
                             <td>
                                 <a href="/admin/user/detail.do?userEmail=${user.userEmail}" class="userEmail">${user.userEmail}</a>
                             </td>
-                            <td>${user.codeName}</td>
+                            <td>${user.codeKr}</td>
                             <td>${user.frstRgsrDtlDttm}</td>
                         </tr>
                     </c:forEach>

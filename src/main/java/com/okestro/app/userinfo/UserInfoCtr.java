@@ -15,7 +15,7 @@ import java.util.List;
 @Controller
 public class UserInfoCtr {
 
-    @Resource(name="userinfoSvc")
+    @Resource(name = "userinfoSvc")
     UserInfoSvc userinfoSvc;
 
 //    @GetMapping("/userinfo/userinfoList.do")
@@ -72,7 +72,7 @@ public class UserInfoCtr {
     @GetMapping("/userinfo/updateForm.do")
     public String updateForm(@RequestParam("userEmail") String userEmail, Model model) {
         UserInfoVo userInfo = userinfoSvc.userDetail(userEmail);
-        if(userInfo == null) {
+        if (userInfo == null) {
             return "redirect:/userinfo/userinfoList.do";
         }
         model.addAttribute("userInfo", userInfo);
@@ -82,7 +82,7 @@ public class UserInfoCtr {
     // 사용자 정보 수정 처리
     @PostMapping("/userinfo/updateUserInfo.do")
     public String updateUserInfo(UserInfoVo userInfoVo, RedirectAttributes redirectAttr) {
-        if(userInfoVo.getUserEmail() == null || userInfoVo.getUserEmail().isEmpty()) {
+        if (userInfoVo.getUserEmail() == null || userInfoVo.getUserEmail().isEmpty()) {
             redirectAttr.addFlashAttribute("message", "사용자 정보가 올바르지 않습니다.");
             return "redirect:/userinfo/userinfoList.do";
         }
@@ -95,7 +95,7 @@ public class UserInfoCtr {
             return "redirect:/userinfo/userinfoList.do";
         }
     }
-    
+
     // 사용자 정보 삭제 처리
     @PostMapping("/userinfo/deleteUserInfo.do")
     public String deleteUserInfo(@RequestParam("userEmail") String userEmail, RedirectAttributes redirectAttr) {
@@ -109,17 +109,22 @@ public class UserInfoCtr {
         return "userinfo/userinfoLogin";
     }
 
-//     로그인 처리
+    // 로그인 처리
     @PostMapping("/userinfo/login.do")
-    public String login(
-            @RequestParam(value="userEmail") String userEmail,
-            @RequestParam(value="userPassword") String userPassword,
-            HttpSession session,
-            RedirectAttributes redirectAttr) {
-        if(userEmail == null || userEmail.isEmpty() || userPassword == null || userPassword.isEmpty()) {
+    public String login(UserInfoVo userInfoVo, HttpSession session, RedirectAttributes redirectAttr) {
+        String userEmail = userInfoVo.getUserEmail();
+        String userPassword = userInfoVo.getUserPassword();
+        if (userEmail.isBlank() || userPassword.isBlank()) {
             redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
             return "redirect:/userinfo/loginForm.do";
+        } else if (userEmail.isBlank()) {
+            redirectAttr.addFlashAttribute("errorMessage", "이메일을 입력해주세요.");
+            return "redirect:/userinfo/loginForm.do";
+        } else if (userPassword.isBlank()) {
+            redirectAttr.addFlashAttribute("errorMessage", "비밀번호를 입력해주세요.");
+            return "redirect:/userinfo/loginForm.do";
         }
+
 //
 //        String  errorMsg = "";
 //
@@ -147,6 +152,7 @@ public class UserInfoCtr {
             return "redirect:/userinfo/loginForm.do";
         }
     }
+
     // 로그아웃
     @GetMapping("/userinfo/logout.do")
     public String logout(HttpSession session, RedirectAttributes redirectAttr) {

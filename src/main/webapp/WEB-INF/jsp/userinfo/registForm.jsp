@@ -44,7 +44,7 @@
                         <div class="mb-4">
                             <label class="form-label">이메일</label>
                             <div class="input-group email-group">
-                                <input type="text" class="form-control email-input" id="userEmail" placeholder="이메일을 입력하세요">
+                                <input type="text" class="form-control email-input" id="userEmail" placeholder="아이디를 입력하세요">
                                 <span class="input-group-text">@</span>
                                 <input type="text" class="form-control domain-input" id="userDomain" name="userDomain" placeholder="도메인">
                                 <select id="domainList" class="form-select domain-select">

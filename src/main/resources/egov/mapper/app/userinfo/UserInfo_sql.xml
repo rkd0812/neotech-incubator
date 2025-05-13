@@ -8,25 +8,23 @@
     <!--사용자 전체 목록조회-->
     <!--  조건 없이 모든 유저의 정보를 UserInfoVo 타입으로 가져옴  -->
     <select id="retrieveAllUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT
-            USER_EMAIL,
-            USER_PASSWORD,
-            ROLE_CD,
-            DEL_YN,
-            FRST_RGSR_ID,
-            FRST_RGSR_DTL_DTTM,
-            LAST_CHNG_ID,
-            LAST_CHNG_DTL_DTTM
+        SELECT USER_EMAIL,
+               USER_PASSWORD,
+               ROLE_CD,
+               DEL_YN,
+               FRST_RGSR_ID,
+               FRST_RGSR_DTL_DTTM,
+               LAST_CHNG_ID,
+               LAST_CHNG_DTL_DTTM
         FROM SCH_INCU.USER
     </select>
 
     <!-- 사용자 권한, 권한명 목록 전체 조회   -->
     <select id="retrieveUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT
-            a.USER_EMAIL,
-            a.USER_PASSWORD,
-            a.ROLE_CD,
-            b.CODE_NAME
+        SELECT a.USER_EMAIL,
+               a.USER_PASSWORD,
+               a.ROLE_CD,
+               b.CODE_NAME
         FROM SCH_INCU.USER a
         LEFT JOIN SCH_INCU.CODE b
          ON a.ROLE_CD = b.CODE_VAL
@@ -34,74 +32,74 @@
     </select>
 
     <!-- 로그인 처리 :  0(로그인 성공), 1(비밀번호 불일치), 2(이메일 없음)  -->
-    <!-- 로그인 처리 :  0(로그인 성공), 1(비밀번호 불일치), 2(이메일 없음)  -->
     <select id="userLogin" parameterType="com.okestro.app.userinfo.UserInfoVo" resultType="int">
-        SELECT
-            CASE
-                WHEN (SELECT COUNT(*) FROM SCH_INCU.USER WHERE USER_EMAIL = #{userEmail} AND DEL_YN = 'N') = 0 THEN 2 -- 이메일 없을 시
-                WHEN (SELECT COUNT(*) FROM SCH_INCU.USER WHERE USER_EMAIL = #{userEmail} AND USER_PASSWORD = #{userPassword} AND DEL_YN = 'N') = 0 THEN 1 -- 비밀번호 불일치 시
-                ELSE 0 -- 로그인 성공시
-                END
+        SELECT CASE
+                   WHEN (SELECT COUNT(1)
+                         FROM SCH_INCU.USER
+                         WHERE USER_EMAIL = #{userEmail}
+                           AND DEL_YN = 'N') = 0 THEN 2 -- 이메일 없을 시
+                   WHEN (SELECT COUNT(1)
+                         FROM SCH_INCU.USER
+                         WHERE USER_EMAIL = #{userEmail}
+                           AND USER_PASSWORD = #{userPassword}
+                           AND DEL_YN = 'N') = 0 THEN 1 -- 비밀번호 불일치 시
+                   ELSE 0 -- 로그인 성공시
+                   END
     </select>
-<!--    SELECT-->
-<!--        USER_EMAIL,-->
-<!--        USER_PASSWORD-->
-<!--    FROM SCH_INCH.USER-->
-<!--    WHERE 1=1-->
-<!--    AND DEL_YN = 'N'-->
-<!--    <if test="userEamil != null and userEmail != ''">-->
-<!--        AND USER_EMAIL = #{userEmail}-->
-<!--        <if test="userPassword != null and userPassword != ''">-->
-<!--            AND USER_PASSWORD = #{userPassword}-->
+<!--        SELECT-->
+<!--            USER_EMAIL,-->
+<!--            USER_PASSWORD-->
+<!--        FROM SCH_INCH.USER-->
+<!--        WHERE 1=1-->
+<!--        AND DEL_YN = 'N'-->
+<!--        <if test="userEamil != null and userEmail != ''">-->
+<!--            AND USER_EMAIL = #{userEmail}-->
+<!--            <if test="userPassword != null and userPassword != ''">-->
+<!--                AND USER_PASSWORD = #{userPassword}-->
+<!--            </if>-->
 <!--        </if>-->
-<!--    </if>-->
 
 
     <!-- 로그인 성공 시 사용자 정보 조회  -->
     <select id="retrieveUserInfoForLogin" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT
-            a.USER_EMAIL AS userEmail,
-            a.USER_PASSWORD AS userPassword,
-            a.ROLE_CD AS roleCd,
-            b.CODE_NAME AS codeName
+        SELECT a.USER_EMAIL    AS userEmail,
+               a.USER_PASSWORD AS userPassword,
+               a.ROLE_CD       AS roleCd,
+               b.CODE_NAME     AS codeName
         FROM SCH_INCU.USER a
         LEFT JOIN SCH_INCU.CODE b
          ON a.ROLE_CD = b.CODE_VAL
         AND b.CODE_NAME = 'ROLE'
-        WHERE
-            a.USER_EMAIL = #{userEmail}
-        AND a.DEL_YN = 'N'
+        WHERE a.USER_EMAIL = #{userEmail}
+          AND a.DEL_YN = 'N'
     </select>
 
 
     <!-- 사용자 등록 insert   -->
     <!--  해당하는 조건의 유저 정보만 찾아서 가져옴  -->
     <insert id="insertUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
-        INSERT INTO SCH_INCU.USER (
-            USER_EMAIL,
-            USER_PASSWORD,
-            ROLE_CD,
-            DEL_YN,
-            FRST_RGSR_ID,
-            FRST_RGSR_DTL_DTTM,
-            LAST_CHNG_ID,
-            LAST_CHNG_DTL_DTTM
-        ) VALUES (#{userEmail},
-                  #{userPassword},
-                  #{roleCd},
-                  'N',
-                  'SYSTEM',
-                  NOW(),
-                  'SYSYTEM',
-                  NOW()
-                         )
+        INSERT INTO SCH_INCU.USER (USER_EMAIL,
+                                   USER_PASSWORD,
+                                   ROLE_CD,
+                                   DEL_YN,
+                                   FRST_RGSR_ID,
+                                   FRST_RGSR_DTL_DTTM,
+                                   LAST_CHNG_ID,
+                                   LAST_CHNG_DTL_DTTM)
+        VALUES (#{userEmail},
+                #{userPassword},
+                #{roleCd},
+                'N',
+                'SYSTEM',
+                NOW(),
+                'SYSYTEM',
+                NOW())
     </insert>
 
 
     <!-- 이메일 중복 확인 SQL   -->
     <select id="checkUserDuplicate" parameterType="String" resultType="int">
-        SELECT
-            COUNT(1)
+        SELECT COUNT(1)
         FROM SCH_INCU.USER
         WHERE USER_EMAIL = #{userEmail}
     </select>
@@ -109,13 +107,13 @@
 
     <!-- 사용자 상세 정보 조회   -->
     <select id="userDetail" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT a.USER_EMAIL AS userEmail,
+        SELECT a.USER_EMAIL    AS userEmail,
                a.USER_PASSWORD AS userPassword,
-               a.ROLE_CD AS roleCd,
-               b.CODE_NAME AS codeName
+               a.ROLE_CD       AS roleCd,
+               b.CODE_NAME     AS codeName
         FROM SCH_INCU.USER a
         LEFT JOIN SCH_INCU.CODE b
-        ON a.ROLE_CD = b.CODE_VAL
+         ON a.ROLE_CD = b.CODE_VAL
         WHERE a.USER_EMAIL = #{userEmail}
     </select>
 
@@ -124,14 +122,13 @@
     <update id="updateUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
         UPDATE SCH_INCU.USER
         SET USER_PASSWORD = #{userPassword},
-            ROLE_CD = #{roleCd}
+            ROLE_CD       = #{roleCd}
         WHERE USER_EMAIL = #{userEmail}
     </update>
 
     <update id="deleteUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
         UPDATE SCH_INCU.USER
-        SET
-            DEL_YN = 'Y'
+        SET DEL_YN = 'Y'
         WHERE USER_EMAIL = #{userEmail}
     </update>
 </mapper>

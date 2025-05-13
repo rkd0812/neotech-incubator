@@ -12,7 +12,7 @@
     <title>로그인</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
+    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do"/>
     <script src="/app/js/userinfo/userinfoLogin.js"></script>
     <style>
         .email-input {
@@ -23,7 +23,7 @@
 <body>
 <div class="container">
     <div class="row justify-content-center mt-5">
-        <div class="col-md-7 col-lg-5">
+        <div class="col-md-10 col-lg-8">
             <div class="text-center mb-4">
                 <h1>로고</h1>
             </div>
@@ -40,8 +40,19 @@
                     <form id="userLogin" action="/userinfo/login.do" method="post">
                         <div class="mb-3">
                             <label for="userEmail" class="form-label">이메일</label>
-                            <input type="text" class="form-control email-input" id="userEmail" name="userEmail"
-                                   placeholder="이메일을 입력하세요">
+                            <div class="input-group email-group">
+                                <input type="text" class="form-control email-input" id="userEmail" name="userEmailId" placeholder="아이디를 입력해주세요">
+                                <span class="input-group-text">@</span>
+                                <input type="text" class="form-control domain-input" id="userDomain" name="userDomain" placeholder="도메인">
+                                <select id = "domainList" class="form-select domain-select">
+                                    <option value="">직접 입력</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="google.com">google.com</option>
+                                    <option value="kakao.com">kakao.com</option>
+                                    <option value="daum.net">daum.net</option>
+                                </select>
+                            </div>
+                            <input type="hidden" id="dbEmail" name="userEmail">
                         </div>
                         <div class="mb-3">
                             <label for="userPassword" class="form-label">비밀번호</label>
