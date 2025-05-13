@@ -30,12 +30,12 @@
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
                 <tbody>
                     <tr>
-                        <th>코드분류</th>
+                        <th>상위코드명</th>
                         <td>
-                            <input type="hidden" name="preCodeName" value="${codeDetail.codeName}">
-                            <select id="codeName" name="codeName">
+                            <input type="hidden" name="preCodeName" value="${codeDetail.upperCodeName}">
+                            <select id="upperCodeName" name="upperCodeName">
                             <c:forEach items="${codeGroupList}" var="grp" varStatus="status">
-                                <option value="${grp.codeName}" <c:if test="${codeDetail.codeName eq grp.codeName}">selected</c:if> >${grp.codeName}</option>
+                                <option name="" value="${grp.upperCodeName}" <c:if test="${codeDetail.upperCodeName eq grp.upperCodeName}">selected</c:if> >${grp.upperCodeName}</option>
                             </c:forEach>
                         </td>
                     </tr>
@@ -49,7 +49,7 @@
                     <tr>
                         <th>코드명</th>
                         <td>
-                            <input type="text" id="codeKr" name="codeKr" value="${codeDetail.codeKr}" />
+                            <input type="text" id="codeName" name="codeName" value="${codeDetail.codeName}" />
                         </td>
                     </tr>
                     <tr>

@@ -7,9 +7,9 @@
     <insert id="registCode" parameterType="com.okestro.app.admin.code.CodeVo">
         INSERT INTO SCH_INCU.CODE
         VALUES (
-                #{codeName},
+                #{upperCodeName},
                 #{codeVal},
-                #{codeKr},
+                #{codeName},
                 'N',
                 'SYSTEM',
                 CURRENT_TIMESTAMP,
@@ -20,9 +20,9 @@
 
     <!--코드 목록조회 -->
     <select id="retrieveCodeList" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
-        SELECT CODE_NAME
+        SELECT UPPER_CODE_NAME
+             , CODE_NAME
              , CODE_VAL
-             , CODE_KR
              , DEL_YN
              , FRST_RGSR_ID
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
@@ -33,19 +33,22 @@
         AND DEL_YN = 'N'
         <if test="codeName != null and codeName != ''">
             AND CODE_NAME LIKE '%' || #{codeName} || '%'
+        </if>
+        <if test="upperCodeName != null and upperCodeName != ''">
+            AND UPPER_CODE_NAME LIKE '%' || #{upperCodeName} || '%'
         </if>
         <if test="startDate != null and startDate != ' and endDate != null and endDate != '">
             AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
             AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
         </if>
-        ORDER BY CODE_NAME, CODE_VAL
+        ORDER BY UPPER_CODE_NAME, CODE_VAL
     </select>
 
     <!-- 코드 상세조회 -->
     <select id="retrieveCodeDetail" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
-        SELECT CODE_NAME
+        SELECT UPPER_CODE_NAME
+             , CODE_NAME
              , CODE_VAL
-             , CODE_KR
              , DEL_YN
              , FRST_RGSR_ID
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
@@ -55,7 +58,7 @@
         WHERE 1=1
         AND DEL_YN = 'N'
         <if test="codeName != null and codeName != ''">
-            AND CODE_NAME LIKE '%' || #{codeName} || '%'
+            AND UPPER_CODE_NAME LIKE '%' || #{upperCodeName} || '%'
         </if>
         <if test="codeVal != null and codeVal != ''">
             AND CODE_VAL LIKE '%' || #{codeVal} || '%'
@@ -65,12 +68,12 @@
     <!-- 코드 수정 -->
     <update id="updateCode" parameterType="com.okestro.app.admin.code.CodeVo">
         UPDATE SCH_INCU.CODE
-        SET CODE_NAME = #{codeName},
+        SET UPPER_CODE_NAME = #{upperCodeName},
             CODE_VAL = #{codeVal},
-            CODE_KR = #{codeKr},
+            CODE_NAME = #{codeName},
             LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
-        AND CODE_NAME = #{preCodeName}
+        AND UPPER_CODE_NAME = #{preCodeName}
         AND CODE_VAL = #{preCodeVal}
     </update>
 
@@ -80,15 +83,15 @@
     SET DEL_YN = 'Y'
     AND LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
     WHERE 1=1
-    AND CODE_NAME = #{codeName}
+    AND UPPER_CODE_NAME = #{upperCodeName}
     AND CODE_VAL = #{codeVal}
     </update>
 
-    <!-- 코드 분류 조회-->
+    <!-- 상위코드 조회-->
     <select id="retrieveCodeGroupList" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
-        SELECT DISTINCT CODE_NAME AS CODE_NAME
+        SELECT DISTINCT UPPER_CODE_NAME AS UPPER_CODE_NAME
         FROM SCH_INCU.CODE
-        ORDER BY CODE_NAME
+        ORDER BY UPPER_CODE_NAME
     </select>
 
 

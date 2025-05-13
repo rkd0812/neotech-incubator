@@ -16,7 +16,7 @@ $(function() {
     // 초기화
     $('#initBtn').click(function() {
         setMonth();
-        $('#codeName').val("");
+        $('#upperCodeName').val("");
     })
 
     // 검색

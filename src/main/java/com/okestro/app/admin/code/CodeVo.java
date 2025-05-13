@@ -6,9 +6,9 @@ import lombok.Setter;
 @Getter @Setter
 public class CodeVo {
 
+    private String upperCodeName;
     private String codeName;
     private String codeVal;
-    private String codeKr;
     private String delYn;
     private String frstRgsrId;
     private String frstRgsrDtlDttm;

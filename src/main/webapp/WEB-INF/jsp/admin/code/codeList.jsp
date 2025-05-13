@@ -38,8 +38,8 @@
                                 <td><input type="date" id="startDate" name="startDate" value="${codeVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${codeVo.endDate}"></td>
                             </tr>
                             <tr>
-                                <th>코드분류</th>
-                                <td><input type="text" id="codeName" name="codeName" value="${codeVo.codeName}" /></td>
+                                <th>상위코드명</th>
+                                <td><input type="text" id="upperCodeName" name="upperCodeName" value="${codeVo.upperCodeName}" /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -52,7 +52,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>코드분류</th>
+                            <th>상위코드명</th>
                             <th>코드값</th>
                             <th>코드명</th>
                             <th>등록일자</th>
@@ -69,9 +69,9 @@
                         <c:forEach var="code" items="${codeList}" varStatus="status">
                             <a><tr>
                                 <td>${status.count}</td>
+                                <td>${code.upperCodeName}</td>
+                                <td><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
                                 <td>${code.codeName}</td>
-                                <td><a href="/admin/code/detail.do?codeName=${code.codeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
-                                <td>${code.codeKr}</td>
 <%--                                <td><fmt:formatDate value="${code.frstRgsrDtlDttm}" pattern="y-MM-dd" type="date"/></td>--%>
                                 <td>${code.frstRgsrDtlDttm}</td>
                             </tr></a>

@@ -14,7 +14,7 @@ public class UserVo {
     private String frstRgsrDtlDttm;
     private String lastChngId;
     private String lastChngDtlDttm;
-    private String codeKr;
+    private String codeName;
     private String startDate;
     private String endDate;
 }

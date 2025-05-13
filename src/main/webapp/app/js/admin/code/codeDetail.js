@@ -10,7 +10,7 @@ $(function() {
     // 삭제
     $('#deleteBtn').click(function() {
         if(confirm("삭제하시겠습니까?")) {
-            location.href = "/admin/code/delete.do?codeName=" + $('#codeName').val() + "&codeVal=" + $('#codeVal').val();
+            location.href = "/admin/code/delete.do?upperCodeName=" + $('#upperCodeName').val() + "&codeVal=" + $('#codeVal').val();
         }
     })
 

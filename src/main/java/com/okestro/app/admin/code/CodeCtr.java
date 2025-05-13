@@ -58,10 +58,7 @@ public class CodeCtr {
 
     // 코드 상세조회
     @GetMapping("/admin/code/detail.do")
-    public String retrieveCodeDetail(@RequestParam String codeName, String codeVal, Model model) {
-        CodeVo codeVo = new CodeVo();
-        codeVo.setCodeName(codeName);
-        codeVo.setCodeVal(codeVal);
+    public String retrieveCodeDetail(@ModelAttribute CodeVo codeVo, Model model) {
 
         CodeVo codeDetail = codeSvc.retrieveCodeDetail(codeVo);
         model.addAttribute("codeDetail", codeDetail);
@@ -84,15 +81,12 @@ public class CodeCtr {
         }
         
 
-        return "redirect:/admin/code/detail.do?codeName=" + codeVo.getCodeName() + "&codeVal=" + codeVo.getCodeVal();
+        return "redirect:/admin/code/detail.do?upperCodeName=" + codeVo.getUpperCodeName() + "&codeVal=" + codeVo.getCodeVal();
     }
 
     // 코드 삭제
     @GetMapping("/admin/code/delete.do")
-    public String deleteCode(@RequestParam String codeName, String codeVal, RedirectAttributes redirectAttributes) {
-        CodeVo codeVo = new CodeVo();
-        codeVo.setCodeName(codeName);
-        codeVo.setCodeVal(codeVal);
+    public String deleteCode(@ModelAttribute CodeVo codeVo, RedirectAttributes redirectAttributes) {
 
         int cnt = codeSvc.deleteCode(codeVo);
 

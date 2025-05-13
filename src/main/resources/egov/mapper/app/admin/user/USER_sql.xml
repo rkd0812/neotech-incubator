@@ -11,7 +11,7 @@
              , TO_CHAR(A.FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
              , A.LAST_CHNG_ID AS LAST_CHNG_ID
              , TO_CHAR(A.LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
-             , B.CODE_KR AS CODE_KR
+             , B.CODE_NAME AS CODE_NAME
         FROM SCH_INCU.USER A
         LEFT OUTER JOIN SCH_INCU.CODE B
         ON A.ROLE_CD = B.CODE_VAL

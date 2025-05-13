@@ -42,7 +42,7 @@ public class UserCtr {
 
         // 사용자 권한 조회 (ROLE)
         CodeVo codeVo = new CodeVo();
-        codeVo.setCodeName("ROLE");
+        codeVo.setUpperCodeName("ROLE");
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
 
@@ -62,7 +62,7 @@ public class UserCtr {
 
         // 사용자 권한 조회 (ROLE)
         CodeVo codeVo = new CodeVo();
-        codeVo.setCodeName("ROLE");
+        codeVo.setUpperCodeName("ROLE");
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
 

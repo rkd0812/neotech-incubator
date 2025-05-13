@@ -24,7 +24,7 @@
 
     <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
 
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2"
           p:viewClass="org.springframework.web.servlet.view.JstlView"
           p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
 
@@ -32,5 +32,17 @@
         <property name="contentType" value="application/json;charset=UTF-8"/>
     </bean>
 
+    <!-- Tiles -->
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+          p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView">
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+        <property name="definitions">
+            <list>
+                <value>/WEB-INF/config/tiles.xml</value>
+            </list>
+        </property>
+    </bean>
 
 </beans>

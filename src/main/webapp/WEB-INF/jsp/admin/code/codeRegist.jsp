@@ -26,8 +26,8 @@
                 <colgroup></colgroup>
                 <tbody>
                     <tr>
-                        <th>코드분류</th>
-                        <td><input type="text" id="codeName" name="codeName" /></td>
+                        <th>상위코드명</th>
+                        <td><input type="text" id="upperCodeName" name="upperCodeName" /></td>
                     </tr>
                     <tr>
                         <th>코드값</th>
@@ -35,7 +35,7 @@
                     </tr>
                     <tr>
                         <th>코드명</th>
-                        <td><input type="text" id="codeKr" name="codeKr" /></td>
+                        <td><input type="text" id="codeName" name="codeName" /></td>
                     </tr>
                 </tbody>
             </table>
