@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -17,20 +18,23 @@ public class ProjectCtr {
     @Resource(name = "projectSvc")
     ProjectSvc projectSvc;
 
-    @GetMapping("/project/projectList.do")
-    public String retrieveProjcetList(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
 
-        if (loginUser == null) {
+    @GetMapping("/project/projectList.do")
+    public String retrieveProjcetList(HttpServletRequest request, HttpServletResponse response, Model model) {
+        HttpSession session = request.getSession(false);
+
+        if (session == null || session.getAttribute("loginUser") == null) {
+            System.out.println("세션이 없거나 로그인 정보가 없음 - 로그인 페이지로 리다이렉트");
             return "redirect:/userinfo/loginForm.do";
         }
 
-        String userEmail = loginUser.getUserEmail();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
+        System.out.println("=== 프로젝트 목록 페이지 접근 ===");
+        System.out.println("로그인 사용자: " + loginUser.getUserEmail());
 
         List<ProjectVo> projectList = projectSvc.retrieveProjcetList();
         model.addAttribute("projectList", projectList);
-
         model.addAttribute("loginUser", loginUser);
 
         return "project/projectList";

@@ -18,6 +18,7 @@
 <!-- 메인 컨텐츠 -->
 <div>
     <a href="/userinfo/userDetail.do?userEmail=${loginUser.userEmail}" id="myInfoBtn">내정보</a>
+    <a href="/userinfo/logout.do" id="logoutBtn">로그아웃</a>
 </div>
 
 <!-- 검색 영역 -->

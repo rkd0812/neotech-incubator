@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
@@ -123,6 +125,9 @@ public class UserInfoCtr {
         } else if (userPassword.isBlank()) {
             redirectAttr.addFlashAttribute("errorMessage", "비밀번호를 입력해주세요.");
             return "redirect:/userinfo/loginForm.do";
+        } else if (userPassword.length() < 10) {
+            redirectAttr.addFlashAttribute("errorMessage", "비밀번호는 최소 10자 이상이어야 합니다.");
+            return "redirect:/userinfo/loginForm.do";
         }
 
 //
@@ -155,11 +160,14 @@ public class UserInfoCtr {
 
     // 로그아웃
     @GetMapping("/userinfo/logout.do")
-    public String logout(HttpSession session, RedirectAttributes redirectAttr) {
-        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-        session.invalidate();
+    public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttr) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+            session.invalidate();
+        }
+            redirectAttr.addFlashAttribute("message", "로그아웃 되었습니다.");
+            return "redirect:/userinfo/loginForm.do";
 
-        redirectAttr.addFlashAttribute("message", "로그아웃 되었습니다.");
-        return "redirect:/userinfo/loginForm.do";
     }
 }

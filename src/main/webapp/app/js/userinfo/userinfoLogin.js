@@ -40,6 +40,13 @@ $(function () {
             return false;
         }
 
+        if (userPassword.length < 10 ){
+            alert("비빌번호는 최소 10자 이상이어야 합니다.");
+            $("#userPassword").focus();
+            event.preventDefault()
+            return false;
+        }
+
         var userDomain = $("#userDomain").val().trim();
         if (userDomain === "") {
             alert("도메인을 입력하거나 선택해주세요.");
