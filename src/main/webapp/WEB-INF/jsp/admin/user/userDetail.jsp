@@ -43,7 +43,7 @@
                             <td>
                                 <select id="roleCd" name="roleCd">
                                     <c:forEach var="role" items="#{codeList}" varStatus="status">
-                                        <option value="${role.codeVal}" <c:if test="${userDetail.roleCd eq role.codeVal}">selected</c:if> >${role.codeName}</option>
+                                        <option value="${role.codeVal}" <c:if test="${userDetail.roleCd eq role.codeVal}">selected</c:if> >${role.codeKr}</option>
                                     </c:forEach>
                                 </select>
                             </td>

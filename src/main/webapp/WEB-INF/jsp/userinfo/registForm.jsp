@@ -31,12 +31,14 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-10 col-lg-8">
             <div class="text-center mb-4">
-                <h1>로고</h1>
+                <h1>
+                    <a href ="/userinfo/loginForm.do" id="homeBtn">로고</a>
+                </h1>
             </div>
 
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">회원 등록</h4>
+                    <h4 class="mb-0">회원 가입</h4>
                 </div>
                 <div class="card-body p-4">
                     <form id="userForm" action="/userinfo/registerUserInfo.do" method="post">
@@ -78,7 +80,7 @@
                         <input type="hidden" name="roleCd" value="A">
 
                         <div class="d-grid gap-2">
-                            <button type="button" id="registerBtn" class="btn btn-primary">회원 등록</button>
+                            <button type="button" id="registerBtn" class="btn btn-primary">회원 가입</button>
                             <a href="/userinfo/loginForm.do" class="btn btn-outline-secondary">이미 계정이 있으신가요? 로그인</a>
                         </div>
                     </form>

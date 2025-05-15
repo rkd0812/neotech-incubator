@@ -30,9 +30,6 @@ public class ProjectCtr {
 
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
 
-        System.out.println("=== 프로젝트 목록 페이지 접근 ===");
-        System.out.println("로그인 사용자: " + loginUser.getUserEmail());
-
         List<ProjectVo> projectList = projectSvc.retrieveProjcetList();
         model.addAttribute("projectList", projectList);
         model.addAttribute("loginUser", loginUser);

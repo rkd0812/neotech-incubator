@@ -25,7 +25,9 @@
     <div class="row justify-content-center mt-5">
         <div class="col-md-10 col-lg-8">
             <div class="text-center mb-4">
-                <h1>로고</h1>
+                <h1>
+                    <a href ="/userinfo/loginForm.do" id="homeBtn">로고</a>
+                </h1>
             </div>
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
@@ -33,8 +35,9 @@
                 </div>
                 <div class="card-body p-4">
                     <c:if test="${not empty errorMessage}">
-                        <div class="alert alert-danger" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show mt-3 loginAlert" role="alert">
                                 ${errorMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     </c:if>
                     <form id="userLogin" action="/userinfo/login.do" method="post">
@@ -58,6 +61,21 @@
                             <label for="userPassword" class="form-label">비밀번호</label>
                             <input type="password" class="form-control" id="userPassword" name="userPassword"
                                    placeholder="비밀번호를 입력하세요">
+                        </div>
+                        <div>
+<%--                            <a>--%>
+<%--                                아이디 찾기--%>
+<%--                            </a>--%>
+<%--                            <a>--%>
+<%--                                비밀번호 찾기--%>
+<%--                            </a>--%>
+                            <small class="text-dark">
+                                아이디 찾기
+                            </small>
+                            &emsp;
+                            <small class="text-dark">
+                                비밀번호 찾기
+                            </small>
                         </div>
                         <div class="d-grid gap-2 mt-4">
                             <button type="submit" id="loginBtn" class="btn btn-primary">로그인</button>
