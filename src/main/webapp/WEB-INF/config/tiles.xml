@@ -4,8 +4,27 @@
 
 <tiles-definitions>
 
-    <definition name="*/*" template="/WEB-INF/jsp/sideBar/sideBar.jsp">
-        <put-attribute name="sideBar" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp"></put-attribute>
+    <definition name="default-layout" template="/WEB-INF/jsp/tiles/layout.jsp">
+        <put-attribute name="navBar" value="/WEB-INF/jsp/tiles/navBar.jsp" />
+        <put-attribute name="sideBar" value="/WEB-INF/jsp/tiles/sideBar.jsp" />
+        <put-attribute name="body" value="" />
     </definition>
+
+<!--    <definition name="*" extends="default-layout">-->
+<!--        <put-attribute name="body" value="/WEB-INF/jsp/{1}.jsp" />-->
+<!--    </definition>-->
+
+<!--    <definition name="*/*" extends="default-layout">-->
+<!--        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />-->
+<!--    </definition>-->
+
+    <definition name="*/*/*" extends="default-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
+    </definition>
+
+    <definition name="*/*/*/*" extends="default-layout">
+        <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}/{4}.jsp" />
+    </definition>
+
 
 </tiles-definitions>

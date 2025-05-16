@@ -11,9 +11,9 @@
 <head>
     <title>심사 프로젝트 목록</title>
     <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/evaProject/evaProjectList.js"></script>
 </head>
 <body>
+<script src="/app/js/evaProject/evaProjectList.js"></script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">심사 프로젝트 목록조회</h1>
@@ -38,7 +38,7 @@
                             <input type="radio" name="evaCd" id="All" value="All" checked /> 전체 &nbsp;
                             <c:forEach var="code" items="${codeList}" varStatus="status">
                                 <c:if test="${code.codeVal ne '00'}">
-                                    <input type="radio" name="evaCd" id="${code.codeVal}" value="${code.codeVal}" <c:if test="${evaProjectVo.evaCd eq code.codeVal}">checked</c:if> > ${code.codeKr} &nbsp;
+                                    <input type="radio" name="evaCd" id="${code.codeVal}" value="${code.codeVal}" <c:if test="${evaProjectVo.evaCd eq code.codeVal}">checked</c:if> > ${code.codeName} &nbsp;
                                 </c:if>
 
                             </c:forEach>
@@ -63,14 +63,14 @@
             </tr>
             </thead>
             <tbody>
-                <c:if test="${evaProject.size() eq 0}">
+                <c:if test="${evaProjectList.size() eq 0}">
                     <tr>
-                        <td colspan="2">
+                        <td colspan="6">
                             조회된 데이터가 없습니다
                         </td>
                     </tr>
                 </c:if>
-                <c:forEach var="evaProj" items="#{eveProjectList}" varStatus="status">
+                <c:forEach var="evaProj" items="#{evaProjectList}" varStatus="status">
                     <tr>
                         <td>${status.count}</td>
                         <td><a href="/evaProject/detail.do?projectId=${evaProj.projectId}">${evaProj.projectName}</td>
