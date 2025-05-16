@@ -43,12 +43,12 @@ public class EvaProjectCtr {
 //            evaProjectVo.setEndDate(LocalDate.now().plusMonths(3).toString());
         }
 
-        List<EvaProjectVo> eveProjectList = evaProjectSvc.retrieveEvaProjectList(evaProjectVo);
-        model.addAttribute("eveProjectList", eveProjectList);
+        List<EvaProjectVo> evaProjectList = evaProjectSvc.retrieveEvaProjectList(evaProjectVo);
+        model.addAttribute("evaProjectList", evaProjectList);
 
         // 심사 상태 권한 조회 (EVALUATION)
         CodeVo codeVo = new CodeVo();
-        codeVo.setCodeName("EVALUATION");
+        codeVo.setUpperCodeName("EVALUATION");
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
 

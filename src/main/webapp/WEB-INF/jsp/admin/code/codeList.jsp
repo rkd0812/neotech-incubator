@@ -7,15 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>코드 목록</title>
+<%--    <title>코드 목록</title>--%>
     <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/admin/code/codeList.js"></script>
+
 </head>
 <body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script src="/app/js/admin/code/codeList.js"></script>
 <script>
     const msg = "${msg}";
     if(msg != '') {
@@ -25,61 +24,79 @@
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">코드 목록조회</h1>
-            <div class="page-inner" style="text-align: center;">
-                <form id="searchForm" name="searchForm" action="/admin/code/list.do">
-                    <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
-                        <colgroup>
-                            <col style="width: 30%;" />
-                            <col style="width: auto;" />
-                        </colgroup>
-                        <tbody>
-                            <tr>
-                                <th>기간</th>
-                                <td><input type="date" id="startDate" name="startDate" value="${codeVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${codeVo.endDate}"></td>
-                            </tr>
-                            <tr>
-                                <th>상위코드명</th>
-                                <td><input type="text" id="upperCodeName" name="upperCodeName" value="${codeVo.upperCodeName}" /></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-                <button id="initBtn">초기화</button>
-                <button id="searchBtn">검색</button>
-                <table style="width: 700px;  border: solid 1px black; margin: 0 auto; text-align: center;">
-                    <colgroup>
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>상위코드명</th>
-                            <th>코드값</th>
-                            <th>코드명</th>
-                            <th>등록일자</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:if test="${codeList.size() eq 0}">
-                            <tr>
-                                <td colspan="5">
-                                    조회된 데이터가 없습니다
-                                </td>
-                            </tr>
-                        </c:if>
-                        <c:forEach var="code" items="${codeList}" varStatus="status">
-                            <a><tr>
-                                <td>${status.count}</td>
-                                <td>${code.upperCodeName}</td>
-                                <td><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
-                                <td>${code.codeName}</td>
-<%--                                <td><fmt:formatDate value="${code.frstRgsrDtlDttm}" pattern="y-MM-dd" type="date"/></td>--%>
-                                <td>${code.frstRgsrDtlDttm}</td>
-                            </tr></a>
-                        </c:forEach>
-                    </tbody>
-                </table>
-                <button id="registBtn">등록</button>
-            </div>
+    </div>
+    <div class="page-inner" style="text-align: center;">
+        <form id="searchForm" name="searchForm" action="/admin/code/list.do">
+            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+                <colgroup>
+                    <col style="width: 30%;" />
+                    <col style="width: auto;" />
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <th>기간</th>
+                        <td><input type="date" id="startDate" name="startDate" value="${codeVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${codeVo.endDate}"></td>
+                    </tr>
+                    <tr>
+                        <th>상위코드명</th>
+                        <td><input type="text" id="upperCodeName" name="upperCodeName" value="${codeVo.upperCodeName}" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <button id="initBtn">초기화</button>
+        <button id="searchBtn">검색</button>
+        <table style="width: 700px;  border: solid 1px black; margin: 0 auto; text-align: center;">
+            <colgroup>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>상위코드명</th>
+                    <th>코드값</th>
+                    <th>코드명</th>
+                    <th>등록일자</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:if test="${codeList.size() eq 0}">
+                    <tr>
+                        <td colspan="5">
+                            조회된 데이터가 없습니다
+                        </td>
+                    </tr>
+                </c:if>
+                <c:forEach var="code" items="${codeList}" varStatus="status">
+                    <a><tr>
+                        <td>${status.count}</td>
+                        <td>${code.upperCodeName}</td>
+                        <td><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
+                        <td>${code.codeName}</td>
+                        <td>${code.frstRgsrDtlDttm}</td>
+                    </tr></a>
+                </c:forEach>
+            </tbody>
+        </table>
+        <button id="registBtn">등록</button>
+        <div id="pagination" style="display: flex; justify-content: center; align-items: center;">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 </div>
 </body>
