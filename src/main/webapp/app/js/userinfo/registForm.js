@@ -20,13 +20,16 @@ $(function () {
     });
 
     // 이메일 입력 필터링
-    var replaceChar = /[ \{\}\[\]\/?.,;:|\)*~`!^\_+┼<>@\#$%&\'\"\\\(\=]/gi;
-    var replaceNotFullKorean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi;
+    var specialChar = /[ \{\}\[\]\/?.,;:|\)*~`!^\_+┼<>@\#$%&\'\"\\\(\=]/gi;
+    var koreanChar = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi;
     $('#userEmail').on("input", function () {
-        var emailInput = $(this).val()
-            .replace(replaceChar, '')
-            .replace(replaceNotFullKorean, '');
-        $(this).val(emailInput);
+        var emailInput = $(this).val();
+
+        if (specialChar.test(emailInput) || koreanChar.test(emailInput)) {
+            alert('영문과 숫자만 입력 가능합니다.');
+            $(this).val("") //입력값 초기화
+            $(this).focus();
+        }
 
         isEmailChecked = false;
         isEmailAvailable = false;

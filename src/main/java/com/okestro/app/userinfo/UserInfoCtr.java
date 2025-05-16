@@ -113,20 +113,38 @@ public class UserInfoCtr {
 
     // 로그인 처리
     @PostMapping("/userinfo/login.do")
-    public String login(UserInfoVo userInfoVo, HttpSession session, RedirectAttributes redirectAttr) {
+    public String login(UserInfoVo userInfoVo, HttpSession session, RedirectAttributes redirectAttr,
+                        @RequestParam(value = "userEmailId", required = false) String userEmailId,
+                        @RequestParam(value = "userDomain", required = false) String userDomain) {
         String userEmail = userInfoVo.getUserEmail();
         String userPassword = userInfoVo.getUserPassword();
+
         if (userEmail.isBlank() || userPassword.isBlank()) {
             redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
+
+            // 이메일 관련 정보 유지
+            if (!userEmailId.isBlank()) {
+                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            }
+            if (!userDomain.isBlank()) {
+                redirectAttr.addFlashAttribute("userDomain", userDomain);
+            }
             return "redirect:/userinfo/loginForm.do";
+
         } else if (userEmail.isBlank()) {
             redirectAttr.addFlashAttribute("errorMessage", "이메일을 입력해주세요.");
             return "redirect:/userinfo/loginForm.do";
         } else if (userPassword.isBlank()) {
             redirectAttr.addFlashAttribute("errorMessage", "비밀번호를 입력해주세요.");
+            // 아이디 입력 후 비밀번호 미 입력 시 아이디 초기화 방지
+            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            redirectAttr.addFlashAttribute("userDomain", userDomain);
             return "redirect:/userinfo/loginForm.do";
         } else if (userPassword.length() < 10) {
             redirectAttr.addFlashAttribute("errorMessage", "비밀번호는 최소 10자 이상이어야 합니다.");
+            // 아이디 입력 후 비밀번호 잘못 입력시 아이디 초기화 방지
+            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            redirectAttr.addFlashAttribute("userDomain", userDomain);
             return "redirect:/userinfo/loginForm.do";
         }
 
@@ -147,6 +165,8 @@ public class UserInfoCtr {
                 return "redirect:/project/projectList.do";
             } else if (loginResult == 1) {
                 redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+                redirectAttr.addFlashAttribute("userDomain", userDomain);
                 return "redirect:/userinfo/loginForm.do";
             } else {
                 redirectAttr.addFlashAttribute("errorMessage", "존재하지 않는 사용자입니다.");
@@ -154,6 +174,8 @@ public class UserInfoCtr {
             }
         } catch (Exception e) {
             redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            redirectAttr.addFlashAttribute("userDomain", userDomain);
             return "redirect:/userinfo/loginForm.do";
         }
     }

@@ -44,9 +44,9 @@
                         <div class="mb-3">
                             <label for="userEmail" class="form-label">이메일</label>
                             <div class="input-group email-group">
-                                <input type="text" class="form-control email-input" id="userEmail" name="userEmailId" placeholder="이메일을 입력해주세요">
+                                <input type="text" class="form-control email-input" id="userEmail" name="userEmailId" placeholder="이메일을 입력해주세요 (영문과 숫자만 입력이 가능합니다.)" value="${userEmailId}">
                                 <span class="input-group-text">@</span>
-                                <input type="text" class="form-control domain-input" id="userDomain" name="userDomain" placeholder="도메인">
+                                <input type="text" class="form-control domain-input" id="userDomain" name="userDomain" placeholder="도메인" value="${userDomain}">
                                 <select id = "domainList" class="form-select domain-select">
                                     <option value="">직접 입력</option>
                                     <option value="naver.com">naver.com</option>
