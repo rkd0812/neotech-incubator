@@ -7,13 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
+<%--<html>--%>
+<%--<head>--%>
 <%--    <title>코드 목록</title>--%>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-
-</head>
-<body>
+<%--    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />--%>
+<%--</head>--%>
+<%--<body>--%>
 <script src="/app/js/admin/code/codeList.js"></script>
 <script>
     const msg = "${msg}";
@@ -21,7 +20,7 @@
         alert(msg);
     }
 </script>
-<div id="page-wrapper">
+<div id="container-fluid">
     <div class="header">
         <h1 class="page-header">코드 목록조회</h1>
     </div>
@@ -99,5 +98,5 @@
         </div>
     </div>
 </div>
-</body>
-</html>
+<%--</body>--%>
+<%--</html>--%>

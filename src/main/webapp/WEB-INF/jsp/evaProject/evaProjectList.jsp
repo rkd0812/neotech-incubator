@@ -7,12 +7,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>심사 프로젝트 목록</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-</head>
-<body>
 <script src="/app/js/evaProject/evaProjectList.js"></script>
 <div id="page-wrapper">
     <div class="header">
@@ -84,5 +78,3 @@
         </table>
     </div>
 </div>
-</body>
-</html>
