@@ -22,7 +22,12 @@
 
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
 
-    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
+    <!-- Tiles -->
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="0"
+          p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView">
+    </bean>
+
+    <bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="1"/>
 
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="2"
           p:viewClass="org.springframework.web.servlet.view.JstlView"
@@ -30,11 +35,6 @@
 
     <bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
         <property name="contentType" value="application/json;charset=UTF-8"/>
-    </bean>
-
-    <!-- Tiles -->
-    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
-          p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView">
     </bean>
 
     <bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
