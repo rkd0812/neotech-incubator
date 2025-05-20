@@ -20,16 +20,23 @@ public class MenuCtr {
 
     // 메뉴 등록화면 이동
     @GetMapping("/admin/menu/openRegist.do")
-    public String openRegistMenu() {
+    public String openRegistMenu(@ModelAttribute MenuVo menuVo, Model model) {
 
-        return "/admin/menu/menuRegist";
+        List<MenuVo> menuList = menuSvc.retrieveMenuList(menuVo);
+        model.addAttribute("menuList", menuList);
+
+        return "admin/menu/menuRegist";
     }
 
     // 메뉴 등록
     @PostMapping("/admin/menu/regist.do")
     public String registMenu(@ModelAttribute MenuVo menuVo, Model model, RedirectAttributes redirectAttributes) {
-        String menuId = "MENU" + menuSvc.getmenuIndex();
+        String menuId = "MENU" + menuSvc.getMenuIndex();
         menuVo.setMenuId(menuId);
+
+        if (menuVo.getUpperMenuId() == null) {
+            menuVo.setMenuLevel(1);
+        }
 
         int cnt = menuSvc.registMenu(menuVo);
 
@@ -57,23 +64,37 @@ public class MenuCtr {
         List<MenuVo> menuList = menuSvc.retrieveMenuList(menuVo);
         model.addAttribute("menuList", menuList);
         
-        return "/admin/menu/menuList";
+        return "admin/menu/menuList";
     }
 
     // 메뉴 상세조회
     @GetMapping("/admin/menu/detail.do")
     public String retrieveMenuDetail(@ModelAttribute MenuVo menuVo, Model model) {
 
-        MenuVo menuDetail = menuSvc.retrieveMenuDetail(menuVo);
+        MenuVo menuDetail = menuSvc.retrieveMenuDetail(menuVo.getMenuId());
         model.addAttribute("menuDetail", menuDetail);
 
-        return "/admin/menu/menuDetail";
+        List<MenuVo> menuList = menuSvc.retrieveMenuList(menuVo);
+        model.addAttribute("menuList", menuList);
+
+        return "admin/menu/menuDetail";
     }
 
     // 메뉴 수정
     @PostMapping("/admin/menu/update.do")
     public String updateMenu(@ModelAttribute MenuVo menuVo, Model model, RedirectAttributes redirectAttributes) {
-        int cnt = menuSvc.updateMenu( menuVo);
+
+        if (menuVo.getUpperMenuId() != null && menuVo.getUpperMenuId() != "") {
+            int menuLevel = menuSvc.getMenuLevel(menuVo.getUpperMenuId());
+            menuVo.setMenuLevel(menuLevel);
+
+            String upperMenuName = menuSvc.retrieveMenuDetail(menuVo.getUpperMenuId()).getMenuName();
+            menuVo.setUpperMenuName(upperMenuName);
+        } else {
+            menuVo.setMenuLevel(1);
+        }
+
+        int cnt = menuSvc.updateMenu(menuVo);
 
         if (cnt > 0) {
             redirectAttributes.addFlashAttribute("msg", "수정 완료");

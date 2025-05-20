@@ -7,15 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>코드 등록</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/admin/code/codeRegist.js"></script>
-</head>
-<body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
-
+<script src="/app/js/admin/code/codeRegist.js"></script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">코드 등록</h1>
@@ -44,5 +36,3 @@
         <button id="btnRegist">등록</button>
     </div>
 </div>
-</body>
-</html>

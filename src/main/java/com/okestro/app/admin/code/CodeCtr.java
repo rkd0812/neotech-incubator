@@ -21,7 +21,7 @@ public class CodeCtr {
     // 코드 등록 페이지 오픈
     @GetMapping("/admin/code/openRegist.do")
     public String openRegistCode(@ModelAttribute CodeVo codeVo) {
-        return "/admin/code/codeRegist";
+        return "admin/code/codeRegist";
     }
 
     // 코드 등록
@@ -53,7 +53,7 @@ public class CodeCtr {
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
 
-        return "/admin/code/codeList";
+        return "admin/code/codeList";
     }
 
     // 코드 상세조회
@@ -66,7 +66,7 @@ public class CodeCtr {
         List<CodeVo> codeGroupList = codeSvc.retrieveCodeGroupList(codeVo);
         model.addAttribute("codeGroupList", codeGroupList);
 
-        return "/admin/code/codeDetail";
+        return "admin/code/codeDetail";
     }
 
     // 코드 수정

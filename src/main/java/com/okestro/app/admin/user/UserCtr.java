@@ -46,7 +46,7 @@ public class UserCtr {
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
 
-        return "/admin/user/userList";
+        return "admin/user/userList";
     }
 
     // 사용자 상세조회
@@ -66,7 +66,7 @@ public class UserCtr {
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
 
-        return "/admin/user/userDetail";
+        return "admin/user/userDetail";
     }
 
     @PostMapping("/admin/user/update.do")
@@ -79,17 +79,17 @@ public class UserCtr {
             redirectAttributes.addFlashAttribute("msg", "수정 실패");
         }
 
-        return "redirect:/admin/user/detail.do?userEmail=" + userVo.getUserEmail();
+        return "redirect:admin/user/detail.do?userEmail=" + userVo.getUserEmail();
     }
 
     @GetMapping("/admin/user/openRegist.do")
     public String openRegistUser(Model model) {
         // 사용자 권한 조회 (ROLE)
         CodeVo codeVo = new CodeVo();
-        codeVo.setCodeName("ROLE");
+        codeVo.setUpperCodeName("ROLE");
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);
         model.addAttribute("codeList", codeList);
-        return "/admin/user/userRegist";
+        return "admin/user/userRegist";
     }
 
     @PostMapping("/admin/user/regist.do")

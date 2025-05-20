@@ -23,12 +23,14 @@
         SELECT MENU_ID
              , MENU_NAME
              , MENU_LEVEL
+             , UPPER_MENU_ID
+             , UPPER_MENU_NAME
              , DEL_YN
              , FRST_RGSR_ID
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
              , LAST_CHNG_ID
              , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
-        FROM SCH_INCU.MENU
+        FROM SCH_INCU.MENU A
         WHERE 1=1
         AND DEL_YN = 'N'
         <if test="menuName != null and menuName != ''">
@@ -42,10 +44,12 @@
     </select>
 
     <!-- 메뉴 상세조회-->
-    <select id="retrieveMenuDetail" parameterType="com.okestro.app.admin.menu.MenuVo" resultType="com.okestro.app.admin.menu.MenuVo">
+    <select id="retrieveMenuDetail" parameterType="string" resultType="com.okestro.app.admin.menu.MenuVo">
         SELECT MENU_ID
              , MENU_NAME
              , MENU_LEVEL
+             , UPPER_MENU_ID
+             , UPPER_MENU_NAME
              , DEL_YN
              , FRST_RGSR_ID
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
@@ -64,6 +68,8 @@
         UPDATE SCH_INCU.MENU
         SET MENU_NAME = #{menuName},
             MENU_LEVEL = #{menuLevel},
+            UPPER_MENU_ID = #{upperMenuId},
+            UPPER_MENU_NAME = #{upperMenuName},
             DEL_YN = 'N',
             LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
@@ -88,5 +94,12 @@
              ) A
     </select>
 
+    <!-- 메뉴 레벨 -->
+    <select id="getmenuLevel" parameterType="string" resultType="int">
+        SELECT MENU_LEVEL + 1 AS MENU_LEVEL
+        FROM SCH_INCU.MENU
+        WHERE 1=1
+        AND MENU_ID = #{upperMenuId}
+    </select>
 
 </mapper>

@@ -18,4 +18,6 @@ public class MenuVo {
     private String lastChngDtlDttm;
     private String startDate;
     private String endDate;
+    private String upperMenuId;
+    private String upperMenuName;
 }

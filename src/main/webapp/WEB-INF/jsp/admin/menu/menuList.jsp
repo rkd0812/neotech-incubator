@@ -7,14 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>메뉴 목록</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/admin/menu/menuList.js"></script>
-</head>
-<body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script src="/app/js/admin/menu/menuList.js"></script>
 <script>
     const msg = "${msg}";
     if(msg != '') {
@@ -53,6 +46,7 @@
                 <tr>
                     <th>No</th>
                     <th>메뉴명</th>
+                    <th>상위메뉴</th>
                     <th>메뉴레벨</th>
                     <th>등록일자</th>
                 </tr>
@@ -69,6 +63,7 @@
                     <tr>
                         <td>${status.count}</td>
                         <td><a href="/admin/menu/detail.do?menuId=${menu.menuId}">${menu.menuName}</a></td>
+                        <td>${menu.upperMenuName}</td>
                         <td>${menu.menuLevel}</td>
                         <td>${menu.frstRgsrDtlDttm}</td>
                     </tr>
@@ -78,6 +73,3 @@
         <button id="registBtn">등록</button>
     </div>
 </div>
-
-</body>
-</html>

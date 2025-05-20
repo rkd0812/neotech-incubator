@@ -8,14 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<html>
-<head>
-    <title>메뉴 상세</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="<c:url value="/app/js/admin/menu/menuDetail.js"/>"></script>
-</head>
-<body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script src="<c:url value="/app/js/admin/menu/menuDetail.js"/>"></script>
 <script>
     const msg = "${msg}";
     if(msg != '') {
@@ -35,15 +28,26 @@
                     <tr>
                         <th>메뉴명</th>
                         <td>
+                            <input type="hidden" id="menuId" name="menuId" value="${menuDetail.menuId}">
                             <input type="text" id="menuName" name="menuName" value="${menuDetail.menuName}">
                         </td>
                     </tr>
                     <tr>
-                        <th>메뉴레벨</th>
+                        <th>상위메뉴</th>
                         <td>
-                            <input type="hidden" id="menuId" name="menuId" value="${menuDetail.menuId}" />
-                            <input type="text" id="menuLevel" name="menuLevel" value="${menuDetail.menuLevel}">
+                            <select id="upperMenuId" name="upperMenuId">
+                                <option value=""></option>
+                                <c:forEach items="${menuList}" var="menu" varStatus="status">
+                                    <c:if test="${menuDetail.menuName ne menu.menuName}">
+                                        <option value="${menu.menuId}" <c:if test="${menu.menuId eq menuDetail.upperMenuId}">selected</c:if> >${menu.menuName}</option>
+                                    </c:if>
+                                </c:forEach>
+                            </select>
                         </td>
+                    </tr>
+                    <tr>
+                        <th>메뉴레벨</th>
+                        <td>${menuDetail.menuLevel}</td>
                     </tr>
                     <tr>
                         <th>등록일자</th>
@@ -57,5 +61,3 @@
         <button id="deleteBtn">삭제</button>
     </div>
 </div>
-</body>
-</html>

@@ -7,19 +7,12 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>메뉴 등록</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/admin/menu/menuRegist.js"></script>
-</head>
-<body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script src="/app/js/admin/menu/menuRegist.js"></script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-header">메뉴 등록</h1>
     </div>
-    <div class="page-wrapper" style="text-align: center;">
+    <div id="page-inner" style="text-align: center;">
         <form id="registForm" name="registForm" action="/admin/menu/regist.do" method="post">
             <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
                 <colgroup>
@@ -30,9 +23,20 @@
                         <th>메뉴명</th>
                         <td><input type="text" id="menuName" name="menuName" /></td>
                     </tr>
+<%--                    <tr>--%>
+<%--                        <th>메뉴레벨</th>--%>
+<%--                        <td><input type="text" id="menuLevel" name="menuLevel" /></td>--%>
+<%--                    </tr>--%>
                     <tr>
-                        <th>메뉴레벨</th>
-                        <td><input type="text" id="menuLevel" name="menuLevel" /></td>
+                        <th>상위메뉴</th>
+                        <td>
+                            <select>
+                                <option value=""></option>
+                                <c:forEach items="${menuList}" var="menu" varStatus="status">
+                                    <option>${menu.menuName}</option>
+                                </c:forEach>
+                            </select>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -41,5 +45,3 @@
         <button id="btnRegist">등록</button>
     </div>
 </div>
-</body>
-</html>

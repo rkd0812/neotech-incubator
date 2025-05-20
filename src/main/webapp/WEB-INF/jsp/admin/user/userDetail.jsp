@@ -7,14 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>사용자 상세조회</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/admin/user/userDetail.js"></script>
-</head>
-<body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
+<script src="/app/js/admin/user/userDetail.js"></script>
 <script>
     const msg = "${msg}";
     if(msg != '') {
@@ -60,5 +53,4 @@
             <button id="deleteBtn">삭제</button>
         </div>
     </div>
-</body>
-</html>
+</div>

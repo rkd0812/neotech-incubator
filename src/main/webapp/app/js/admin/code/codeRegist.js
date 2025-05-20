@@ -11,7 +11,7 @@ $(function() {
             } else if ($('#codeName').val() === null || $('#codeName').val() === '') {
                 alert("코드명을 입력해주세요.");
             } else {
-                $('#egistForm').submit();
+                $('#registForm').submit();
             }
         }
     })
