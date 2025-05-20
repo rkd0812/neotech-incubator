@@ -7,13 +7,14 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>사용자 정보 수정</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/userinfo/userUpdateForm.js"></script>
-</head>
-<body>
+<%--<html>--%>
+<%--<head>--%>
+<%--    <title>사용자 정보 수정</title>--%>
+<%--    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />--%>
+<%--    <script src="/app/js/userinfo/userUpdateForm.js"></script>--%>
+<%--</head>--%>
+<%--<body>--%>
+<script src="<c:url value="/app/js/userinfo/userUpdateForm.js"/>"></script> <%-- 필수 --%>
 <h1>사용자 정보 수정</h1>
 <div>
     <form id="updateForm" action="/userinfo/updateUserInfo.do" method="post">
@@ -57,5 +58,5 @@
         <input type="hidden" id="hiddenUserEmail" name="userEmail" value="${userInfo.userEmail}">
     </form>
 </div>
-</body>
-</html>
+<%--</body>--%>
+<%--</html>--%>

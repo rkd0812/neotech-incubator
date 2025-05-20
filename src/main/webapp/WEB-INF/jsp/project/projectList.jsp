@@ -7,14 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>프로젝트 리스트</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/project/projectList.js"></script>
-</head>
-<body>
-
+<script src="<c:url value="/app/js/project/projectList.do"/>"></script> <%-- 필수 --%>
 <!-- 메인 컨텐츠 -->
 <div>
     <a href="/userinfo/userDetail.do?userEmail=${loginUser.userEmail}" id="myInfoBtn">내정보</a>

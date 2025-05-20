@@ -114,8 +114,8 @@ public class UserInfoCtr {
     // 로그인 처리
     @PostMapping("/userinfo/login.do")
     public String login(UserInfoVo userInfoVo, HttpSession session, RedirectAttributes redirectAttr,
-                        @RequestParam(value = "userEmailId", required = false) String userEmailId,
-                        @RequestParam(value = "userDomain", required = false) String userDomain) {
+                        @RequestParam(value = "userEmailId") String userEmailId,
+                        @RequestParam(value = "userDomain") String userDomain) {
         String userEmail = userInfoVo.getUserEmail();
         String userPassword = userInfoVo.getUserPassword();
 

@@ -3,6 +3,11 @@ $(function () {
     var isEmailChecked = false; // 이메일 중복 확인 여부
     var isEmailAvailable = false; // 이메일 사용 가능 여부
 
+    // 결과 메시지 초기화
+    function clearEmailResult() {
+        $("#emailCheckResult").html('');
+    }
+
     // 도메인 선택 시 입력
     $("#domainList").change(function () {
         var domain = $(this).val();
@@ -62,6 +67,10 @@ $(function () {
         var fullEmail = email + "@" + domain;
         $("#dbEmail").val(fullEmail);
 
+        // 중복 확인 버튼 상태 변경 및 로딩 표시
+        var $checkBtn = $(this);
+        $checkBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 확인 중...');
+
         // 서버 중복 확인
         $.ajax({
             url: "/userinfo/checkEmailDuplicate.do",
@@ -77,11 +86,17 @@ $(function () {
                     alert("사용 가능한 이메일입니다.");
                     isEmailAvailable = true; // 사용 가능
                 }
+
+                // 버튼 상태 복원
+                $checkBtn.prop('disabled', false).html('중복확인');
             },
             error: function() {
                 alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
                 isEmailChecked = false;
                 isEmailAvailable = false;
+
+                // 버튼 상태 복원
+                $checkBtn.prop('disabled', false).html('중복확인');
             }
         });
     });

@@ -45,4 +45,21 @@
         </property>
     </bean>
 
+    <mvc:interceptors>
+        <!-- 로그인 인터셉터 설정 -->
+        <mvc:interceptor>
+            <!-- 모든 경로에 대해 인터셉터 적용 -->
+            <mvc:mapping path="/**" />
+            <!-- 인터셉터를 적용하지 않을 경로 설정 -->
+            <mvc:exclude-mapping path="/userinfo/loginForm.do" />
+            <mvc:exclude-mapping path="/userinfo/login.do" />
+            <mvc:exclude-mapping path="/userinfo/registForm.do" />
+            <mvc:exclude-mapping path="/userinfo/registerUserInfo.do" />
+            <mvc:exclude-mapping path="/userinfo/checkEmailDuplicate.do" />
+            <!-- JS 리소스 제외 -->
+            <mvc:exclude-mapping path="/app/js/**" />
+            <bean class="com.okestro.app.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 </beans>
