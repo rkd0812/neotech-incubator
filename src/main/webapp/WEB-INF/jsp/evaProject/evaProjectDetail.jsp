@@ -65,7 +65,7 @@
             </tbody>
         </table>
         <button id="listBtn" onclick=location.href="/evaProject/list.do">목록</button>
-        <c:if test="${evaProjectDetail.evaYn eq 'Y' and evaProjectDetail.evaCd eq '01'}"><button id="evaBtn">심사하기</button></c:if>
+        <c:if test="${evaProjectDetail.evaFormYn eq 'Y' and evaProjectDetail.evaCd eq '01'}"><button id="evaBtn">심사하기</button></c:if>
 
         <c:if test="${commentList ne null}">
             <h5>댓글</h5>

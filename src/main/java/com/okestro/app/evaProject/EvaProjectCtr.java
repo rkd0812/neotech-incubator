@@ -62,21 +62,21 @@ public class EvaProjectCtr {
         EvaProjectVo evaProjectDetail = evaProjectSvc.retrieveEvaProjectDetail(evaProjectVo);
         model.addAttribute("evaProjectDetail", evaProjectDetail);
 
-//        // 첨부파일 조회
-//        List<AttachmentVo> attachmentList = attachmentSvc.retrieveAttachmentList(evaProjectVo);
-//        List<AttachmentVo> attachmentDetailList = new ArrayList<>();
-//
-//        attachmentList.forEach(attachment -> {
-//            AttachmentVo attachmentDetail = attachmentSvc.retrieveAttachment(attachment.getAttachmentId());
-//            attachmentDetailList.add(attachmentDetail);
-//        });
-//
-//        model.addAttribute("attachmentDetailList", attachmentDetailList);
-//
-//        // 댓글 조회
-//        List<CommentVo> commentList = commentSvc.retrieveCommentList(evaProjectVo.getProjectId());
-//
-//        model.addAttribute("commentList", commentList);
+        // 첨부파일 조회
+        List<AttachmentVo> attachmentList = attachmentSvc.retrieveAttachmentList(evaProjectVo);
+        List<AttachmentVo> attachmentDetailList = new ArrayList<>();
+
+        attachmentList.forEach(attachment -> {
+            AttachmentVo attachmentDetail = attachmentSvc.retrieveAttachment(attachment.getAttachmentId());
+            attachmentDetailList.add(attachmentDetail);
+        });
+
+        model.addAttribute("attachmentDetailList", attachmentDetailList);
+
+        // 댓글 조회
+        List<CommentVo> commentList = commentSvc.retrieveCommentList(evaProjectVo.getProjectId());
+
+        model.addAttribute("commentList", commentList);
 
         return "/evaProject/evaProjectDetail";
 

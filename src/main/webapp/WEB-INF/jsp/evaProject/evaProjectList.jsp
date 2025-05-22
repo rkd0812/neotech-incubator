@@ -71,7 +71,7 @@
                         <td>${evaProj.evaCdNm}</td>
                         <td>${evaProj.evaStartDt}</td>
                         <td>${evaProj.evaEndDt}</td>
-                        <td>${evaProj.evaYn}</td>
+                        <td>${evaProj.evaFormYn}</td>
                     </tr>
                 </c:forEach>
             </tbody>

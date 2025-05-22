@@ -18,11 +18,15 @@ public class EvaProjectVo {
     private String frstRgsrDtlDttm;
     private String lastChngId;
     private String lastChngDtlDttm;
+    private String userGroupId;
+    private String evaGroupId;
+    private String projectDetail;
+    private String url;
+    private String evaFormYn;
     private String startDate;
     private String endDate;
     private String groupId;
     private String groupCd;
     private String groupCdNm;
-    private String projectDetail;
-    private String url;
+
 }
