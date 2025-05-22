@@ -58,6 +58,8 @@
             <mvc:exclude-mapping path="/userinfo/checkEmailDuplicate.do" />
             <!-- JS 리소스 제외 -->
             <mvc:exclude-mapping path="/app/js/**" />
+            <!-- 리소스 제외 -->
+            <mvc:exclude-mapping path="/assets/**" />
             <bean class="com.okestro.app.interceptor.LoginInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
