@@ -10,6 +10,7 @@
     <select id="retrieveAllUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
         SELECT USER_EMAIL,
                USER_PASSWORD,
+               USER_NAME,
                ROLE_CD,
                DEL_YN,
                FRST_RGSR_ID,
@@ -23,6 +24,7 @@
     <select id="retrieveUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
         SELECT a.USER_EMAIL,
                a.USER_PASSWORD,
+               a.USER_NAME,
                a.ROLE_CD,
                b.CODE_NAME
         FROM SCH_INCU.USER a
@@ -64,6 +66,7 @@
     <select id="retrieveUserInfoForLogin" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
         SELECT a.USER_EMAIL    AS userEmail,
                a.USER_PASSWORD AS userPassword,
+               a.USER_NAME     AS userName,
                a.ROLE_CD       AS roleCd,
                b.CODE_NAME     AS codeName
         FROM SCH_INCU.USER a
@@ -80,6 +83,7 @@
     <insert id="insertUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
         INSERT INTO SCH_INCU.USER (USER_EMAIL,
                                    USER_PASSWORD,
+                                   USER_NAME,
                                    ROLE_CD,
                                    DEL_YN,
                                    FRST_RGSR_ID,
@@ -88,6 +92,7 @@
                                    LAST_CHNG_DTL_DTTM)
         VALUES (#{userEmail},
                 #{userPassword},
+                #{userName},
                 #{roleCd},
                 'N',
                 'SYSTEM',
@@ -109,6 +114,7 @@
     <select id="userDetail" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
         SELECT a.USER_EMAIL    AS userEmail,
                a.USER_PASSWORD AS userPassword,
+               a.USER_NAME     AS userName,
                a.ROLE_CD       AS roleCd,
                b.CODE_NAME     AS codeName
         FROM SCH_INCU.USER a
@@ -122,7 +128,7 @@
     <update id="updateUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
         UPDATE SCH_INCU.USER
         SET USER_PASSWORD = #{userPassword},
-            ROLE_CD       = #{roleCd}
+--             ROLE_CD       = #{roleCd}
         WHERE USER_EMAIL = #{userEmail}
     </update>
 

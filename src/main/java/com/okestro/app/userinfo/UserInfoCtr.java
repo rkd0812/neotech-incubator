@@ -159,10 +159,10 @@ public class UserInfoCtr {
             int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
             if (loginResult == 0) {
                 UserInfoVo userInfo = userinfoSvc.retrieveUserInfoForLogin(userEmail);
-                session.setAttribute("loginUser", userInfo);
-                session.setAttribute("userEmail", userInfo.getUserEmail());
-                session.setAttribute("roleCd", userInfo.getRoleCd());
-                return "redirect:/project/projectList.do";
+                session.setAttribute("loginUser", userInfo);  // 사용자 객체 전체 저장
+                session.setAttribute("userEmail", userInfo.getUserEmail());  // 이메일만 따로 저장
+                session.setAttribute("roleCd", userInfo.getRoleCd());   // 역할 코드만 저장
+                return "redirect:/project/projectList.do";   // 저장 후 프로젝트 목록 페이지로 리다이렉트
             } else if (loginResult == 1) {
                 redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
                 redirectAttr.addFlashAttribute("userEmailId", userEmailId);

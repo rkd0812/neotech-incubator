@@ -7,8 +7,6 @@ import org.egovframe.rte.fdl.access.service.impl.EgovAccessServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
 
 @Service("userinfoSvc")
 public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSvc {

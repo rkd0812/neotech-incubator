@@ -20,9 +20,9 @@ public class EvaProjectVo {
     private String lastChngDtlDttm;
     private String startDate;
     private String endDate;
-    private String userGroupId;
-    private String evaGroupId;
+    private String groupId;
+    private String groupCd;
+    private String groupCdNm;
     private String projectDetail;
     private String url;
-    private String evaYn;
 }
