@@ -8,70 +8,140 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
-<html>
-<head>
-    <title></title>
-<%--    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />--%>
-</head>
-<body>
-
-<%--    <div class="container-fluid">--%>
-<%--        <div class="row flex-nowrap">--%>
-        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">
-            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-<%--                <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">--%>
-<%--                    <span class="fs-5 d-none d-sm-inline text-black">Menu</span>--%>
-<%--                </a>--%>
-                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item">
-                        <a href="/project/projectList.do" class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">사용자 프로젝트</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href=/evaProject/list.do class="nav-link align-middle px-0">
-                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">심사 프로젝트</span>
-                        </a>
-                    </li>
-
+<%--        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">--%>
+<%--            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">--%>
+<%--                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">--%>
+<%--                    <li class="nav-item">--%>
+<%--                        <a href="/project/projectList.do" class="nav-link align-middle px-0">--%>
+<%--                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">사용자 프로젝트</span>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
+<%--                    <li class="nav-item">--%>
+<%--                        <a href=/evaProject/list.do class="nav-link align-middle px-0">--%>
+<%--                            <i class="fs-4 bi-house"></i> <span class="ms-1 d-none d-sm-inline">심사 프로젝트</span>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
 <%--                    <li>--%>
-<%--                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle">--%>
-<%--                            <i class="fs-4 bi-speedometer2"></i> <span class="ms-1 d-none d-sm-inline">심사 프로젝트</span> </a>--%>
-<%--                        <ul class="collapse show nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">--%>
+<%--                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">--%>
+<%--                        <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">관리자</span></a>--%>
+<%--                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">--%>
 <%--                            <li class="w-100">--%>
-<%--                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 1 </a>--%>
+<%--                                <a href="/admin/user/list.do" class="nav-link px-0"> <span class="d-none d-sm-inline">사용자 관리</span></a>--%>
 <%--                            </li>--%>
 <%--                            <li>--%>
-<%--                                <a href="#" class="nav-link px-0"> <span class="d-none d-sm-inline">Item</span> 2 </a>--%>
+<%--                                <a href="/admin/menu/list.do" class="nav-link px-0"> <span class="d-none d-sm-inline">메뉴 관리</span></a>--%>
+<%--                            </li>--%>
+<%--                            <li>--%>
+<%--                                <a href="/admin/code/list.do" class="nav-link px-0"> <span class="d-none d-sm-inline">코드 관리</span></a>--%>
 <%--                            </li>--%>
 <%--                        </ul>--%>
 <%--                    </li>--%>
-                    <li>
-<%--                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">--%>
-                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle ">
-                        <i class="fs-4 bi-bootstrap"></i> <span class="ms-1 d-none d-sm-inline">관리자</span></a>
-                        <ul class="collapse nav flex-column ms-1" id="submenu2" data-bs-parent="#menu">
-                            <li class="w-100">
-                                <a href="/admin/user/list.do" class="nav-link px-0"> <span class="d-none d-sm-inline">사용자 관리</span></a>
-                            </li>
-                            <li>
-                                <a href="/admin/menu/list.do" class="nav-link px-0"> <span class="d-none d-sm-inline">메뉴 관리</span></a>
-                            </li>
-                            <li>
-                                <a href="/admin/code/list.do" class="nav-link px-0"> <span class="d-none d-sm-inline">코드 관리</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-
-            </div>
-        </div>
-<%--        <div class="col py-3">--%>
-<%--            Content area...--%>
+<%--                </ul>--%>
+<%--            </div>--%>
 <%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 
+<div class="l-navbar" id="navbar">
+    <nav class="nav">
+        <div>
+            <div class="nav__brand">
+                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+<%--                <a href="#" class="nav__logo">Bedimcode</a>--%>
+            </div>
+            <div class="nav__list">
+                <a href="#" class="nav__link active">
+                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Dashboard</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Messenger</span>
+                </a>
 
-</body>
-</html>
+                <div href="#" class="nav__link collapse">
+                    <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Projects</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="#" class="collapse__sublink">Data</a>
+                        <a href="#" class="collapse__sublink">Group</a>
+                        <a href="#" class="collapse__sublink">Members</a>
+                    </ul>
+                </div>
+
+                <a href="#" class="nav__link">
+                    <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Analytics</span>
+                </a>
+
+                <div href="#" class="nav__link collapse">
+                    <ion-icon name="people-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Team</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="#" class="collapse__sublink">Data</a>
+                        <a href="#" class="collapse__sublink">Group</a>
+                        <a href="#" class="collapse__sublink">Members</a>
+                    </ul>
+                </div>
+
+                <a href="#" class="nav__link">
+                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Settings</span>
+                </a>
+            </div>
+            <a href="#" class="nav__link">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">Log out</span>
+            </a>
+        </div>
+    </nav>
+</div>
+
+<%--<h1>Componentes</h1>--%>
+<!-- IONICONS -->
+<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+<!-- JS -->
+<script>
+    /* EXPANDER MENU */
+    const showMenu = (toggleId, navbarId, bodyId) => {
+        const toggle = document.getElementById(toggleId),
+            navbar = document.getElementById(navbarId),
+            bodypadding = document.getElementById(bodyId)
+
+        if( toggle && navbar ) {
+            toggle.addEventListener('click', ()=>{
+                navbar.classList.toggle('expander');
+
+                bodypadding.classList.toggle('body-pd')
+            })
+        }
+    }
+
+    showMenu('nav-toggle', 'navbar', 'body-pd')
+
+    /* LINK ACTIVE */
+    const linkColor = document.querySelectorAll('.nav__link')
+    function colorLink() {
+        linkColor.forEach(l=> l.classList.remove('active'))
+        this.classList.add('active')
+    }
+    linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+    /* COLLAPSE MENU */
+    const linkCollapse = document.getElementsByClassName('collapse__link')
+    var i
+
+    for(i=0;i<linkCollapse.length;i++) {
+        linkCollapse[i].addEventListener('click', function(){
+            const collapseMenu = this.nextElementSibling
+            collapseMenu.classList.toggle('showCollapse')
+
+            const rotate = collapseMenu.previousElementSibling
+            rotate.classList.toggle('rotate')
+        });
+    }
+</script>

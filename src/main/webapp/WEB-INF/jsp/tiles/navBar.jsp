@@ -7,22 +7,26 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title></title>
-<%--    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />--%>
-</head>
-<body>
 
-<nav class="navbar bg-body-tertiary">
-    <div class="container-fluid">
+<div class="navbar bg-body-tertiary" style="display: flex; justify-content: space-between;">
+<%--    <div class="container-fluid">--%>
+<%--    <img src="/assets/img/logo.png" style="width: auto; height: auto;">--%>
         <a class="navbar-brand">Navbar</a>
         <form class="d-flex" role="search">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
             <button class="btn btn-outline-success" type="submit">Search</button>
         </form>
-    </div>
-</nav>
+<%--    </div>--%>
+</div>
 
-</body>
-</html>
+
+<%--<div class="navbar bg-body-tertiary">--%>
+<%--    <div class="container-fluid">--%>
+<%--        <a class="navbar-brand">Navbar</a>--%>
+<%--        <form class="d-flex" role="search">--%>
+<%--            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>--%>
+<%--            <button class="btn btn-outline-success" type="submit">Search</button>--%>
+<%--        </form>--%>
+<%--    </div>--%>
+<%--</div>--%>
+

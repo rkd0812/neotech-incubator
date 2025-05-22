@@ -34,8 +34,14 @@ public class MenuCtr {
         String menuId = "MENU" + menuSvc.getMenuIndex();
         menuVo.setMenuId(menuId);
 
-        if (menuVo.getUpperMenuId() == null) {
+        if (menuVo.getUpperMenuId().isEmpty()) {
             menuVo.setMenuLevel(1);
+        } else {
+            int menuLevel = menuSvc.getMenuLevel(menuVo.getUpperMenuId());
+            menuVo.setMenuLevel(menuLevel);
+
+            String upperMenuName = menuSvc.retrieveMenuDetail(menuVo.getUpperMenuId()).getMenuName();
+            menuVo.setUpperMenuName(upperMenuName);
         }
 
         int cnt = menuSvc.registMenu(menuVo);
@@ -84,14 +90,14 @@ public class MenuCtr {
     @PostMapping("/admin/menu/update.do")
     public String updateMenu(@ModelAttribute MenuVo menuVo, Model model, RedirectAttributes redirectAttributes) {
 
-        if (menuVo.getUpperMenuId() != null && menuVo.getUpperMenuId() != "") {
+        if (menuVo.getUpperMenuId().isEmpty()) {
+            menuVo.setMenuLevel(1);
+        } else {
             int menuLevel = menuSvc.getMenuLevel(menuVo.getUpperMenuId());
             menuVo.setMenuLevel(menuLevel);
 
             String upperMenuName = menuSvc.retrieveMenuDetail(menuVo.getUpperMenuId()).getMenuName();
             menuVo.setUpperMenuName(upperMenuName);
-        } else {
-            menuVo.setMenuLevel(1);
         }
 
         int cnt = menuSvc.updateMenu(menuVo);

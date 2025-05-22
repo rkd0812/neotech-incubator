@@ -30,10 +30,10 @@
                     <tr>
                         <th>상위메뉴</th>
                         <td>
-                            <select>
+                            <select id="upperMenuId" name="upperMenuId">
                                 <option value=""></option>
                                 <c:forEach items="${menuList}" var="menu" varStatus="status">
-                                    <option>${menu.menuName}</option>
+                                    <option value="${menu.menuId}">${menu.menuName}</option>
                                 </c:forEach>
                             </select>
                         </td>

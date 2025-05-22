@@ -80,8 +80,8 @@
     <!-- 코드 삭제 -->
     <update id="deleteCode" parameterType="com.okestro.app.admin.code.CodeVo">
     UPDATE SCH_INCU.CODE
-    SET DEL_YN = 'Y'
-    AND LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
+    SET DEL_YN = 'Y',
+        LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
     WHERE 1=1
     AND UPPER_CODE_NAME = #{upperCodeName}
     AND CODE_VAL = #{codeVal}
@@ -91,6 +91,8 @@
     <select id="retrieveCodeGroupList" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
         SELECT DISTINCT UPPER_CODE_NAME AS UPPER_CODE_NAME
         FROM SCH_INCU.CODE
+        WHERE 1=1
+        AND DEL_YN = 'N'
         ORDER BY UPPER_CODE_NAME
     </select>
 
