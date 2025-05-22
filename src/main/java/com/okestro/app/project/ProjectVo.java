@@ -11,14 +11,17 @@ public class ProjectVo extends BaseVo {
     // 테이블 컬럼 필드 설정
     // project 테이블 필드
     private String projectName;
+    private String userGroupId;
+    private String evaGroupId;
     private String evaCd;
     private Integer scoreFin;
+    private String projectDetail;
+    private String url;
     private LocalDateTime evastartDt;
     private LocalDateTime evaendDt;
     
     // project_detail 테이블 필드
-    private String groupId;
-    private String projectDetail;
-    private String url;
-    private String attachmentId;
+
+
+    private String attachmentID;
 }

@@ -1,6 +1,5 @@
 package com.okestro.app.evaProject.impl;
 
-import com.okestro.app.attachment.AttachmentVo;
 import com.okestro.app.cmmn.dao.CmmnAbstractDao;
 import com.okestro.app.evaProject.EvaProjectSvc;
 import com.okestro.app.evaProject.EvaProjectVo;
@@ -26,8 +25,4 @@ public class EvaProjectSvcImpl extends EgovAccessServiceImpl implements EvaProje
         return dao.selectOne("evaProject.retrieveEvaProjectDetail", evaProjectVo);
     }
 
-    @Override
-    public List<AttachmentVo> retrieveAttachmentList(EvaProjectVo evaProjectVo) {
-        return dao.selectList("evaProject.retrieveAttachmentList", evaProjectVo);
-    }
 }

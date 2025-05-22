@@ -17,14 +17,6 @@ $(function (){
         $('#searchForm').submit();
     });
 
-    // $('#myInfoBtn').on('click', function(){
-    //     // POST 방식으로 처리하는 간결한 방법
-    //     var userEmail = $(this).data('email');
-    //     var form = $('<form action="/userinfo/userDetail.do" method="post"></form>');
-    //     form.append('<input type="hidden" name="userEmail" value="' + userEmail + '">');
-    //     $('body').append(form);
-    //     form.submit();
-    // });
     $('#logoutBtn').on('click', function(e) {
         e.preventDefault();
 
@@ -37,3 +29,4 @@ $(function (){
         alert("프로젝트 등록 기능은 아직 구현되지 않았습니다.");
     });
 })
+

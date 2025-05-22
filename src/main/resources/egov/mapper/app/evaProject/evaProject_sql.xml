@@ -7,7 +7,6 @@
         SELECT A.PROJECT_ID
              , A.PROJECT_NAME
              , A.EVA_CD
-             , (SELECT CODE_NAME FROM SCH_INCU.CODE WHERE UPPER_CODE_NAME = 'EVALUATION' AND CODE_VAL = A.EVA_CD) AS EVA_CD_NM
              , A.SCORE_FIN
              , TO_CHAR(A.EVA_START_DT, 'yyyy-mm-dd') AS EVA_START_DT
              , TO_CHAR(A.EVA_END_DT, 'yyyy-mm-dd') AS EVA_END_DT
@@ -15,27 +14,15 @@
              , A.FRST_RGSR_ID
              , TO_CHAR(A.FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
              , A.LAST_CHNG_ID
-             , TO_CHAR(A.LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
-             , B.UPPER_CODE_NAME AS UPPER_CODE_NAME
-             , CASE WHEN (SELECT EVA_GROUP_ID FROM SCH_INCU.PROJECT_DETAIL WHERE 1=1 AND PROJECT_ID = A.PROJECT_ID) IS NULL THEN 'N'
-                 ELSE 'Y' END AS EVA_YN
+             , TO_CHAR(A.LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNF_DTL_DTTM
+             , B.CODE_KR AS EVA_CD_NM
         FROM SCH_INCU.PROJECT A
         LEFT JOIN SCH_INCU.CODE B
         ON A.EVA_CD = B.CODE_VAL
         WHERE 1=1
         AND A.EVA_CD NOT IN ('00')
-        AND B.UPPER_CODE_NAME = 'EVALUATION'
+        AND B.CODE_NAME = 'EVALUATION'
         AND A.DEL_YN = 'N'
-        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-            AND TO_CHAR(EVA_START_DT, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
-            AND TO_CHAR(EVA_END_DT, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
-        </if>
-        <if test="projectName != null and projectName != ''">
-            AND A.PROJECT_NAME LIKE '%' || #{projectName} || '%'
-        </if>
-        <if test="evaCd != null and evaCd != '' and evaCd != 'All'">
-            AND A.EVA_CD = #{evaCd}
-        </if>
     </select>
 
     <!-- 심사 프로젝트 상세조회-->
@@ -43,7 +30,7 @@
         SELECT A.PROJECT_ID
              , A.PROJECT_NAME
              , A.EVA_CD
-             , (SELECT UPPER_CODE_NAME FROM SCH_INCU.CODE WHERE 1=1 AND CODE_NAME = 'EVALUATION' AND A.EVA_CD = CODE_VAL) AS EVA_CD_NM
+             , (SELECT CODE_KR FROM SCH_INCU.CODE WHERE 1=1 AND CODE_NAME = 'EVALUATION' AND A.EVA_CD = CODE_VAL) AS EVA_CD_NM
              , A.SCORE_FIN
              , TO_CHAR(A.EVA_START_DT, 'yyyy-mm-dd') AS EVA_START_DT
              , TO_CHAR(A.EVA_END_DT, 'yyyy-mm-dd') AS EVA_END_DT
@@ -52,26 +39,20 @@
              , TO_CHAR(A.FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
              , A.LAST_CHNG_ID
              , TO_CHAR(A.LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
-             , B.USER_GROUP_ID
-             , B.EVA_GROUP_ID
+             , B.GROUP_ID
              , B.PROJECT_DETAIL
              , B.URL
+             , C.GROUP_ID
+             , C.GROUP_CD
+             , (SELECT CODE_KR FROM SCH_INCU.CODE WHERE 1=1 AND CODE_NAME = 'GROUP' AND C.GROUP_CD = CODE_VAL) AS GROUP_CD_NM
         FROM SCH_INCU.PROJECT A
            , SCH_INCU.PROJECT_DETAIL B
+           , SCH_INCU.GROUP C
         WHERE 1=1
         AND A.PROJECT_ID = B.PROJECT_ID
+        AND A.PROJECT_ID = C.PROJECT_ID
         <if test="projectId != null and projectId != ''">
             AND A.PROJECT_ID = #{projectId}
-        </if>
-    </select>
-
-    <!-- 프로젝트 첨부파일 목록조회 -->
-    <select id="retrieveAttachmentList" parameterType="com.okestro.app.evaProject.EvaProjectVo" resultType="com.okestro.app.attachment.AttachmentVo">
-        SELECT ATTACHMENT_ID
-        FROM SCH_INCU.PROJECT_DETAIL
-        WHERE 1=1
-        <if test="projectId != null and projectId != ''">
-            AND PROJECT_ID = #{projectId}
         </if>
     </select>
 

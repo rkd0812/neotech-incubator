@@ -17,7 +17,6 @@ $(function() {
     $('#initBtn').click(function() {
         setMonth();
         $('#menuName').val('');
-        $('#All').prop('checked', true);
     })
 
     // 검색 버튼

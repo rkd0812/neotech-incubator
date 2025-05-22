@@ -1,12 +1,7 @@
 $(function () {
-    // 중복 확인 상태 변수
+    // 중복 확인 상태
     var isEmailChecked = false; // 이메일 중복 확인 여부
     var isEmailAvailable = false; // 이메일 사용 가능 여부
-
-    // 결과 메시지 초기화
-    function clearEmailResult() {
-        $("#emailCheckResult").html('');
-    }
 
     // 도메인 선택 시 입력
     $("#domainList").change(function () {
@@ -22,6 +17,7 @@ $(function () {
         // 도메인이 변경되면 중복 확인 초기화
         isEmailChecked = false;
         isEmailAvailable = false;
+        $("#emailResult").html(""); // 결과 메시지 초기화
     });
 
     // 이메일 입력 필터링
@@ -32,18 +28,20 @@ $(function () {
 
         if (specialChar.test(emailInput) || koreanChar.test(emailInput)) {
             alert('영문과 숫자만 입력 가능합니다.');
-            $(this).val("") //입력값 초기화
+            $(this).val(""); //입력값 초기화
             $(this).focus();
         }
 
         isEmailChecked = false;
         isEmailAvailable = false;
+        $("#duplicateResult").html(""); // 결과 메시지 초기화
     });
 
     // 사용자 도메인 입력 시 중복확인 초기화
     $('#userDomain').on("input", function () {
         isEmailChecked = false;
         isEmailAvailable = false;
+        $("#duplicateResult").html(""); // 결과 메시지 초기화
     });
 
     // 중복 확인 버튼 클릭
@@ -67,10 +65,6 @@ $(function () {
         var fullEmail = email + "@" + domain;
         $("#dbEmail").val(fullEmail);
 
-        // 중복 확인 버튼 상태 변경 및 로딩 표시
-        var $checkBtn = $(this);
-        $checkBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 확인 중...');
-
         // 서버 중복 확인
         $.ajax({
             url: "/userinfo/checkEmailDuplicate.do",
@@ -80,23 +74,18 @@ $(function () {
                 isEmailChecked = true; // 중복 확인
 
                 if (isDuplicate) {
-                    alert("중복된 이메일입니다.");
+                    $("#duplicateResult").html("이미 사용 중인 이메일입니다.").css("color", "red");
                     isEmailAvailable = false; // 사용 불가능
                 } else {
-                    alert("사용 가능한 이메일입니다.");
+                    $("#duplicateResult").html("사용 가능한 이메일입니다.").css("color", "green");
                     isEmailAvailable = true; // 사용 가능
                 }
-
-                // 버튼 상태 복원
-                $checkBtn.prop('disabled', false).html('중복확인');
             },
             error: function() {
                 alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
                 isEmailChecked = false;
                 isEmailAvailable = false;
-
-                // 버튼 상태 복원
-                $checkBtn.prop('disabled', false).html('중복확인');
+                $("#duplicateResult").html("");
             }
         });
     });
@@ -119,13 +108,18 @@ $(function () {
 
     // 회원 등록 버튼 클릭
     $("#registerBtn").click(function () {
+        var userName = $("#userName").val();
         var email = $("#userEmail").val();
         var domain = $("#userDomain").val();
         var pw = $("#userPassword").val();
         var pwConfirm = $("#passwordConfirm").val();
 
         // 입력 확인
-        if (email === "") {
+        if (userName === "") {
+            alert("성함을 입력해주세요.");
+            $("#userName").focus();
+            return;
+        } else if (email === "") {
             alert("이메일을 입력해주세요.");
             $("#userEmail").focus();
             return;

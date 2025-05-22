@@ -60,8 +60,13 @@
                                 <button type="button" id="checkemailBtn" class="btn btn-outline-primary check-button">중복확인</button>
                             </div>
                             <%-- 중복 확인 후 상태 표시 --%>
-                            
+                            <div id="duplicateResult" style="margin-top: 5px;"></div>
                             <input type="hidden" id="dbEmail" name="userEmail">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="userName" class="form-label">이름</label>
+                            <input type="text" class="form-control" id="userName" name="userName" placeholder="이름을 입력하세요">
                         </div>
 
                         <div class="mb-3">

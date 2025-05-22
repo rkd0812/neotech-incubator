@@ -11,6 +11,7 @@ public class UserInfoVo extends BaseVo {
     // user 테이블 컬럼 목록
     private String userEmail;
     private String userPassword;
+    private String userName;
     private String roleCd;
 
     // code 테이블 컬럼 목록

@@ -16,28 +16,39 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Resource(name="cmmnDao")
     CmmnAbstractDao dao;
 
-    @Override
-    public List<ProjectVo> retrieveProjcetList() {
-        return dao.selectList("project.retrieveProjcetList");
-    }
-
-    @Override
-    public ProjectVo retrieveProjectDetail(ProjectVo projectVo) {
-        return dao.selectOne("projectdetail.retrieveProjectDetail", projectVo);
-    }
-
-    @Override
-    public int updateProjectDetail(ProjectVo projectVo) {
-        return dao.update("projectdetail.updateProjectDetail", projectVo);
-    }
-
+    // 전체 프로젝트 조회 시 사용
 //    @Override
-//    public int deleteProjectDetail(ProjectVo projectVo) {
-//        return dao.delete("projectdetail.deleteProjectDetail", projectVo);
+//    public List<ProjectVo> allProjcetList(String userEmail) {
+//        return dao.selectList("project.allProjectList", userEmail);
 //    }
 
+    // 로그인한 사용자의 프로젝트 조회 시 사용
     @Override
-    public int delYnConfirmProjectDetail(ProjectVo projectVo) {
-        return dao.update("projectdetail.delYnConfirmProjectDetail", projectVo);
+    public List<ProjectVo> retrieveProjcetList(String userEmail) {
+        return dao.selectList("project.retrieveProjcetList", userEmail);
+    }
+
+    // 프로젝트 상세 조회
+    @Override
+    public ProjectVo retrieveProjectDetail(String projectId) {
+        return dao.selectOne("project.retrieveProjectDetail", projectId);
+    }
+
+    // 프로젝트 등록 시 사용
+    @Override
+    public void insertUserProject(ProjectVo projectVo) {
+        dao.insert("project.insertUserProject", projectVo);
+    }
+    
+    // 프로젝트 수정 시 사용
+    @Override
+    public void updateProject(ProjectVo projectVo) {
+        dao.update("project.updateProject", projectVo);
+    }
+
+    // 프로젝트 삭제 시 사용
+    @Override
+    public void deleteProject(ProjectVo projectVo) {
+        dao.update("project.deleteProject", projectVo);
     }
 }

@@ -3,39 +3,135 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace = 테이블 이름-->
 <mapper namespace="project">
-    <!-- 프로젝트  리스트 전체 리스트 조회  -->
-    <select id="allProjcetList"  resultType="com.okestro.app.project.ProjectVo">
+<!--    &lt;!&ndash; 프로젝트  리스트 전체 리스트 조회  &ndash;&gt;-->
+<!--    <select id="allProjcetList"  resultType="com.okestro.app.project.ProjectVo">-->
+<!--        SELECT-->
+<!--            PROJECT_ID AS projectId,-->
+<!--            PROJECT_NAME AS projectName,-->
+<!--            EVA_CD AS evaCd,-->
+<!--            SCORE_FIN AS scoreFin,-->
+<!--            EVA_START_DT AS evaStartDt,-->
+<!--            EVA_END_DT AS evaEndDt,-->
+<!--            USER_GROUP_ID AS userGroupId,-->
+<!--            EVA_GROUP_ID AS evaGroupId,-->
+<!--            PROJECT_DETAIL AS projectDetail,-->
+<!--            URL AS url,-->
+<!--            DEL_YN AS delYn,-->
+<!--            FRST_RGSR_ID AS frstRgsrId,-->
+<!--            FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,-->
+<!--            LAST_CHNG_ID AS lastChngId,-->
+<!--            LAST_CHNG_DTL_DTTM AS lastChngDtlDttm-->
+<!--        FROM SCH_INCU.PROJECT-->
+<!--        WHERE LAST_CHNG_ID = #{userEmail}-->
+<!--          AND DEL_YN = 'N'-->
+<!--        ORDER BY FRST_RGSR_DTL_DTTM DESC-->
+<!--    </select>-->
+
+
+    <!-- 프로젝트  메인 화면 조회 시 필요한 쿼리  -->
+    <select id="retrieveProjcetList"  resultType="com.okestro.app.project.ProjectVo">
         SELECT
-            PRJOJECT_ID,
-            PROJECT_NAME,
-            EVA_CD,
-            SCORE_FIN,
-            EVA_START_DT,
-            EVA_END_DT,
-            DEL_YN,
-            FRST_RGSR_ID,
-            FRST_RGSR_DTL_DTTM,
-            LAST_CHNG_ID,
-            LAST_CHNG_DTL_DTTM
-        FROM
-            sch_incu.project
+            PROJECT_ID AS projectId,
+            PROJECT_NAME AS projectName,
+            LAST_CHNG_ID AS lastChngId,
+            EVA_START_DT AS evaStartDt,
+            EVA_CD AS evaCd
+        FROM SCH_INCU.PROJECT
+        WHERE LAST_CHNG_ID = #{userEmail}
+          AND DEL_YN = 'N'
+        ORDER BY FRST_RGSR_DTL_DTTM DESC
     </select>
 
-    <select id="retrieveProjcetList" resultType="com.okestro.app.project.ProjectVo">
-        SELECT
-            a.PROJECT_ID AS projectId,
-            a.PROJECT_NAME AS projectName,
-            b.USER_GROUP_ID AS groupId,
-            a.EVA_START_DT AS evastartDt,
-            a.EVA_CD AS evaCd
-        FROM sch_incu.project a
-                 LEFT JOIN sch_incu.project_detail b
-                           ON a.project_id = b.project_id
+    <!-- 로그인한 사용자가 프로젝트 등록   -->
+    <insert id="insertUserProject" parameterType="com.okestro.app.project.ProjectVo">
+        <selectKey keyProperty="project_id" resultType="String" order="BEFORE">
+            SELECT
+                CASE
+                    WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS PRO_NUM)) IS NULL THEN 'PRO0001'
+                    ELSE CONCAT('PRO', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) + 1 AS VARCHAR, 4, '0'))
+                END
+            FROM SCH_INCU.PROJECT
+            WHERE PROJECT_ID LIKE 'PRO%'
+        </selectKey>
+        INSERT INTO SCH_INCH.PROJECT (PROJECT_ID,
+                                      PROJECT_NAME,
+                                      EVA_CD,
+                                      SCORE_FIN,
+                                      PROJECT_DETAIL,
+                                      URL,
+                                      EVA_START_DT,
+                                      EVA_END_DT,
+                                      DEL_YN,
+                                      FRST_RGSR_ID,
+                                      FRST_RGSR_DTL_DTTM,
+                                      LAST_CHNG_ID,
+                                      LAST_CHNG_DTL_DTTM)
+        VALUES (#{projectId},
+                #{projectName},
+                'A',
+                NULL,
+                NOW(),
+                NULL,
+                #{userGroupId},
+                NULL,
+                #{projectDetail},
+                #{url},
+                'N',
+                #{userEmail},
+                NOW(),
+                #{userEmail},
+                NOW())
+    </insert>
+
+    <!--  프로젝트 수정  -->
+    <update id="updateProject" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.PROJECT
+        SET
+            PROJECT_NAME = #{projectName},
+            PROJECT_DETAIL = #{projectDetail},
+            URL = #{url},
+            LAST_CHNG_ID = #{userEmail},
+            LAST_CHNG_DTL_DTTM = NOW()
         WHERE
-            a.del_yn = 'N'
-        ORDER BY
-            a.eva_start_dt DESC
+            PROJECT_ID = #{projectId}
+        AND LAST_CHNG_ID = #{userEmail}
+        AND DEL_YN = 'N'
+
+    </update>
+
+    <!-- 프로젝트 삭제 -->
+    <update id="deleteProject" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.PROJECT
+        SET
+        DEL_YN = 'Y',
+        LAST_CHNG_ID = #{userEmail},
+        LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+        PROJECT_ID = #{projectId}
+        AND LAST_CHNG_ID = #{userEmail}
+        AND DEL_YN = 'N'
+    </update>
+
+    <!-- 프로젝트 상세 조회  -->
+    <select id="retrieveProjcetDetail" parameterType="String" resultType="com.okestro.app.project.ProjectVo">
+                SELECT
+                    PROJECT_ID AS projectId,
+                    PROJECT_NAME AS projectName,
+                    EVA_CD AS evaCd,
+                    SCORE_FIN AS scoreFin,
+                    EVA_START_DT AS evaStartDt,
+                    EVA_END_DT AS evaEndDt,
+                    USER_GROUP_ID AS userGroupId,
+                    EVA_GROUP_ID AS evaGroupId,
+                    PROJECT_DETAIL AS projectDetail,
+                    URL AS url,
+                    DEL_YN AS delYn,
+                    FRST_RGSR_ID AS frstRgsrId,
+                    FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
+                    LAST_CHNG_ID AS lastChngId,
+                    LAST_CHNG_DTL_DTTM AS lastChngDtlDttm
+                FROM SCH_INCU.PROJECT
+                WHERE PROJECT_ID = #{projectId}
+                  AND DEL_YN = 'N'
     </select>
-
-
 </mapper>
