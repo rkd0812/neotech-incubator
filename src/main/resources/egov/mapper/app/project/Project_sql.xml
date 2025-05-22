@@ -29,12 +29,12 @@
 
 
     <!-- 프로젝트  메인 화면 조회 시 필요한 쿼리  -->
-    <select id="retrieveProjcetList"  resultType="com.okestro.app.project.ProjectVo">
+    <select id="retrieveProjectList" resultType="com.okestro.app.project.ProjectVo">
         SELECT
             PROJECT_ID AS projectId,
             PROJECT_NAME AS projectName,
             LAST_CHNG_ID AS lastChngId,
-            EVA_START_DT AS evaStartDt,
+--             EVA_START_DT AS evaStartDt,
             EVA_CD AS evaCd
         FROM SCH_INCU.PROJECT
         WHERE LAST_CHNG_ID = #{userEmail}
@@ -48,12 +48,12 @@
             SELECT
                 CASE
                     WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS PRO_NUM)) IS NULL THEN 'PRO0001'
-                    ELSE CONCAT('PRO', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) + 1 AS VARCHAR, 4, '0'))
+                    ELSE CONCAT('PRJ', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) + 1 AS VARCHAR, 4, '0'))
                 END
             FROM SCH_INCU.PROJECT
-            WHERE PROJECT_ID LIKE 'PRO%'
+            WHERE PROJECT_ID LIKE 'PRJ%'
         </selectKey>
-        INSERT INTO SCH_INCH.PROJECT (PROJECT_ID,
+        INSERT INTO SCH_INCU.PROJECT (PROJECT_ID,
                                       PROJECT_NAME,
                                       EVA_CD,
                                       SCORE_FIN,
@@ -114,24 +114,25 @@
 
     <!-- 프로젝트 상세 조회  -->
     <select id="retrieveProjcetDetail" parameterType="String" resultType="com.okestro.app.project.ProjectVo">
-                SELECT
-                    PROJECT_ID AS projectId,
-                    PROJECT_NAME AS projectName,
-                    EVA_CD AS evaCd,
-                    SCORE_FIN AS scoreFin,
-                    EVA_START_DT AS evaStartDt,
-                    EVA_END_DT AS evaEndDt,
-                    USER_GROUP_ID AS userGroupId,
-                    EVA_GROUP_ID AS evaGroupId,
-                    PROJECT_DETAIL AS projectDetail,
-                    URL AS url,
-                    DEL_YN AS delYn,
-                    FRST_RGSR_ID AS frstRgsrId,
-                    FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
-                    LAST_CHNG_ID AS lastChngId,
-                    LAST_CHNG_DTL_DTTM AS lastChngDtlDttm
-                FROM SCH_INCU.PROJECT
-                WHERE PROJECT_ID = #{projectId}
-                  AND DEL_YN = 'N'
+        SELECT
+            PROJECT_ID AS projectId,
+            PROJECT_NAME AS projectName,
+            EVA_CD AS evaCd,
+            SCORE_FIN AS scoreFin,
+            EVA_START_DT AS evaStartDt,
+            EVA_END_DT AS evaEndDt,
+            USER_GROUP_ID AS userGroupId,
+            EVA_GROUP_ID AS evaGroupId,
+            PROJECT_DETAIL AS projectDetail,
+            URL AS url,
+            DEL_YN AS delYn,
+            FRST_RGSR_ID AS frstRgsrId,
+            FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
+            LAST_CHNG_ID AS lastChngId,
+            LAST_CHNG_DTL_DTTM AS lastChngDtlDttm
+        FROM SCH_INCU.PROJECT
+        WHERE PROJECT_ID = #{projectId}
+          AND DEL_YN = 'N'
     </select>
+
 </mapper>

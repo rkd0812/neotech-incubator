@@ -22,7 +22,7 @@ public class ProjectCtr {
 
     // 로그인 한 유저의 프로젝트 목록 조회
     @GetMapping("/project/projectList.do")
-    public String retrieveProjcetList(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String retrieveProjectList(HttpServletRequest request, HttpServletResponse response, Model model) {
         // 세션 체크
         HttpSession session = request.getSession(false);   ///현재 세션이 있으면 가져오고, 안가져옴.
         if (session == null || session.getAttribute("loginUser") == null) {  // 세션이 아예 없는 경우, 세션은 있지만 loginUser 속성이 없는 경우
@@ -34,7 +34,7 @@ public class ProjectCtr {
         String userEmail = loginUser.getUserEmail(); // 사용자 이메일 추출
 
         // 프로젝트 목록 조회 (사용자 이메일 전달)
-        List<ProjectVo> projectList = projectSvc.retrieveProjcetList(userEmail);
+        List<ProjectVo> projectList = projectSvc.retrieveProjectList(userEmail);
 
         // 모델에 데이터 추가
         model.addAttribute("projectList", projectList);
@@ -87,7 +87,7 @@ public class ProjectCtr {
     }
 
     // 프로젝트 상세 조회
-    @GetMapping("/project/projectDeatil.do")
+    @GetMapping("/project/projectDetail.do")
     public String projectDetail(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr, Model model) {
         // 세션 체크
         HttpSession session = request.getSession(false);

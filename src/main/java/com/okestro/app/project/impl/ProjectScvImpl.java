@@ -24,8 +24,8 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 
     // 로그인한 사용자의 프로젝트 조회 시 사용
     @Override
-    public List<ProjectVo> retrieveProjcetList(String userEmail) {
-        return dao.selectList("project.retrieveProjcetList", userEmail);
+    public List<ProjectVo> retrieveProjectList(String userEmail) {
+        return dao.selectList("project.retrieveProjectList", userEmail);
     }
 
     // 프로젝트 상세 조회

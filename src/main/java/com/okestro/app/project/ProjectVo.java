@@ -1,6 +1,7 @@
 package com.okestro.app.project;
 import com.okestro.app.cmmn.vo.BaseVo;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +20,17 @@ public class ProjectVo extends BaseVo {
     private String url;
     private LocalDateTime evastartDt;
     private LocalDateTime evaendDt;
-    
+
+
     // project_detail 테이블 필드
-
-
     private String attachmentID;
+
+    public String getEvaStartDtString() {
+        return evastartDt != null ? evastartDt.toLocalDate().toString() : "";
+    }
+
+    public String getEvaEndDtString() {
+        return evaendDt != null ? evaendDt.toLocalDate().toString() : "";
+    }
+
 }
