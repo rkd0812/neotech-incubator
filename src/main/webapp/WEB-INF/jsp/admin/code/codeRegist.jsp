@@ -14,7 +14,7 @@
     </div>
     <div class="page-inner" style="text-align: center;">
         <form id="registForm" name="registForm" action="/admin/code/regist.do" method="post">
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <table>
                 <colgroup></colgroup>
                 <tbody>
                     <tr>

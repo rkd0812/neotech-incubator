@@ -10,10 +10,10 @@
 <script src="<c:url value="/app/js/evaProject/evaProjectDetail.js"/>"></script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">심사 프로젝트 상세</h1>
+        <h1 class="page-title">심사 프로젝트 상세</h1>
     </div>
     <div class="page-inner" style="text-align: center;">
-        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+        <table>
             <colgroup>
             </colgroup>
             <tbody>
@@ -67,9 +67,9 @@
         <button id="listBtn" onclick=location.href="/evaProject/list.do">목록</button>
         <c:if test="${evaProjectDetail.evaFormYn eq 'Y' and evaProjectDetail.evaCd eq '01'}"><button id="evaBtn">심사하기</button></c:if>
 
-        <c:if test="${commentList ne null}">
-            <h5>댓글</h5>
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+        <c:if test="${commentList.size() ne 0}">
+            <h5 class="comment-title">댓글</h5>
+            <table>
                 <thead>
                     <th>No</th>
                     <th>내용</th>

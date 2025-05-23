@@ -25,6 +25,9 @@
         WHERE 1=1
         AND DEL_YN = 'N'
         AND EVA_CD != '00'
+        <if test="evaCd != null and evaCd != '' and evaCd != 'All'">
+            AND EVA_CD = #{evaCd}
+        </if>
     </select>
 
     <!-- 심사 프로젝트 상세조회-->

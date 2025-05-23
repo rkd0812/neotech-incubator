@@ -20,7 +20,7 @@
     </div>
     <div class="page-inner" style="text-align: center;">
         <form id="detailForm" name="detailForm" action="/admin/code/update.do" method="post">
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <table>
                 <tbody>
                     <tr>
                         <th>상위코드명</th>

@@ -26,6 +26,11 @@ public class CodeSvcImpl extends EgovAccessServiceImpl implements CodeSvc {
     }
 
     @Override
+    public int retrieveCodeListCnt(CodeVo codeVo) {
+        return dao.selectOne("code.retrieveCodeListCnt", codeVo);
+    }
+
+    @Override
     public CodeVo retrieveCodeDetail(CodeVo codeVo) {
         return dao.selectOne("code.retrieveCodeDetail", codeVo);
     }

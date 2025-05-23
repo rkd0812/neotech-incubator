@@ -9,6 +9,8 @@ public class UserVo {
     private String userEmail;
     private String userPassword;
     private String roleCd;
+    private String roleCdNm;
+    private String userName;
     private String delYn;
     private String frstRgsrId;
     private String frstRgsrDtlDttm;

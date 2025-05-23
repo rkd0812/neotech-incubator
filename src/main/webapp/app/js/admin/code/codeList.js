@@ -44,3 +44,10 @@ const setMonth = function() {
     $('#endDate').val(now.toISOString().substring(0, 10));
     $('#startDate').val(new Date(now.setMonth(now.getMonth() - 1)).toISOString().substring(0, 10));
 }
+
+// 페이징
+const fnPaging = (page) => {
+    $('input[name="currentPageNo"]').val(page);
+    $('#searchForm').submit();
+
+}

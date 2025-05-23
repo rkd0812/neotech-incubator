@@ -47,56 +47,32 @@
                 <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
 <%--                <a href="#" class="nav__logo">Bedimcode</a>--%>
             </div>
+
+
             <div class="nav__list">
-                <a href="#" class="nav__link active">
+                <a href="/project/projectList.do" class="nav__link">
                     <ion-icon name="home-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Dashboard</span>
-                </a>
-                <a href="#" class="nav__link">
-                    <ion-icon name="chatbubbles-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Messenger</span>
+                    <span class="nav_name">사용자 프로젝트</span>
                 </a>
 
-                <div href="#" class="nav__link collapse">
+                <a href="/evaProject/list.do" class="nav__link">
                     <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Projects</span>
-
-                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-
-                    <ul class="collapse__menu">
-                        <a href="#" class="collapse__sublink">Data</a>
-                        <a href="#" class="collapse__sublink">Group</a>
-                        <a href="#" class="collapse__sublink">Members</a>
-                    </ul>
-                </div>
-
-                <a href="#" class="nav__link">
-                    <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Analytics</span>
+                    <span class="nav_name">관리자 프로젝트</span>
                 </a>
 
-                <div href="#" class="nav__link collapse">
-                    <ion-icon name="people-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Team</span>
-
-                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-
-                    <ul class="collapse__menu">
-                        <a href="#" class="collapse__sublink">Data</a>
-                        <a href="#" class="collapse__sublink">Group</a>
-                        <a href="#" class="collapse__sublink">Members</a>
-                    </ul>
-                </div>
-
-                <a href="#" class="nav__link">
+                <div href="#" onclick="location.href='/admin/user/list.do'" class="nav__link collapse">
                     <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Settings</span>
-                </a>
+                    <span class="nav_name">관리자</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="/admin/user/list.do" class="collapse__sublink">사용자 관리</a>
+                        <a href="/admin/menu/list.do" class="collapse__sublink">메뉴 관리</a>
+                        <a href="/admin/code/list.do" class="collapse__sublink">코드 관리</a>
+                    </ul>
+                </div>
             </div>
-            <a href="#" class="nav__link">
-                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
-                <span class="nav_name">Log out</span>
-            </a>
         </div>
     </nav>
 </div>
@@ -106,6 +82,31 @@
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 <!-- JS -->
 <script>
+    $(function() {
+        const path = document.location.pathname.split('/')[1];
+
+        const navLink = $('.nav__link');
+
+        for (let i = 0; i < navLink.length; i++) {
+
+            // console.log(navLink[i])
+
+            // console.log(navLink[i].href)
+            // console.log(path)
+
+        }
+
+        const toggle = document.getElementById('nav-toggle'),
+            navbar = document.getElementById('navbar'),
+            bodypadding = document.getElementById('body-pd');
+
+        navbar.classList.toggle('expander');
+        bodypadding.classList.toggle('body-pd');
+
+    })
+
+
+
     /* EXPANDER MENU */
     const showMenu = (toggleId, navbarId, bodyId) => {
         const toggle = document.getElementById(toggleId),
@@ -113,35 +114,37 @@
             bodypadding = document.getElementById(bodyId)
 
         if( toggle && navbar ) {
-            toggle.addEventListener('click', ()=>{
+            toggle.addEventListener('click', () => {
                 navbar.classList.toggle('expander');
 
-                bodypadding.classList.toggle('body-pd')
+                bodypadding.classList.toggle('body-pd');
             })
         }
     }
 
-    showMenu('nav-toggle', 'navbar', 'body-pd')
+    showMenu('nav-toggle', 'navbar', 'body-pd');
 
     /* LINK ACTIVE */
-    const linkColor = document.querySelectorAll('.nav__link')
+    const linkColor = document.querySelectorAll('.nav__link');
+
     function colorLink() {
-        linkColor.forEach(l=> l.classList.remove('active'))
-        this.classList.add('active')
+        linkColor.forEach(l => l.classList.remove('active'));
+        // this.classList.add('active');
+
     }
-    linkColor.forEach(l=> l.addEventListener('click', colorLink))
+    linkColor.forEach(l => l.addEventListener('click', colorLink));
 
     /* COLLAPSE MENU */
-    const linkCollapse = document.getElementsByClassName('collapse__link')
-    var i
+    const linkCollapse = document.getElementsByClassName('collapse__link');
 
-    for(i=0;i<linkCollapse.length;i++) {
-        linkCollapse[i].addEventListener('click', function(){
-            const collapseMenu = this.nextElementSibling
-            collapseMenu.classList.toggle('showCollapse')
+    for(var i = 0; i < linkCollapse.length; i++) {
+        linkCollapse[i].addEventListener('click', function() {
+            event.stopPropagation();
+            const collapseMenu = this.nextElementSibling;
+            collapseMenu.classList.toggle('showCollapse');
 
-            const rotate = collapseMenu.previousElementSibling
-            rotate.classList.toggle('rotate')
+            const rotate = collapseMenu.previousElementSibling;
+            rotate.classList.toggle('rotate');
         });
     }
 </script>

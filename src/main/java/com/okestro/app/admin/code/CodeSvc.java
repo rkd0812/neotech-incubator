@@ -7,6 +7,8 @@ public interface CodeSvc {
     int registerCode(CodeVo codeVo);
     // 코드 목록 조회
     List<CodeVo> retrieveCodeList(CodeVo codeVo);
+    // 코드 목록 개수 조회
+    int retrieveCodeListCnt(CodeVo codeVo);
     // 코드 상세조회
     CodeVo retrieveCodeDetail(CodeVo codeVo);
     // 코드 수정

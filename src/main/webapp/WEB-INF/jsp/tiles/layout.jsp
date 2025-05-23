@@ -75,14 +75,13 @@
         .l-navbar {
             position: fixed;
             top: 0;
-            /*top: 10vh;*/
             left: 0;
             width: var(--nav--width);
             height: 100vh;
             /*background-color: var(--bg-color);*/
             background-color: rgba(248, 249, 250);
             color: var(--white-color);
-            padding: 1.5rem 1.5rem 2rem;
+            padding: 60PX 1.5rem 2rem;
             transition: .5s;
             z-index: var(--z-fixed);
         }
@@ -92,7 +91,10 @@
             top: 0;
             left: 0;
             width: 100%;
-            transition: .5s;
+            height: 60px;
+            z-index: 999;
+            padding-left: 2rem;
+            padding-right: 2rem;
         }
 
         /* NAV */
@@ -184,6 +186,7 @@
         .collapse__sublink {
             color: var(--sub-color);
             font-size: var(--small-font-size);
+            white-space: nowrap;
         }
 
         .collapse__sublink:hover {
@@ -204,6 +207,84 @@
         .collapse:not(.show) {
              display: grid;
         }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            border-left: 6px solid #3498db;
+            padding-left: 16px;
+            margin-bottom: 24px;
+            font-family: 'Pretendard', 'Noto Sans KR', sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        #page-wrapper {
+            padding-top: 60px;
+        }
+
+        table {
+            width: 70%;
+            margin: 30px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 16px;
+            color: #333;
+        }
+
+        th, td {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f5f7fa;
+            font-weight: 600;
+            color: #2c3e50;
+            width: 180px;
+        }
+
+        td input[type="text"],
+        td input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 45%;
+            font-size: 14px;
+        }
+
+        td input[type="radio"] {
+            margin-right: 6px;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        input[type="radio"] + label {
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        h5.comment-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            text-align: left;
+            border-left: 4px solid #3498db;
+            padding-left: 12px;
+            /*background-color: #f5f7fa;*/
+            display: inline-block;
+            border-radius: 4px;
+        }
+
     </style>
 </head>
 <body id="body-pd">

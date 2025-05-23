@@ -20,14 +20,41 @@
 
     <!--코드 목록조회 -->
     <select id="retrieveCodeList" parameterType="com.okestro.app.admin.code.CodeVo" resultType="com.okestro.app.admin.code.CodeVo">
-        SELECT UPPER_CODE_NAME
-             , CODE_NAME
-             , CODE_VAL
-             , DEL_YN
-             , FRST_RGSR_ID
-             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
-             , LAST_CHNG_ID
-             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
+        SELECT *
+            FROM (
+            SELECT ROW_NUMBER() OVER() AS RNUM
+                 , *
+            FROM (
+                SELECT UPPER_CODE_NAME
+                     , CODE_NAME
+                     , CODE_VAL
+                     , DEL_YN
+                     , FRST_RGSR_ID
+                     , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+                     , LAST_CHNG_ID
+                     , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
+                FROM SCH_INCU.CODE
+                WHERE 1=1
+                AND DEL_YN = 'N'
+                <if test="codeName != null and codeName != ''">
+                    AND CODE_NAME LIKE '%' || #{codeName} || '%'
+                </if>
+                <if test="upperCodeName != null and upperCodeName != ''">
+                    AND UPPER_CODE_NAME LIKE '%' || #{upperCodeName} || '%'
+                </if>
+                <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+                </if>
+                ORDER BY UPPER_CODE_NAME, CODE_VAL
+            ) T1
+        ) T2
+        WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
+    </select>
+
+    <!-- 코드 목록 개수 조회 -->
+    <select id="retrieveCodeListCnt" parameterType="com.okestro.app.admin.code.CodeVo" resultType="int">
+        SELECT COUNT(*) AS CNT
         FROM SCH_INCU.CODE
         WHERE 1=1
         AND DEL_YN = 'N'
@@ -37,11 +64,10 @@
         <if test="upperCodeName != null and upperCodeName != ''">
             AND UPPER_CODE_NAME LIKE '%' || #{upperCodeName} || '%'
         </if>
-        <if test="startDate != null and startDate != ' and endDate != null and endDate != '">
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
             AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
             AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
         </if>
-        ORDER BY UPPER_CODE_NAME, CODE_VAL
     </select>
 
     <!-- 코드 상세조회 -->

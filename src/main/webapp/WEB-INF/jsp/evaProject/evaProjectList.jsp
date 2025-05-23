@@ -10,11 +10,11 @@
 <script src="/app/js/evaProject/evaProjectList.js"></script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">심사 프로젝트 목록조회</h1>
+        <h1 class="page-title">심사 프로젝트 목록조회</h1>
     </div>
     <div id="page-inner" style="text-align: center;">
         <form id="searchForm" name="searchForm" action="/evaProject/list.do" >
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <table>
                 <colgroup>
                 </colgroup>
                 <tbody>
@@ -43,7 +43,7 @@
         </form>
         <button id="initBtn">초기화</button>
         <button id="searchBtn">검색</button>
-        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+        <table>
             <colgroup>
             </colgroup>
             <thead>

@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <script src="/app/js/admin/code/codeList.js"></script>
 <script>
     const msg = "${msg}";
@@ -16,13 +17,14 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">코드 목록조회</h1>
+        <h1 class="page-title">코드 목록조회</h1>
     </div>
     <div class="page-inner" style="text-align: center;">
         <form id="searchForm" name="searchForm" action="/admin/code/list.do">
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <input type="hidden" name="currentPageNo" value=${currentPageNo}>
+            <table>
                 <colgroup>
-                    <col style="width: 30%;" />
+                    <col style="width: auto;" />
                     <col style="width: auto;" />
                 </colgroup>
                 <tbody>
@@ -39,7 +41,7 @@
         </form>
         <button id="initBtn">초기화</button>
         <button id="searchBtn">검색</button>
-        <table style="width: 700px;  border: solid 1px black; margin: 0 auto; text-align: center;">
+        <table>
             <colgroup>
             </colgroup>
             <thead>
@@ -61,7 +63,8 @@
                 </c:if>
                 <c:forEach var="code" items="${codeList}" varStatus="status">
                     <a><tr>
-                        <td>${status.count}</td>
+<%--                        <td>${status.count}</td>--%>
+                        <td>${code.rnum}</td>
                         <td>${code.upperCodeName}</td>
                         <td><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
                         <td>${code.codeName}</td>
@@ -71,24 +74,32 @@
             </tbody>
         </table>
         <button id="registBtn">등록</button>
-        <div id="pagination" style="display: flex; justify-content: center; align-items: center;">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+
+<%--        <div id="pagination" style="display: flex; justify-content: center; align-items: center;">--%>
+<%--            <nav aria-label="Page navigation example">--%>
+<%--                <ul class="pagination">--%>
+<%--                    <li class="page-item">--%>
+<%--                        <a class="page-link" href="#" aria-label="Previous">--%>
+<%--                            <span aria-hidden="true">&laquo;</span>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
+<%--                    <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
+<%--                    <li class="page-item">--%>
+<%--                        <a class="page-link" href="#" aria-label="Next">--%>
+<%--                            <span aria-hidden="true">&raquo;</span>--%>
+<%--                        </a>--%>
+<%--                    </li>--%>
+<%--                </ul>--%>
+<%--            </nav>--%>
+<%--        </div>--%>
+        <div id="pagination">
+            <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging"/>
         </div>
+
     </div>
 </div>
+<script>
+
+</script>
