@@ -26,8 +26,8 @@
 
         /* VARIABLES CSS */
         :root {
-            --nav--width: 92px;
-
+            /*--nav--width: 92px;*/
+            --nav--width: 180px;
             /* Colores */
             --first-color: #0c5df4;
             --bg-color: #12192c;
@@ -81,9 +81,10 @@
             /*background-color: var(--bg-color);*/
             background-color: rgba(248, 249, 250);
             color: var(--white-color);
-            padding: 60PX 1.5rem 2rem;
+            padding: 100PX 1.5rem 2rem;
             transition: .5s;
             z-index: var(--z-fixed);
+            align-items: center;
         }
 
         .navbar {
@@ -91,7 +92,8 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            /*height: 60px;*/
+            height: 100px;
             z-index: 999;
             padding-left: 2rem;
             padding-right: 2rem;
@@ -220,7 +222,8 @@
         }
 
         #page-wrapper {
-            padding-top: 60px;
+            padding-top: 100px;
+            padding-left: 130px;
         }
 
         table {

@@ -44,7 +44,7 @@
     <nav class="nav">
         <div>
             <div class="nav__brand">
-                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+<%--                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>--%>
 <%--                <a href="#" class="nav__logo">Bedimcode</a>--%>
             </div>
 
