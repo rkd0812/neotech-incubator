@@ -16,7 +16,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Resource(name="cmmnDao")
     CmmnAbstractDao dao;
 
-    // 전체 프로젝트 조회 시 사용
+//     전체 프로젝트 조회 시 사용
 //    @Override
 //    public List<ProjectVo> allProjcetList(String userEmail) {
 //        return dao.selectList("project.allProjectList", userEmail);
@@ -28,11 +28,11 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return dao.selectList("project.retrieveProjectList", userEmail);
     }
 
-    // 프로젝트 상세 조회
-    @Override
-    public ProjectVo retrieveProjectDetail(String projectId) {
-        return dao.selectOne("project.retrieveProjectDetail", projectId);
-    }
+//    // 프로젝트 상세 조회
+//    @Override
+//    public ProjectVo retrieveProjectDetail(String projectVo) {
+//        return dao.selectOne("project.retrieveProjectDetail", projectVo);
+//    }
 
     // 프로젝트 등록 시 사용
     @Override

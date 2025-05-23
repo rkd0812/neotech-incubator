@@ -27,27 +27,79 @@
 <!--        ORDER BY FRST_RGSR_DTL_DTTM DESC-->
 <!--    </select>-->
 
-
-    <!-- 프로젝트  메인 화면 조회 시 필요한 쿼리  -->
+    <!-- 프로젝트  메인 화면 조회 시 필요한 쿼리 및 프로젝트 페이징 조회 -->
     <select id="retrieveProjectList" resultType="com.okestro.app.project.ProjectVo">
         SELECT
-            PROJECT_ID AS projectId,
-            PROJECT_NAME AS projectName,
-            LAST_CHNG_ID AS lastChngId,
---             EVA_START_DT AS evaStartDt,
-            EVA_CD AS evaCd
+        PROJECT_ID AS projectId,
+        PROJECT_NAME AS projectName,
+        LAST_CHNG_ID AS lastChngId,
+--         EVA_START_DT AS evaStartDt,
+        EVA_CD AS evaCd
         FROM SCH_INCU.PROJECT
-        WHERE LAST_CHNG_ID = #{userEmail}
-          AND DEL_YN = 'N'
-        ORDER BY FRST_RGSR_DTL_DTTM DESC
+        where
+            LAST_CHNG_ID = #{userEmail}
+            AND DEL_YN = 'N'
     </select>
+
+
+<!--    &lt;!&ndash; 프로젝트  메인 화면 조회 시 필요한 쿼리 및 프로젝트 페이징 조회 &ndash;&gt;-->
+<!--    <select id="retrieveProjectList" resultType="com.okestro.app.project.ProjectVo">-->
+<!--        SELECT-->
+<!--            PROJECT_ID AS projectId,-->
+<!--            PROJECT_NAME AS projectName,-->
+<!--            LAST_CHNG_ID AS lastChngId,-->
+<!--            EVA_START_DT AS evaStartDt,-->
+<!--            EVA_CD AS evaCd-->
+<!--        FROM SCH_INCU.PROJECT-->
+<!--        <where>-->
+<!--            LAST_CHNG_ID = #{userEmail}-->
+<!--            AND DEL_YN = 'N'-->
+
+<!--            <if test="startDate != NULL AND startDate != '' AND endDate != NULL AND endDate != ''" >-->
+<!--                AND EVA_START_DT BETWEEN #{startDate} AND #{endDate}-->
+<!--            </if>-->
+
+<!--            <if test="projectName !=NULL AND projectName != ''">-->
+<!--                AND PROJECT_NAME LIKE CONCAT('%', #{projectName}, '%')-->
+<!--            </if>-->
+
+<!--            <if test="evaCd != NULL AND evaCd !=''">-->
+<!--                AND EVA_CD = #{evaCd}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        ORDER BY FRST_RGSR_DTL_DTTM DESC-->
+<!--        LIMIT #{pageSize} OFFESET #{offset}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash; 프로젝트 목롱 총 개수 조회 &ndash;&gt;-->
+<!--    <select id="countProjectList" resultType="int">-->
+<!--        SELECT-->
+<!--            COUNT(*)-->
+<!--        FROM SCH_INCU.PROJECT-->
+<!--        <where>-->
+<!--            LAST_CHNG_ID = #{userEmail}-->
+<!--            AND DEL_YN = 'N'-->
+
+<!--            <if test="startDate != NULL AND startDate != '' AND endDate != NULL and endDate != ''" >-->
+<!--                AND EVA_START_DT BETWEEN #{startDate} AND #{endDate}-->
+<!--            </if>-->
+
+<!--            <if test="projectName !=NULL AND projectName != ''">-->
+<!--                AND PROJECT_NAME LIKE CONCAT('%', #{projectName}, '%')-->
+<!--            </if>-->
+
+<!--            <if test="evaCd != NULL AND evaCd !=''">-->
+<!--                AND EVA_CD = #{evaCd}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--    </select>-->
 
     <!-- 로그인한 사용자가 프로젝트 등록   -->
     <insert id="insertUserProject" parameterType="com.okestro.app.project.ProjectVo">
         <selectKey keyProperty="project_id" resultType="String" order="BEFORE">
             SELECT
                 CASE
-                    WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS PRO_NUM)) IS NULL THEN 'PRO0001'
+                    WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS PRO_NUM)) IS NULL THEN 'PRJO0001'
                     ELSE CONCAT('PRJ', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) + 1 AS VARCHAR, 4, '0'))
                 END
             FROM SCH_INCU.PROJECT

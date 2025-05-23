@@ -18,19 +18,19 @@ public class ProjectVo extends BaseVo {
     private Integer scoreFin;
     private String projectDetail;
     private String url;
-    private LocalDateTime evastartDt;
-    private LocalDateTime evaendDt;
+    private LocalDateTime evaStartDt;
+    private LocalDateTime evaEndDt;
 
 
     // project_detail 테이블 필드
     private String attachmentID;
 
     public String getEvaStartDtString() {
-        return evastartDt != null ? evastartDt.toLocalDate().toString() : "";
+        return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
     }
 
     public String getEvaEndDtString() {
-        return evaendDt != null ? evaendDt.toLocalDate().toString() : "";
+        return evaEndDt != null ? evaEndDt.toLocalDate().toString() : "";
     }
 
 }

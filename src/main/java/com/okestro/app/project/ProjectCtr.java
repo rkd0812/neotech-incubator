@@ -87,71 +87,71 @@ public class ProjectCtr {
     }
 
     // 프로젝트 상세 조회
-    @GetMapping("/project/projectDetail.do")
-    public String projectDetail(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr, Model model) {
-        // 세션 체크
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loginUser") == null) {
-            return "redirect:/userinfo/loginForm.do";
-        }
+//    @GetMapping("/project/projectDetail.do")
+//    public String projectDetail(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr, Model model) {
+//        // 세션 체크
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("loginUser") == null) {
+//            return "redirect:/userinfo/loginForm.do";
+//        }
+//
+//        // 로그인 사용자 정보 가져옴
+//        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+//
+//        // 프로젝트 상세 정보 조회
+//        ProjectVo projectDetail = projectSvc.retrieveProjectDetail(projectId);
+//
+//        // 프로젝트가 없거나 삭제된 경우
+//        if (projectDetail == null) {
+//            redirectAttr.addFlashAttribute("message", "해당 프로젝트를 찾을 수 없습니다.");
+//            return "redirect:/project/projectList.do";
+//        }
+//
+//        // 모델에 데이터 추가
+//        model.addAttribute("project", projectDetail);
+//        model.addAttribute("loginUser", loginUser);
+//
+//        // 자신의 프로젝트인지 확인 (수정/삭제 버튼 표시 여부 결정)
+//        boolean isMyProject = projectDetail.getLastChngId().equals(loginUser.getUserEmail());
+//        model.addAttribute("isMyProject", isMyProject);
+//
+//        return "project/projectDetail";
+//    }
 
-        // 로그인 사용자 정보 가져옴
-        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-
-        // 프로젝트 상세 정보 조회
-        ProjectVo projectDetail = projectSvc.retrieveProjectDetail(projectId);
-
-        // 프로젝트가 없거나 삭제된 경우
-        if (projectDetail == null) {
-            redirectAttr.addFlashAttribute("message", "해당 프로젝트를 찾을 수 없습니다.");
-            return "redirect:/project/projectList.do";
-        }
-
-        // 모델에 데이터 추가
-        model.addAttribute("project", projectDetail);
-        model.addAttribute("loginUser", loginUser);
-
-        // 자신의 프로젝트인지 확인 (수정/삭제 버튼 표시 여부 결정)
-        boolean isMyProject = projectDetail.getLastChngId().equals(loginUser.getUserEmail());
-        model.addAttribute("isMyProject", isMyProject);
-
-        return "project/projectDetail";
-    }
-
-    // 프로젝트 수정
-    @GetMapping("/project/updateForm.do")
-    public String updateForm(@RequestParam("projectId") String projectId, HttpServletRequest request, Model model) {
-        // 세션 확인
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loginUser") == null) {
-            return "redirect:/userinfo/loginForm.do";
-        }
-
-        // 로그인 사용자 정보 가져옴
-        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-        String userEmail = loginUser.getUserEmail();
-
-        // 프로젝트 상세 정보 조회
-        ProjectVo projectDetail = projectSvc.retrieveProjectDetail(projectId);
-
-        // 프로젝트가 없거나 삭제된 경우
-        if (projectDetail == null) {
-            model.addAttribute("message", "해당 프로젝트를 찾을 수 없습니다.");
-            return "redirect:/project/projectList.do";
-        }
-
-        // 로그인한 유저의 프로젝트인지 확인
-        if (!projectDetail.getLastChngId().equals(userEmail)) {
-            model.addAttribute("message", "본인의 프로젝트만 수정할 수 있습니다.");
-            return "redirect:/project/projectList.do";
-        }
-
-        // 6모델에 데이터 추가
-        model.addAttribute("project", projectDetail);
-        model.addAttribute("loginUser", loginUser);
-
-        return "project/projectUpdateForm";
-    }
+//    // 프로젝트 수정
+//    @GetMapping("/project/updateForm.do")
+//    public String updateForm(@RequestParam("projectId") String projectId, HttpServletRequest request, Model model) {
+//        // 세션 확인
+//        HttpSession session = request.getSession(false);
+//        if (session == null || session.getAttribute("loginUser") == null) {
+//            return "redirect:/userinfo/loginForm.do";
+//        }
+//
+//        // 로그인 사용자 정보 가져옴
+//        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+//        String userEmail = loginUser.getUserEmail();
+//
+//        // 프로젝트 상세 정보 조회
+//        ProjectVo projectDetail = projectSvc.retrieveProjectDetail(projectId);
+//
+//        // 프로젝트가 없거나 삭제된 경우
+//        if (projectDetail == null) {
+//            model.addAttribute("message", "해당 프로젝트를 찾을 수 없습니다.");
+//            return "redirect:/project/projectList.do";
+//        }
+//
+//        // 로그인한 유저의 프로젝트인지 확인
+//        if (!projectDetail.getLastChngId().equals(userEmail)) {
+//            model.addAttribute("message", "본인의 프로젝트만 수정할 수 있습니다.");
+//            return "redirect:/project/projectList.do";
+//        }
+//
+//        // 6모델에 데이터 추가
+//        model.addAttribute("project", projectDetail);
+//        model.addAttribute("loginUser", loginUser);
+//
+//        return "project/projectUpdateForm";
+//    }
 
      // 프로젝트 수정 처리
 

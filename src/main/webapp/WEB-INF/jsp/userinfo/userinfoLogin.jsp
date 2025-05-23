@@ -8,14 +8,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <script src="<c:url value="/app/js/userinfo/userinfoLogin.js"/>"></script> <%-- 필수 --%>
-<div class="container">
+<div id="page-wrapper">
     <div class="row justify-content-center mt-5">
         <div class="col-md-10 col-lg-8">
-            <div class="text-center mb-4">
-                <h1>
-                    로고
-                </h1>
-            </div>
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">로그인</h4>
