@@ -16,7 +16,7 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">코드 상세조회</h1>
+        <h1 class="page-title">코드 상세조회</h1>
     </div>
     <div class="page-inner" style="text-align: center;">
         <form id="detailForm" name="detailForm" action="/admin/code/update.do" method="post">

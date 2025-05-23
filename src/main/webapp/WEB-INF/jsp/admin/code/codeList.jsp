@@ -94,10 +94,11 @@
 <%--                </ul>--%>
 <%--            </nav>--%>
 <%--        </div>--%>
-        <div id="pagination">
-            <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging"/>
-        </div>
-
+        <c:if test="${codeList.size() ne 0}">
+            <div id="pagination">
+                <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging"/>
+            </div>
+        </c:if>
     </div>
 </div>
 <script>
