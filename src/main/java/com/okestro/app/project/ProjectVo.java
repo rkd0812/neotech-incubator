@@ -25,6 +25,18 @@ public class ProjectVo extends BaseVo {
     // project_detail 테이블 필드
     private String attachmentID;
 
+    // Join 하기 위해 사용할 다른 테이블 필드
+    private String userName;         // user 테이블의 사용자 이름
+    private String codeName;         // code 테이블의 코드명
+
+
+    // 검색을 위한 필드
+    private String searchProjectName;  // 프로젝트 이름 검색 시 사용하기 위해 만든 필드
+    private String searchStartDate;    // 프로젝트 등록 날짜 검색 시 사용하기 위해 만든 필드
+    private String searchEndDate;      // 프로젝트 최종 등록 날짜 검색 시 사용하기 위해 만든 필드
+    private String searchEvaCd;        // 프로젝트 평가 상태를 검색 시 사용하기 위해 만든 필드
+
+
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
     }

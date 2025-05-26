@@ -28,6 +28,12 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return dao.selectList("project.retrieveProjectList", userEmail);
     }
 
+    // 검색을 조회시 사용
+    @Override
+    public List<ProjectVo> searchProjectList(ProjectVo searchVo) {
+        return dao.selectList("project.searchProjectList", searchVo);
+    }
+
 //    // 프로젝트 상세 조회
 //    @Override
 //    public ProjectVo retrieveProjectDetail(String projectVo) {

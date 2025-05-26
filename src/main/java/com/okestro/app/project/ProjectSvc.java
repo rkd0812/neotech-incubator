@@ -7,8 +7,11 @@ public interface ProjectSvc {
 //    // 프로젝트 전체 리스트
 //    List<ProjectVo> allProjcetList(String userEmail);
 
-//     프로젝트 (로그인한 사용자) 리스트
+    //  프로젝트 (로그인한 사용자) 리스트
     List<ProjectVo> retrieveProjectList(String userEmail);
+
+    // 프로젝트 검색을 하게하는 리스트
+    List<ProjectVo> searchProjectList(ProjectVo projectVo);
 
     // 프로젝트 상세 조회
 //    ProjectVo retrieveProjectDetail(ProjectPagingVo searchVo);
