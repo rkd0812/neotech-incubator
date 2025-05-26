@@ -20,28 +20,79 @@ public class ProjectCtr {
     @Resource(name = "projectSvc")
     ProjectSvc projectSvc;
 
-    // 로그인 한 유저의 프로젝트 목록 조회
+//    // 로그인 한 유저의 프로젝트 목록 조회
+//    @GetMapping("/project/projectList.do")
+//    public String retrieveProjectList(HttpServletRequest request, HttpServletResponse response, Model model) {
+//        // 세션 체크
+//        HttpSession session = request.getSession(false);   ///현재 세션이 있으면 가져오고, 안가져옴.
+//        if (session == null || session.getAttribute("loginUser") == null) {  // 세션이 아예 없는 경우, 세션은 있지만 loginUser 속성이 없는 경우
+//            return "redirect:/userinfo/loginForm.do";
+//        }
+//
+//        // 로그인 사용자 정보 가져옴
+//        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+//        String userEmail = loginUser.getUserEmail(); // 사용자 이메일 추출
+//
+//        // 프로젝트 목록 조회 (사용자 이메일 전달)
+//        List<ProjectVo> projectList = projectSvc.retrieveProjectList(userEmail);
+//
+//        // 모델에 데이터 추가
+//        model.addAttribute("projectList", projectList);
+//        model.addAttribute("loginUser", loginUser);
+//
+//        // 페이지 반환
+//        return "project/projectList";
+//    }
+
     @GetMapping("/project/projectList.do")
-    public String retrieveProjectList(HttpServletRequest request, HttpServletResponse response, Model model) {
+    public String retrieveProjectList(HttpServletRequest request, HttpServletResponse response,
+                                      Model model, ProjectVo searchVo) {
         // 세션 체크
-        HttpSession session = request.getSession(false);   ///현재 세션이 있으면 가져오고, 안가져옴.
-        if (session == null || session.getAttribute("loginUser") == null) {  // 세션이 아예 없는 경우, 세션은 있지만 loginUser 속성이 없는 경우
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("loginUser") == null) {
             return "redirect:/userinfo/loginForm.do";
         }
 
         // 로그인 사용자 정보 가져옴
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-        String userEmail = loginUser.getUserEmail(); // 사용자 이메일 추출
+        String userEmail = loginUser.getUserEmail();
 
-        // 프로젝트 목록 조회 (사용자 이메일 전달)
-        List<ProjectVo> projectList = projectSvc.retrieveProjectList(userEmail);
+        String[] evaCdArray = request.getParameterValues("searchEvaCd");
+        if (evaCdArray != null && evaCdArray.length > 0) {
+            String combinedEvaCd = String.join(",", evaCdArray);  // "01,02,03" 형태
+            searchVo.setSearchEvaCd(combinedEvaCd);
+        }
+
+        // 검색 실행
+        List<ProjectVo> projectList;
+        if (isSearchRequested(searchVo)) {
+            searchVo.setLastChngId(userEmail);
+            projectList = projectSvc.searchProjectList(searchVo);
+        } else {
+            projectList = projectSvc.retrieveProjectList(userEmail);
+        }
 
         // 모델에 데이터 추가
         model.addAttribute("projectList", projectList);
         model.addAttribute("loginUser", loginUser);
+        model.addAttribute("searchVo", searchVo);
 
-        // 페이지 반환
         return "project/projectList";
+    }
+
+
+     // 검색 조건이 있는지 확인
+    private boolean isSearchRequested(ProjectVo searchVo) {
+        if (searchVo.getSearchProjectName() != null && !searchVo.getSearchProjectName().trim().isEmpty()) {
+            return true;
+        } else if (searchVo.getSearchStartDate() != null && !searchVo.getSearchStartDate().trim().isEmpty()) {
+            return true;
+        } else if (searchVo.getSearchEndDate() != null && !searchVo.getSearchEndDate().trim().isEmpty()) {
+            return true;
+        } else if (searchVo.getSearchEvaCd() != null && !searchVo.getSearchEvaCd().trim().isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     // 프로젝트 등록
