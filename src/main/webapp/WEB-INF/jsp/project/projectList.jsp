@@ -47,7 +47,7 @@
                         </label>
                         <label>
                             <input type="checkbox" name="searchEvaCd" value="03" id="status03"
-                                   <c:if test="${not empty searchVo.searchEvaCd and searchVo.searchEvaCd.contains('03')}">checked</c:if>> 심사완료
+                                   <c:if test="${not empty searchVo.searchEvaCd and searchVo.searchEvaCd.contains('03')}">checked</c:if>> 심사 완료
                         </label>
                     </td>
                 </tbody>
