@@ -27,7 +27,8 @@
         /* VARIABLES CSS */
         :root {
             /*--nav--width: 92px;*/
-            --nav--width: 180px;
+            /*--nav--width: 180px;*/
+            --nav--width: 320px;
             /* Colores */
             --first-color: #0c5df4;
             --bg-color: #12192c;
@@ -151,7 +152,8 @@
         }
 
         .nav_name {
-            font-size: var(--small-font-size);
+            /*font-size: var(--small-font-size);*/
+            font-size: var(--normal-font-size);
         }
 
         /* Expander menu */
@@ -210,6 +212,10 @@
              display: grid;
         }
 
+        .header {
+            padding-left: 120px;
+        }
+
         .page-title {
             font-size: 2.5rem;
             font-weight: bold;
@@ -224,6 +230,10 @@
         #page-wrapper {
             padding-top: 100px;
             padding-left: 130px;
+        }
+
+        .page-inner {
+            text-align: center;
         }
 
         table {
@@ -287,6 +297,37 @@
             display: inline-block;
             border-radius: 4px;
         }
+
+        .custom-pagination {
+            display: flex;
+            /*gap: 5px;*/
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem;
+        }
+
+        .custom-pagination a,
+        .custom-pagination strong {
+            padding: 5px 10px;
+            border: 1px solid #dee2e6;
+            background-color: #fff;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .custom-pagination a:hover {
+            background-color: #e9ecef;
+        }
+
+        .custom-pagination strong {
+            background-color: #007bff;
+            color: white;
+            pointer-events: none;
+        }
+
 
     </style>
 </head>

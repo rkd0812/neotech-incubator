@@ -2,16 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="user">
-    <!--사용자 목록조회-->
-    <select id="retrieveUserList" parameterType="com.okestro.app.admin.user.UserVo" resultType="com.okestro.app.admin.user.UserVo">
-        SELECT USER_EMAIL
-             , USER_PASSWORD
-             , ROLE_CD
-             , (SELECT CODE_NAME FROM SCH_INCU.CODE WHERE UPPER_CODE_NAME = 'ROLE' AND ROLE_CD = CODE_VAL) AS ROLE_CD_NM
-             , DEL_YN
-             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
-             , LAST_CHNG_ID
-             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
+    <!-- 사용자 목록 개수 조회 -->
+    <select id="retrieveUserListCnt" parameterType="com.okestro.app.admin.user.UserVo" resultType="int">
+        SELECT COUNT(*)
         FROM SCH_INCU.USER
         WHERE 1=1
         AND DEL_YN = 'N'
@@ -25,7 +18,42 @@
             AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
             AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
         </if>
-        ORDER BY FRST_RGSR_DTL_DTTM DESC, USER_EMAIL
+    </select>
+
+    <!--사용자 목록조회-->
+    <select id="retrieveUserList" parameterType="com.okestro.app.admin.user.UserVo" resultType="com.okestro.app.admin.user.UserVo">
+        SELECT *
+        FROM (
+            SELECT ROW_NUMBER() OVER() AS RNUM
+            , *
+            FROM (
+                SELECT USER_EMAIL
+                     , USER_PASSWORD
+                     , ROLE_CD
+                     , (SELECT CODE_NAME FROM SCH_INCU.CODE WHERE UPPER_CODE_NAME = 'ROLE' AND ROLE_CD = CODE_VAL) AS ROLE_CD_NM
+                     , DEL_YN
+                     , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+                     , LAST_CHNG_ID
+                     , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
+                FROM SCH_INCU.USER
+                WHERE 1=1
+                AND DEL_YN = 'N'
+                <if test="userEmail != null and userEmail != ''">
+                    AND USER_EMAIL LIKE '%' || #{userEmail} || '%'
+                </if>
+                <if test="roleCd != null and roleCd != '' and roleCd != 'All'">
+                    AND ROLE_CD LIKE '%' || #{roleCd} || '%'
+                </if>
+                <if test="startDate != null and startDate != ' and endDate != null and endDate != '">
+                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+                </if>
+                ORDER BY FRST_RGSR_DTL_DTTM DESC, USER_EMAIL
+            ) T1
+        ) T2
+        <if test="firstRecordIndex >= 0 and lastRecordIndex > 0">
+            WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
+        </if>
     </select>
 
     <!--사용자 상세조회-->

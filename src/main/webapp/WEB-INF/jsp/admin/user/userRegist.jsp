@@ -7,21 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<html>
-<head>
-    <title>사용자 등록</title>
-    <c:import charEncoding="utf-8" url="/layout/cmmnlib.do" />
-    <script src="/app/js/admin/user/userRegist.js"></script>
-</head>
-<body>
-<%--<%@ include file="/WEB-INF/jsp/navBar/navBar.jsp"%>--%>
-
+<script src="/app/js/admin/user/userRegist.js"></script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">사용자 등록</h1>
-            <div class="page-inner" style="text-align: center;">
+        <h1 class="page-title">사용자 등록</h1>
+            <div class="page-inner">
                 <form id="registForm" name="registForm" action="/admin/user/regist.do" method="post">
-                    <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+                    <table>
                         <tbody>
                             <tr>
                                 <th>이메일</th>
@@ -49,5 +41,3 @@
             </div>
     </div>
 </div>
-</body>
-</html>

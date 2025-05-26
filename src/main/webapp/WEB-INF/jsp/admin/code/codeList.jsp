@@ -19,7 +19,7 @@
     <div class="header">
         <h1 class="page-title">코드 목록조회</h1>
     </div>
-    <div class="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <form id="searchForm" name="searchForm" action="/admin/code/list.do">
             <input type="hidden" name="currentPageNo" value=${currentPageNo}>
             <table>
@@ -63,7 +63,6 @@
                 </c:if>
                 <c:forEach var="code" items="${codeList}" varStatus="status">
                     <a><tr>
-<%--                        <td>${status.count}</td>--%>
                         <td>${code.rnum}</td>
                         <td>${code.upperCodeName}</td>
                         <td><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
@@ -73,32 +72,35 @@
                 </c:forEach>
             </tbody>
         </table>
-        <button id="registBtn">등록</button>
-
-<%--        <div id="pagination" style="display: flex; justify-content: center; align-items: center;">--%>
-<%--            <nav aria-label="Page navigation example">--%>
-<%--                <ul class="pagination">--%>
-<%--                    <li class="page-item">--%>
-<%--                        <a class="page-link" href="#" aria-label="Previous">--%>
-<%--                            <span aria-hidden="true">&laquo;</span>--%>
-<%--                        </a>--%>
-<%--                    </li>--%>
-<%--                    <li class="page-item"><a class="page-link" href="#">1</a></li>--%>
-<%--                    <li class="page-item"><a class="page-link" href="#">2</a></li>--%>
-<%--                    <li class="page-item"><a class="page-link" href="#">3</a></li>--%>
-<%--                    <li class="page-item">--%>
-<%--                        <a class="page-link" href="#" aria-label="Next">--%>
-<%--                            <span aria-hidden="true">&raquo;</span>--%>
-<%--                        </a>--%>
-<%--                    </li>--%>
-<%--                </ul>--%>
-<%--            </nav>--%>
-<%--        </div>--%>
         <c:if test="${codeList.size() ne 0}">
-            <div id="pagination">
-                <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging"/>
+            <div class="paging custom-pagination">
+                <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging" />
             </div>
         </c:if>
+        <button id="registBtn">등록</button>
+
+        <%-- 페이징 --%>
+<%--        <c:if test="${codeList.size() ne 0}">--%>
+<%--            <div id="pagination">--%>
+<%--                <nav>--%>
+<%--                    <ul class="pagination">--%>
+<%--                        <li class="page-item">--%>
+<%--                            <a class="page-link" href="#" aria-label="Previous" onclick="fnPaging(${firstPageNoOnPageList})">--%>
+<%--                                <span aria-hidden="true">&laquo;</span>--%>
+<%--                            </a>--%>
+<%--                        </li>--%>
+<%--                        <c:forEach var="i" begin="1" end="${totalPageCount}">--%>
+<%--                            <li class="page-item"><a class="page-link" href="#" onclick="fnPaging(${i}); return false;">${i}</a></li>--%>
+<%--                        </c:forEach>--%>
+<%--                        <li class="page-item">--%>
+<%--                            <a class="page-link" href="#" aria-label="Next" onclick="fnPaging(${lastPageNoOnPageList})">--%>
+<%--                                <span aria-hidden="true">&raquo;</span>--%>
+<%--                            </a>--%>
+<%--                        </li>--%>
+<%--                    </ul>--%>
+<%--                </nav>--%>
+<%--            </div>--%>
+<%--        </c:if>--%>
     </div>
 </div>
 <script>

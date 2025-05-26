@@ -3,14 +3,16 @@ package com.okestro.app.admin.user;
 import java.util.List;
 
 public interface UserSvc {
+    // 사용자 목록 개수 조회
+    int retrieveUserListCnt(UserVo userVo);
     // 사용자 목록조회
-    public List<UserVo> retrieveUserList(UserVo userVo);
+    List<UserVo> retrieveUserList(UserVo userVo);
     // 사용자 상세조회
-    public UserVo retrieveUserDetail(UserVo userVo);
+    UserVo retrieveUserDetail(UserVo userVo);
     // 사용자 수정
-    public int updateUser(UserVo userVo);
+    int updateUser(UserVo userVo);
     // 사용자 등록
-    public int registUser(UserVo userVo);
+    int registUser(UserVo userVo);
     // 사용자 삭제
-    public int deleteUser(String userEmail);
+    int deleteUser(String userEmail);
 }

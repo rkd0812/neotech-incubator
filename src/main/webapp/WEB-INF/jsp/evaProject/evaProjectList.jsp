@@ -7,13 +7,15 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <script src="/app/js/evaProject/evaProjectList.js"></script>
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-title">심사 프로젝트 목록조회</h1>
     </div>
-    <div id="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <form id="searchForm" name="searchForm" action="/evaProject/list.do" >
+            <input type="hidden" name="currentPageNo" value=${currentPageNo}>
             <table>
                 <colgroup>
                 </colgroup>
@@ -66,7 +68,7 @@
                 </c:if>
                 <c:forEach var="evaProj" items="#{evaProjectList}" varStatus="status">
                     <tr>
-                        <td>${status.count}</td>
+                        <td>${evaProj.rnum}</td>
                         <td><a href="/evaProject/detail.do?projectId=${evaProj.projectId}">${evaProj.projectName}</td>
                         <td>${evaProj.evaCdNm}</td>
                         <td>${evaProj.evaStartDt}</td>
@@ -76,5 +78,12 @@
                 </c:forEach>
             </tbody>
         </table>
+
+        <%-- 페이징 --%>
+        <c:if test="${evaProjectList.size() ne 0}">
+            <div class="paging custom-pagination">
+                <ui:pagination paginationInfo="${evaProjectVo}" type="text" jsFunction="fnPaging" />
+            </div>
+        </c:if>
     </div>
 </div>

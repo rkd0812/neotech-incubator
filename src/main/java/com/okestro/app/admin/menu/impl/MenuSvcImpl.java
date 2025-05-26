@@ -21,6 +21,11 @@ public class MenuSvcImpl extends EgovAccessServiceImpl implements MenuSvc {
     }
 
     @Override
+    public int retrieveMenuListCnt(MenuVo menuVo) {
+        return dao.selectOne("menu.retrieveMenuListCnt", menuVo);
+    }
+
+    @Override
     public List<MenuVo> retrieveMenuList(MenuVo menuVo) {
         return dao.selectList("menu.retrieveMenuList", menuVo);
     }

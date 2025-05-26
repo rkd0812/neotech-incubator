@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <script src="/app/js/admin/menu/menuList.js"></script>
 <script>
     const msg = "${msg}";
@@ -16,11 +17,12 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">메뉴 목록조회</h1>
+        <h1 class="page-title">메뉴 목록조회</h1>
     </div>
-    <div id="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <form id="searchForm" name="searchForm" action="/admin/menu/list.do" >
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <input type="hidden" name="currentPageNo" value=${currentPageNo}>
+            <table>
                 <colgroup>
                     <col style="width: 30%;"/>
                     <col style="width: auto;" />
@@ -39,7 +41,7 @@
         </form>
         <button id="initBtn">초기화</button>
         <button id="searchBtn">검색</button>
-        <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+        <table>
             <colgroup>
             </colgroup>
             <thead>
@@ -54,12 +56,12 @@
             <tbody>
             <c:if test="${menuList.size() eq 0}">
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         조회된 데이터가 없습니다
                     </td>
                 </tr>
             </c:if>
-                <c:forEach var="menu" items="#{menuList}" varStatus="status">
+                <c:forEach var="menu" items="${menuList}" varStatus="status">
                     <tr>
                         <td>${status.count}</td>
                         <td><a href="/admin/menu/detail.do?menuId=${menu.menuId}">${menu.menuName}</a></td>
@@ -72,4 +74,9 @@
         </table>
         <button id="registBtn">등록</button>
     </div>
+    <c:if test="${menuList.size() ne 0}">
+        <div class="paging custom-pagination">
+            <ui:pagination paginationInfo="${menuVo}" type="text" jsFunction="fnPaging" />
+        </div>
+    </c:if>
 </div>

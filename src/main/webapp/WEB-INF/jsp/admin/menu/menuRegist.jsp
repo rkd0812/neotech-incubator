@@ -10,11 +10,11 @@
 <script src="/app/js/admin/menu/menuRegist.js"></script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">메뉴 등록</h1>
+        <h1 class="page-title">메뉴 등록</h1>
     </div>
-    <div id="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <form id="registForm" name="registForm" action="/admin/menu/regist.do" method="post">
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <table>
                 <colgroup>
 
                 </colgroup>
@@ -23,10 +23,6 @@
                         <th>메뉴명</th>
                         <td><input type="text" id="menuName" name="menuName" /></td>
                     </tr>
-<%--                    <tr>--%>
-<%--                        <th>메뉴레벨</th>--%>
-<%--                        <td><input type="text" id="menuLevel" name="menuLevel" /></td>--%>
-<%--                    </tr>--%>
                     <tr>
                         <th>상위메뉴</th>
                         <td>

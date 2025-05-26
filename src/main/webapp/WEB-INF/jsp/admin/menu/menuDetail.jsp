@@ -17,11 +17,11 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">메뉴 상세</h1>
+        <h1 class="page-title">메뉴 상세</h1>
     </div>
-    <div class="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <form id="detailForm" name="detailForm" action="/admin/menu/update.do" method="post">
-            <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <table>
                 <colgroup>
                 </colgroup>
                 <thead>

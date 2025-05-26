@@ -16,6 +16,11 @@ public class EvaProjectSvcImpl extends EgovAccessServiceImpl implements EvaProje
     CmmnAbstractDao dao;
 
     @Override
+    public int retrieveEvaProjectListCnt(EvaProjectVo evaProjectVo) {
+        return dao.selectOne("evaProject.retrieveEvaProjectListCnt", evaProjectVo);
+    }
+
+    @Override
     public List<EvaProjectVo> retrieveEvaProjectList(EvaProjectVo evaProjectVo) {
         return dao.selectList("evaProject.retrieveEvaProjectList", evaProjectVo);
     }

@@ -12,7 +12,7 @@
     <div class="header">
         <h1 class="page-title">심사 프로젝트 상세</h1>
     </div>
-    <div class="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <table>
             <colgroup>
             </colgroup>

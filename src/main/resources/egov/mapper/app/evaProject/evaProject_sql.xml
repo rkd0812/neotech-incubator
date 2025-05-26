@@ -2,31 +2,67 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="evaProject">
-    <!-- 심사 프로젝트 목록조회-->
-    <select id="retrieveEvaProjectList" parameterType="com.okestro.app.evaProject.EvaProjectVo" resultType="com.okestro.app.evaProject.EvaProjectVo">
-        SELECT PROJECT_ID
-             , PROJECT_NAME
-             , EVA_CD
-             , (SELECT CODE_NAME FROM SCH_INCU.CODE WHERE UPPER_CODE_NAME = 'EVALUATION' AND CODE_VAL = EVA_CD) AS EVA_CD_NM
-             , SCORE_FIN
-             , TO_CHAR(EVA_START_DT, 'yyyy-mm-dd') AS EVA_START_DT
-             , TO_CHAR(EVA_END_DT, 'yyyy-mm-dd') AS EVA_END_DT
-             , DEL_YN
-             , FRST_RGSR_ID
-             , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
-             , LAST_CHNG_ID
-             , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNF_DTL_DTTM
-             , USER_GROUP_ID
-             , EVA_GROUP_ID
-             , PROJECT_DETAIL
-             , URL
-             , CASE WHEN EVA_GROUP_ID IS NULL THEN 'N' ELSE 'Y' END AS EVA_FORM_YN
+    <!-- 심사 프로젝트 목록 개수 조회 -->
+    <select id="retrieveEvaProjectListCnt" parameterType="com.okestro.app.evaProject.EvaProjectVo" resultType="int">
+        SELECT COUNT(*)
         FROM SCH_INCU.PROJECT
         WHERE 1=1
         AND DEL_YN = 'N'
         AND EVA_CD != '00'
+        <if test="projectName != null and projectName != ''">
+            AND PROJECT_NAME LIKE '%' || #{projectName} || '%'
+        </if>
         <if test="evaCd != null and evaCd != '' and evaCd != 'All'">
             AND EVA_CD = #{evaCd}
+        </if>
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+        </if>
+    </select>
+
+    <!-- 심사 프로젝트 목록조회-->
+    <select id="retrieveEvaProjectList" parameterType="com.okestro.app.evaProject.EvaProjectVo" resultType="com.okestro.app.evaProject.EvaProjectVo">
+        SELECT *
+        FROM (
+            SELECT ROW_NUMBER() OVER() AS RNUM
+                 , *
+            FROM (
+                SELECT PROJECT_ID
+                     , PROJECT_NAME
+                     , EVA_CD
+                     , (SELECT CODE_NAME FROM SCH_INCU.CODE WHERE UPPER_CODE_NAME = 'EVALUATION' AND CODE_VAL = EVA_CD) AS EVA_CD_NM
+                     , SCORE_FIN
+                     , TO_CHAR(EVA_START_DT, 'yyyy-mm-dd') AS EVA_START_DT
+                     , TO_CHAR(EVA_END_DT, 'yyyy-mm-dd') AS EVA_END_DT
+                     , DEL_YN
+                     , FRST_RGSR_ID
+                     , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
+                     , LAST_CHNG_ID
+                     , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNF_DTL_DTTM
+                     , USER_GROUP_ID
+                     , EVA_GROUP_ID
+                     , PROJECT_DETAIL
+                     , URL
+                     , CASE WHEN EVA_GROUP_ID IS NULL THEN 'N' ELSE 'Y' END AS EVA_FORM_YN
+                FROM SCH_INCU.PROJECT
+                WHERE 1=1
+                AND DEL_YN = 'N'
+                AND EVA_CD != '00'
+                <if test="projectName != null and projectName != ''">
+                    AND PROJECT_NAME LIKE '%' || #{projectName} || '%'
+                </if>
+                <if test="evaCd != null and evaCd != '' and evaCd != 'All'">
+                    AND EVA_CD = #{evaCd}
+                </if>
+                <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+                </if>
+            ) T1
+        ) T2
+        <if test="firstRecordIndex >= 0 and lastRecordIndex > 0">
+            WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
         </if>
     </select>
 

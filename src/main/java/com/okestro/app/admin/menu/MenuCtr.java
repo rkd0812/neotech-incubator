@@ -61,12 +61,30 @@ public class MenuCtr {
 
         if(menuVo.getStartDate() == null && menuVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            menuVo.setStartDate(LocalDate.now().minusMonths(1).toString());
+            menuVo.setStartDate(LocalDate.now().minusMonths(3).toString());
             menuVo.setEndDate(nowDate.toString());
         }
 
-        model.addAttribute("menuVo", menuVo);
+        // 목록 개수 조회
+        int menuListCnt = menuSvc.retrieveMenuListCnt(menuVo);
 
+        // 페이징
+        int currentPageNo = menuVo.getCurrentPageNo();
+
+        if (currentPageNo == 0) {
+            menuVo.setCurrentPageNo(1);
+        }
+
+        menuVo.setTotalRecordCount(menuListCnt);    // 총 개수
+        menuVo.setRecordCountPerPage(10);           // 한 페이지당 글 10개
+        menuVo.setPageSize(10);                     // 페이지 리스트에 게시되는 페이지 건수
+
+        int totalPageCount = menuVo.getTotalPageCount();
+
+        model.addAttribute("currentPageNo", currentPageNo);
+        model.addAttribute("totalPageCount", totalPageCount);
+
+        // 목록조회
         List<MenuVo> menuList = menuSvc.retrieveMenuList(menuVo);
         model.addAttribute("menuList", menuList);
         

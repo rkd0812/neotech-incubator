@@ -44,7 +44,7 @@ public class CodeCtr {
 
         if(codeVo.getStartDate() == null && codeVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            codeVo.setStartDate(LocalDate.now().minusMonths(1).toString());
+            codeVo.setStartDate(LocalDate.now().minusMonths(3).toString());
             codeVo.setEndDate(nowDate.toString());
         }
 
@@ -57,22 +57,19 @@ public class CodeCtr {
         if (currentPageNo == 0) {
             codeVo.setCurrentPageNo(1);             // 현재 페이지
         }
+
         codeVo.setTotalRecordCount(codeListCnt);    // 총 개수
         codeVo.setRecordCountPerPage(10);           // 한 페이지당 글 10개
         codeVo.setPageSize(10);                     // 페이지 리스트에 게시되는 페이지 건수
 
         int totalPageCount = codeVo.getTotalPageCount();                    // 페이지 개수
-        int firstPageNoOnPageList = codeVo.getFirstPageNoOnPageList();      // 시작 페이지
-        int lastPageNoOnPageList = codeVo.getLastPageNoOnPageList();        // 마지막 페이지
-        int firstRecordIndex = codeVo.getFirstRecordIndex();                // 글 시작 번호
-        int lastRecordIndex = codeVo.getLastRecordIndex();                  // 글 마지막 번호
+//        int firstPageNoOnPageList = codeVo.getFirstPageNoOnPageList();      // 시작 페이지
+//        int lastPageNoOnPageList = codeVo.getLastPageNoOnPageList();        // 마지막 페이지
+//        int firstRecordIndex = codeVo.getFirstRecordIndex();                // 글 시작 번호
+//        int lastRecordIndex = codeVo.getLastRecordIndex();                  // 글 마지막 번호
 
         model.addAttribute("currentPageNo", currentPageNo);
         model.addAttribute("totalPageCount", totalPageCount);
-        model.addAttribute("firstPageNoOnPageList", firstPageNoOnPageList);
-        model.addAttribute("lastPageNoOnPageList", lastPageNoOnPageList);
-        model.addAttribute("firstRecordIndex", firstRecordIndex);
-        model.addAttribute("lastRecordIndex", lastRecordIndex);
 
         // 목록조회
         List<CodeVo> codeList = codeSvc.retrieveCodeList(codeVo);

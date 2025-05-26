@@ -10,9 +10,9 @@
 <script src="/app/js/admin/code/codeRegist.js"></script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">코드 등록</h1>
+        <h1 class="page-title">코드 등록</h1>
     </div>
-    <div class="page-inner" style="text-align: center;">
+    <div class="page-inner">
         <form id="registForm" name="registForm" action="/admin/code/regist.do" method="post">
             <table>
                 <colgroup></colgroup>

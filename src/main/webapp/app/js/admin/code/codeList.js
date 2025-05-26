@@ -27,6 +27,7 @@ $(function() {
         if(startDate > endDate) {
             alert("기간 입력이 잘못 되었습니다.");
         } else {
+            $('input[name="currentPageNo"]').val(1);
             $('#searchForm').submit();
         }
     })
@@ -49,5 +50,4 @@ const setMonth = function() {
 const fnPaging = (page) => {
     $('input[name="currentPageNo"]').val(page);
     $('#searchForm').submit();
-
 }

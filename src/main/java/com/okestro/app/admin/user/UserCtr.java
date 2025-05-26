@@ -30,11 +30,28 @@ public class UserCtr {
 
         if(userVo.getStartDate() == null && userVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            userVo.setStartDate(nowDate.minusMonths(1).toString());
+            userVo.setStartDate(nowDate.minusMonths(3).toString());
             userVo.setEndDate(nowDate.toString());
         }
 
-        model.addAttribute("userVo", userVo);
+        // 목록 개수 조회
+        int userListCnt = userSvc.retrieveUserListCnt(userVo);
+
+        // 페이징
+        int currrentPageNo = userVo.getCurrentPageNo();
+
+        if (currrentPageNo == 0) {
+            userVo.setCurrentPageNo(1);
+        }
+
+        userVo.setTotalRecordCount(userListCnt);
+        userVo.setRecordCountPerPage(10);
+        userVo.setPageSize(10);
+
+        int totalPageCount = userVo.getTotalPageCount();
+
+        model.addAttribute("currentPageNo", currrentPageNo);
+        model.addAttribute("totalPageCount", totalPageCount);
 
         // 사용자 목록조회
         List<UserVo> userList = userSvc.retrieveUserList(userVo);

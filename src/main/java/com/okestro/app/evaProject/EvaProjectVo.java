@@ -2,9 +2,10 @@ package com.okestro.app.evaProject;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Getter @Setter
-public class EvaProjectVo {
+public class EvaProjectVo extends PaginationInfo {
 
     private String projectId;
     private String projectName;
@@ -28,5 +29,5 @@ public class EvaProjectVo {
     private String groupId;
     private String groupCd;
     private String groupCdNm;
-
+    private String rnum;
 }

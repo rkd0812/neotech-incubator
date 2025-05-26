@@ -37,12 +37,36 @@ public class EvaProjectCtr {
 
         if(evaProjectVo.getStartDate() == null && evaProjectVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            evaProjectVo.setStartDate(LocalDate.now().minusMonths(1).toString());
-            evaProjectVo.setEndDate(nowDate.toString());
-//            evaProjectVo.setStartDate(LocalDate.now().minusMonths(3).toString());
-//            evaProjectVo.setEndDate(LocalDate.now().plusMonths(3).toString());
+//            evaProjectVo.setStartDate(LocalDate.now().minusMonths(1).toString());
+//            evaProjectVo.setEndDate(nowDate.toString());
+            evaProjectVo.setStartDate(nowDate.minusMonths(3).toString());
+            evaProjectVo.setEndDate(nowDate.plusMonths(3).toString());
+        }
+        
+        // 목록 개수 조회
+        int evaProjectListCnt = evaProjectSvc.retrieveEvaProjectListCnt(evaProjectVo);
+
+        // 페이징
+        int currentPageNo = evaProjectVo.getCurrentPageNo();
+
+        if (currentPageNo == 0) {
+            evaProjectVo.setCurrentPageNo(1);       // 현재 페이지
         }
 
+        evaProjectVo.setTotalRecordCount(evaProjectListCnt);    // 총 개수
+        evaProjectVo.setRecordCountPerPage(10);                 // 한 페이지당 글 10개
+        evaProjectVo.setPageSize(10);                           // 페이지 리스트에 게시되는 페이지 건수
+
+        int totalPageCount = evaProjectVo.getTotalPageCount();                    // 페이지 개수
+//        int firstPageNoOnPageList = evaProjectVo.getFirstPageNoOnPageList();      // 시작 페이지
+//        int lastPageNoOnPageList = evaProjectVo.getLastPageNoOnPageList();        // 마지막 페이지
+//        int firstRecordIndex = evaProjectVo.getFirstRecordIndex();                // 글 시작 번호
+//        int lastRecordIndex = evaProjectVo.getLastRecordIndex();                  // 글 마지막 번호
+
+        model.addAttribute("currentPageNo", currentPageNo);
+        model.addAttribute("totalPageCount", totalPageCount);
+
+        // 목록조회
         List<EvaProjectVo> evaProjectList = evaProjectSvc.retrieveEvaProjectList(evaProjectVo);
         model.addAttribute("evaProjectList", evaProjectList);
 

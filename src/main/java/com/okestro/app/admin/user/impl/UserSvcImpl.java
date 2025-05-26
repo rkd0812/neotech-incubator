@@ -16,6 +16,11 @@ public class UserSvcImpl extends EgovAccessServiceImpl implements UserSvc {
     CmmnAbstractDao dao;
 
     @Override
+    public int retrieveUserListCnt(UserVo userVo) {
+        return dao.selectOne("user.retrieveUserListCnt", userVo);
+    }
+
+    @Override
     public List<UserVo> retrieveUserList(UserVo userVo) {
         return dao.selectList("user.retrieveUserList", userVo);
     }

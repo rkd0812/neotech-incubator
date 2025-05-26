@@ -49,7 +49,9 @@
                 ORDER BY UPPER_CODE_NAME, CODE_VAL
             ) T1
         ) T2
-        WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
+        <if test="firstRecordIndex >= 0 and lastRecordIndex > 0">
+            WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
+        </if>
     </select>
 
     <!-- 코드 목록 개수 조회 -->

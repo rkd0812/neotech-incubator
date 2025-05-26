@@ -16,10 +16,10 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-header">사용자 상세조회</h1>
-        <div id="page-inner" style="text-align: center;">
+        <h1 class="page-title">사용자 상세조회</h1>
+        <div class="page-inner">
             <form id="detailForm" name="detailForm" action="/admin/user/update.do" method="post">
-                <table style="width: 700px; border: solid 1px black; margin: 0 auto; text-align: center;">
+                <table>
                     <tbody>
                         <tr>
                             <th>이메일</th>

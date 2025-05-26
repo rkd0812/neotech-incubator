@@ -83,25 +83,14 @@
 <!-- JS -->
 <script>
     $(function() {
-        const path = document.location.pathname.split('/')[1];
 
-        const navLink = $('.nav__link');
 
-        for (let i = 0; i < navLink.length; i++) {
-
-            // console.log(navLink[i])
-
-            // console.log(navLink[i].href)
-            // console.log(path)
-
-        }
-
-        const toggle = document.getElementById('nav-toggle'),
-            navbar = document.getElementById('navbar'),
-            bodypadding = document.getElementById('body-pd');
-
-        navbar.classList.toggle('expander');
-        bodypadding.classList.toggle('body-pd');
+        // const toggle = document.getElementById('nav-toggle'),
+        //     navbar = document.getElementById('navbar'),
+        //     bodypadding = document.getElementById('body-pd');
+        //
+        // navbar.classList.toggle('expander');
+        // bodypadding.classList.toggle('body-pd');
 
     })
 

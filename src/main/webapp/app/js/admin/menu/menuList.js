@@ -27,6 +27,7 @@ $(function() {
         if(startDate > endDate) {
             alert("기간 입력이 잘못 되었습니다.");
         } else {
+            $('input[name="currentPageNo"]').val(1);
             $('#searchForm').submit();
         }
     })
@@ -42,4 +43,10 @@ const setMonth = function() {
     const now = new Date();
     $('#endDate').val(now.toISOString().substring(0, 10));
     $('#startDate').val(new Date(now.setMonth(now.getMonth() - 1)).toISOString().substring(0, 10));
+}
+
+// 페이징
+const fnPaging = (page) => {
+    $('input[name="currentPageNo"]').val(page);
+    $('#searchForm').submit();
 }

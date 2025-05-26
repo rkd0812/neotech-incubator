@@ -2,9 +2,10 @@ package com.okestro.app.admin.user;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Getter @Setter
-public class UserVo {
+public class UserVo extends PaginationInfo {
 
     private String userEmail;
     private String userPassword;
@@ -19,4 +20,5 @@ public class UserVo {
     private String codeName;
     private String startDate;
     private String endDate;
+    private String rnum;
 }
