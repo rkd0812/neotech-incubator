@@ -4,18 +4,11 @@ package com.okestro.app.project;
 import java.util.List;
 
 public interface ProjectSvc {
-//    // 프로젝트 전체 리스트
-//    List<ProjectVo> allProjcetList(String userEmail);
+    // 전체 프로젝트 개수 조회 (페이징)
+    int countProjectList(ProjectPagingVo pagingVo);
 
-    //  프로젝트 (로그인한 사용자) 리스트
-    List<ProjectVo> retrieveProjectList(String userEmail);
-
-    // 프로젝트 검색을 하게하는 리스트
-    List<ProjectVo> searchProjectList(ProjectVo projectVo);
-
-    // 프로젝트 상세 조회
-//    ProjectVo retrieveProjectDetail(ProjectPagingVo searchVo);
-
+    //  프로젝트 목록 조회 (검색과 페이징 둘 다)
+    List<ProjectVo> retrieveProjectListPagiging(ProjectPagingVo pagingVo);
 
     // 프로젝트 등록
     void insertUserProject(ProjectVo projectVo);

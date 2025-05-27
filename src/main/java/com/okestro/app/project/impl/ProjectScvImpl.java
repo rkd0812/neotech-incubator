@@ -2,6 +2,7 @@ package com.okestro.app.project.impl;
 
 
 import com.okestro.app.cmmn.dao.CmmnAbstractDao;
+import com.okestro.app.project.ProjectPagingVo;
 import com.okestro.app.project.ProjectSvc;
 import com.okestro.app.project.ProjectVo;
 import org.egovframe.rte.fdl.access.service.impl.EgovAccessServiceImpl;
@@ -16,22 +17,15 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Resource(name="cmmnDao")
     CmmnAbstractDao dao;
 
-//     전체 프로젝트 조회 시 사용
-//    @Override
-//    public List<ProjectVo> allProjcetList(String userEmail) {
-//        return dao.selectList("project.allProjectList", userEmail);
-//    }
-
+    // 전체 프로젝트 개수 조회 시 사용 (페이징)
+    @Override
+    public int countProjectList(ProjectPagingVo pagingVo) {
+        return  dao.selectOne("project.countProjectList", pagingVo);
+    }
     // 로그인한 사용자의 프로젝트 조회 시 사용
     @Override
-    public List<ProjectVo> retrieveProjectList(String userEmail) {
-        return dao.selectList("project.retrieveProjectList", userEmail);
-    }
-
-    // 검색을 조회시 사용
-    @Override
-    public List<ProjectVo> searchProjectList(ProjectVo searchVo) {
-        return dao.selectList("project.searchProjectList", searchVo);
+    public List<ProjectVo> retrieveProjectListPagiging(ProjectPagingVo pagingVo) {
+        return  dao.selectList("project.retrieveProjectListPagiging", pagingVo);
     }
 
 //    // 프로젝트 상세 조회

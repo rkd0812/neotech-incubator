@@ -37,6 +37,8 @@ public class ProjectVo extends BaseVo {
     private String searchEvaCd;        // 프로젝트 평가 상태를 검색 시 사용하기 위해 만든 필드
 
 
+
+
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
     }

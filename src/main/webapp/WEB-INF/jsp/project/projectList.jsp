@@ -14,46 +14,62 @@
     </div>
     <!-- 검색 영역 -->
     <div class="page-inner">
-        <form id="searchForm"style="text-align: center;">
+        <form id="searchForm" method="get" action="/project/projectList.do" style="text-align: center;">
+            <!-- 페이징 정보 유지를 위한 hidden 필드 추가 -->
+            <input type="hidden" name="pageNum" id="pageNum" value="${empty paging.pageNum ? 1 : paging.pageNum}">
+            <!-- 실제 검색에 사용되는 hidden 필드 (조회 버튼 눌렀을 때만 값이 설정됨) -->
+            <input type="hidden" name="searchStartDate" id="hiddenStartDate" value="${paging.searchStartDate}">
+            <input type="hidden" name="searchEndDate" id="hiddenEndDate" value="${paging.searchEndDate}">
+            <input type="hidden" name="searchProjectName" id="hiddenProjectName" value="${paging.searchProjectName}">
+            <input type="hidden" name="searchEvaCd" id="hiddenSearchEvaCd" value="${paging.searchEvaCd}">
+
             <table style="width: 1000px; border: solid 1px black; margin: 0 auto; text-align: center;">
                 <tbody>
                     <tr>
                         <th>기간</th>
                         <td>
-                            <input type="date" name="searchStartDate" id="startDate" value="${param.searchStartDate}">
+                            <input type="date" id="startDate" value="">
                             ~
-                            <input type="date" name="searchEndDate" id="endDate" value="${param.searchEndDate}">
+                            <input type="date" id="endDate" value="">
                         </td>
                         </tr>
                     <tr>
                         <th>프로젝트 명</th>
                         <td>
-                            <input type="text" id="projectName" name="searchProjectName" placeholder="프로젝트명 입력" value="${param.searchProjectName}">
+                            <input type="text" id="projectName" placeholder="프로젝트명 입력" value="">
                         </td>
                     </tr>
                         <th>심사 상태</th>
                     <td>
                         <label style="margin-right: 15px;">
-                            <input type="checkbox" id="allStatus"
-                            ${empty paramValues.searchEvaCd ? 'checked' : ''}> 전체
+                            <input type="checkbox" id="allStatus" checked> 전체
                         </label>
                         <label style="margin-right: 15px;">
-                            <input type="checkbox" name="searchEvaCd" value="01" id="status01"
-                                   <c:if test="${not empty searchVo.searchEvaCd and searchVo.searchEvaCd.contains('01')}">checked</c:if>> 심사요청
+
+                            <input type="checkbox" value="01" id="status01"> 심사요청
                         </label>
                         <label style="margin-right: 15px;">
-                            <input type="checkbox" name="searchEvaCd" value="02" id="status02"
-                                   <c:if test="${not empty searchVo.searchEvaCd and searchVo.searchEvaCd.contains('02')}">checked</c:if>> 심사중
+                            <input type="checkbox" value="02" id="status02"> 심사중
                         </label>
                         <label>
-                            <input type="checkbox" name="searchEvaCd" value="03" id="status03"
-                                   <c:if test="${not empty searchVo.searchEvaCd and searchVo.searchEvaCd.contains('03')}">checked</c:if>> 심사 완료
+                            <input type="checkbox" value="03" id="status03"> 심사완료
                         </label>
                     </td>
                 </tbody>
             </table>
 
             <div style="width: 1000px; margin: 10px auto; text-align: center;">
+                <button type="button" id="reset_btn" style="
+                    background-color: #6c757d;
+                    color: white;
+                    border: none;
+                    padding: 8px 16px;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin-left: 10px;">초기화
+                </button>
+
                 <button type="button" id="search_btn" style="
                     background-color: #007bff;
                     color: white;
@@ -80,59 +96,59 @@
                 </tr>
                 </thead>
                 <tbody>
-                <c:if test="${empty projectList}">
-                    <tr>
-                        <td colspan="5">등록된 프로젝트가 없습니다.</td>
-                    </tr>
-                </c:if>
-                <c:if test="${not empty projectList}">
-                    <c:forEach var="project" items="${projectList}" varStatus="status">
+                <c:choose>
+                    <c:when test="${empty projectList}">
                         <tr>
-                            <td>${project.projectId}</td>
-                            <td>
-                                <a href="/project/projectDetail.do?projectId=${project.projectId}">
-                                        ${project.projectName}
-                                </a>
-                            </td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${not empty project.userName}">
-                                        ${project.userName}
-                                    </c:when>
-                                    <c:otherwise>
-                                        ${project.lastChngId}
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>${project.evaStartDtString}</td>
-                            <td>
-                                <c:choose>
-                                    <c:when test="${not empty project.codeName}">
-                                        ${project.codeName}
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:choose>
-                                            <c:when test="${project.evaCd eq '01'}">심사요청</c:when>
-                                            <c:when test="${project.evaCd eq '02'}">심사중</c:when>
-                                            <c:when test="${project.evaCd eq '03'}">심사완료</c:when>
-                                            <c:otherwise>${project.evaCd}</c:otherwise>
-                                        </c:choose>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
+                            <td colspan="5">등록된 프로젝트가 없습니다.</td>
                         </tr>
-                    </c:forEach>
-                </c:if>
+                    </c:when>
+                    <c:otherwise>
+                        <!-- 방법 1: 가장 안전한 방법 - 단순하게 status.index 사용 -->
+                        <c:forEach var="project" items="${projectList}" varStatus="status">
+                            <tr>
+                                <td>${project.projectId}</td>
+                                <td>
+                                    <a href="/project/projectDetail.do?projectId=${project.projectId}">
+                                            ${project.projectName}
+                                    </a>
+                                </td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${not empty project.userName}">
+                                            ${project.userName}
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${project.lastChngId}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>${project.evaStartDtString}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${not empty project.codeName}">
+                                            ${project.codeName}
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!-- 코드명이 없을 때 기본값 표시 -->
+                                            <c:choose>
+                                                <c:when test="${project.evaCd eq 'A'}">대기중</c:when>
+                                                <c:when test="${project.evaCd eq '01'}">심사요청</c:when>
+                                                <c:when test="${project.evaCd eq '02'}">심사중</c:when>
+                                                <c:when test="${project.evaCd eq '03'}">심사완료</c:when>
+                                                <c:otherwise>${project.evaCd}</c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
                 </tbody>
             </table>
         </div>
 
-        <!-- 페이징 영역 -->
-        <div class="paging-area">
-
-        </div>
-
-        <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;">
+        <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;" >
             <button type="button" id="register_btn" style="
                 background-color: #28a745;
                 color: white;
@@ -143,5 +159,79 @@
                 font-size: 16px;
             ">프로젝트 등록</button>
         </div>
+
+        <!-- 페이징 영역 -->
+        <div class="paging-area" style="text-align: center; margin: 20px 0;">
+            <c:if test="${not empty paging and paging.totalPages > 1}">
+                <div class="pagination" style="display: inline-block;">
+
+                    <!-- 맨 처음 페이지 -->
+                    <c:if test="${paging.pageNum > 1}">
+                        <a href="javascript:void(0)" onclick="goToPage(1)"
+                           style="display: inline-block; padding: 8px 12px; margin: 0 2px;
+                                  border: 1px solid #ddd; text-decoration: none; color: #333;">
+                            ≪
+                        </a>
+                    </c:if>
+
+                    <!-- 이전 페이지 -->
+                    <c:if test="${paging.pageNum > 1}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.pageNum - 1})"
+                           style="display: inline-block; padding: 8px 12px; margin: 0 2px;
+                                  border: 1px solid #ddd; text-decoration: none; color: #333;">
+                            ＜
+                        </a>
+                    </c:if>
+
+                    <!-- 페이지 번호들 -->
+                    <c:set var="startPage" value="${paging.pageNum <= 3 ? 1 : paging.pageNum - 2}" />
+                    <c:set var="endPage" value="${startPage + 4 > paging.totalPages ? paging.totalPages : startPage + 4}" />
+
+                    <c:forEach var="pageNumber" begin="${startPage}" end="${endPage}">
+                        <c:choose>
+                            <c:when test="${pageNumber == paging.pageNum}">
+                                <span style="display: inline-block; padding: 8px 12px; margin: 0 2px;
+                                             border: 1px solid #007bff; background-color: #007bff;
+                                             color: white; font-weight: bold;">
+                                        ${pageNumber}
+                                </span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="javascript:void(0)" onclick="goToPage(${pageNumber})"
+                                   style="display: inline-block; padding: 8px 12px; margin: 0 2px;
+                                          border: 1px solid #ddd; text-decoration: none; color: #333;">
+                                        ${pageNumber}
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <!-- 다음 페이지 -->
+                    <c:if test="${paging.pageNum < paging.totalPages}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.pageNum + 1})"
+                           style="display: inline-block; padding: 8px 12px; margin: 0 2px;
+                                  border: 1px solid #ddd; text-decoration: none; color: #333;">
+                            ＞
+                        </a>
+                    </c:if>
+
+                    <!-- 맨 마지막 페이지 -->
+                    <c:if test="${paging.pageNum < paging.totalPages}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.totalPages})"
+                           style="display: inline-block; padding: 8px 12px; margin: 0 2px;
+                                  border: 1px solid #ddd; text-decoration: none; color: #333;">
+                            ≫
+                        </a>
+                    </c:if>
+                </div>
+
+                <!-- 페이징 정보 -->
+                <div style="margin-top: 10px; color: #666; font-size: 14px;">
+                    총 ${paging.totalCount}개
+                    (${paging.pageNum} / ${paging.totalPages} 페이지)
+                </div>
+            </c:if>
+        </div>
+
     </div>
 </div>
