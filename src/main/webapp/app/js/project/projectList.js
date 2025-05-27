@@ -34,55 +34,42 @@ $(function (){
         }
     });
 
-    // 🎯 개별 상태 체크박스들 클릭 시 (원래 로직 복원)
+    // 개별 상태 체크박스들 클릭 시 (원래 로직 복원)
     $('input[name="searchEvaCd"]').on('change', function(){
         if($(this).is(':checked')) {
-            // ✅ 개별 상태가 체크되면 전체만 해제 (다른 개별 상태는 그대로 유지)
+            // 개별 상태가 체크되면 전체만 해제 (다른 개별 상태는 그대로 유지)
             $('#allStatus').prop('checked', false);
         } else {
-            // ✅ 체크 해제될 때: 모든 개별 상태가 해제되면 전체를 다시 체크
+            // 체크 해제될 때 : 모든 개별 상태가 해제되면 [전체]를 다시 체크
             if($('input[name="searchEvaCd"]:checked').length === 0) {
                 $('#allStatus').prop('checked', true);
             }
         }
     });
 
-    // 🔍 검색 버튼 클릭 이벤트
+    // 검색 버튼 클릭 이벤트
     $('#search_btn').on('click', function(){
-        // 📅 날짜 유효성 검사
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
 
-        // 시작일과 종료일이 모두 입력된 경우 유효성 검사
-        if(startDate !== '' && endDate !== '') {
-            if (startDate > endDate) {
-                alert('종료일은 시작일보다 이후여야 합니다.');
-                return;
-            }
-        }
-
-        // 현재 날짜보다 미래 날짜가 입력되었는지 확인
-        if(startDate !== '' && startDate > todayString) {
+        if(startDate && endDate && startDate > endDate) {
+            alert('종료일은 시작일보다 이후여야 합니다.');
+            return;
+        } else if(startDate > today) {
             alert('시작일은 오늘 날짜보다 미래일 수 없습니다.');
             return;
-        }
-
-        if(endDate !== '' && endDate > todayString) {
+        } else if(endDate > today) {
             alert('종료일은 오늘 날짜보다 미래일 수 없습니다.');
             return;
         }
 
-        // 🏷️ 전체가 선택된 경우 개별 상태 체크박스들을 모두 해제
-        // (서버에서 상태 조건 없이 검색하도록)
         if($('#allStatus').is(':checked')) {
             $('input[name="searchEvaCd"]').prop('checked', false);
         }
-
-        // 🎯 검색 폼 제출
         $('#searchForm').submit();
     });
 
-    // 🧹 초기화 버튼 클릭 이벤트
+    // 초기화 버튼 클릭 이벤트
     $('#reset_btn').on('click', function(){
         // 모든 입력 필드 초기화
         $('#startDate').val('');
