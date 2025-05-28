@@ -76,7 +76,7 @@
         </if>
 
         ORDER BY A.FRST_RGSR_DTL_DTTM DESC
-        LIMIT #{pageSize} OFFSET #{offset}
+        LIMIT #{paginationInfo.recordCountPerPage} OFFSET #{paginationInfo.firstRecordIndex}
     </select>
 
     <!-- 로그인한 사용자가 프로젝트 등록   -->

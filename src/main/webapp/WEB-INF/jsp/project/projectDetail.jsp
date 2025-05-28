@@ -17,7 +17,7 @@
 <!-- 프로젝트 상세 테이블 -->
 <div>
     <caption>프로젝트 상세 조회</caption>
-    <table border="1">
+    <table>
         <tbody>
         <tr>
             <th>심사 결과</th>

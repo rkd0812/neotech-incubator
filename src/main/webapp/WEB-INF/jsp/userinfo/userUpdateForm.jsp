@@ -57,43 +57,6 @@
                             </div>
                         </div>
 
-                        <!-- 권한 설정 -->
-                        <c:choose>
-                            <c:when test="${loginUser.roleCd eq 'Z' || loginUser.roleCd eq 'C'}">
-                                <!-- 시스템 관리자나 심사장만 권한 수정 가능 -->
-                                <div class="mb-4">
-                                    <label for="roleCd" class="form-label fw-bold">권한</label>
-                                    <select name="roleCd" id="roleCd" class="form-select">
-                                        <option value="A" ${userInfo.roleCd eq 'A' ? 'selected' : ''}>A (일반 사용자)</option>
-                                        <option value="B" ${userInfo.roleCd eq 'B' ? 'selected' : ''}>B (심사자)</option>
-                                        <option value="C" ${userInfo.roleCd eq 'C' ? 'selected' : ''}>C (심사장)</option>
-                                        <c:if test="${loginUser.roleCd eq 'Z'}">
-                                            <option value="Z" ${userInfo.roleCd eq 'Z' ? 'selected' : ''}>Z (시스템 관리자)</option>
-                                        </c:if>
-                                    </select>
-                                    <small class="text-muted">권한을 변경할 수 있습니다.</small>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <!-- 일반 사용자는 권한 보기만 가능 -->
-                                <div class="mb-4">
-                                    <label class="form-label fw-bold">현재 권한</label>
-                                    <div class="form-control bg-light d-flex align-items-center">
-                                        <span class="badge bg-secondary me-2">${userInfo.roleCd}</span>
-                                        <c:choose>
-                                            <c:when test="${userInfo.roleCd eq 'A'}">일반 사용자</c:when>
-                                            <c:when test="${userInfo.roleCd eq 'B'}">심사자</c:when>
-                                            <c:when test="${userInfo.roleCd eq 'C'}">심사장</c:when>
-                                            <c:when test="${userInfo.roleCd eq 'Z'}">시스템 관리자</c:when>
-                                        </c:choose>
-                                    </div>
-                                    <small class="text-muted">권한은 관리자만 변경할 수 있습니다.</small>
-                                    <!-- 히든 필드로 기존 권한 유지 -->
-                                    <input type="hidden" name="roleCd" value="${userInfo.roleCd}">
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
-
                         <!-- 버튼 영역 -->
                         <div class="d-grid gap-2">
                             <button type="button" id="updateSubmitBtn" class="btn btn-primary">
