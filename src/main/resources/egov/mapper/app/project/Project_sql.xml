@@ -25,11 +25,7 @@
         </if>
         <!-- 상태 코드 조건 -->
         <if test="searchEvaCd != null and searchEvaCd != ''">
-            AND EVA_CD IN (
-            <foreach collection="searchEvaCd.split(',')" item="evaCd" separator=",">
-                #{evaCd}
-            </foreach>
-            )
+            AND EVA_CD = #{searchEvaCd}
         </if>
     </select>
 
@@ -76,11 +72,7 @@
         </if>
         <!-- 상태 코드 조건 -->
         <if test="searchEvaCd != null and searchEvaCd != ''">
-            AND A.EVA_CD IN (
-            <foreach collection="searchEvaCd.split(',')" item="evaCd" separator=",">
-                #{evaCd}
-            </foreach>
-            )
+            AND A.EVA_CD = #{searchEvaCd}
         </if>
 
         ORDER BY A.FRST_RGSR_DTL_DTTM DESC

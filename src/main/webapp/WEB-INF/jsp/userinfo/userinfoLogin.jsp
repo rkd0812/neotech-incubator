@@ -10,14 +10,14 @@
 <script src="<c:url value="/app/js/userinfo/userinfoLogin.js"/>"></script> <%-- 필수 --%>
 <div id="page-wrapper">
     <div class="row justify-content-center mt-5">
-        <div class="col-md-10 col-lg-8">
+        <div class="col-md-6 col-lg-5">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">로그인</h4>
                 </div>
                 <div class="card-body p-4">
                     <c:if test="${not empty errorMessage}">
-                        <div class="alert alert-danger alert-dismissible fade show mt-3 loginAlert" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show mt-2 loginAlert" role="alert">
                                 ${errorMessage}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>

@@ -29,8 +29,8 @@
 <%--<body>--%>
 <script src="<c:url value="/app/js/userinfo/registForm.js"/>"></script> <%-- 필수 --%>
 <div id="page-wrapper">
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-10 col-lg-8">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 col-lg-6">
             <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h4 class="mb-0">회원가입</h4>

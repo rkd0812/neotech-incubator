@@ -34,10 +34,9 @@ public class ProjectCtr {
         pagingVo.setUserEmail(userEmail);
 
         // 심사 상태 체크 부분을 하나의 문자열로 합치는 작업
-        String[] evaCdArray = request.getParameterValues("searchEvaCd");
-        if (evaCdArray != null && evaCdArray.length > 0) {
-            String combinedEvaCd = String.join(",", evaCdArray);
-            pagingVo.setSearchEvaCd(combinedEvaCd);
+        String searchEvaCd = request.getParameter("searchEvaCd");
+        if (searchEvaCd != null && !searchEvaCd.trim().isEmpty()) {
+            pagingVo.setSearchEvaCd(searchEvaCd);
         }
 
         // 전체 데이터 개수 조회

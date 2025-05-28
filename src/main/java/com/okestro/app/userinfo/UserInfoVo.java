@@ -15,7 +15,8 @@ public class UserInfoVo extends BaseVo {
     private String roleCd;
 
     // code 테이블 컬럼 목록
-    private String codeName;
+    private String upperCodeName;
     private String codeVal;
-    private String codeKr;
+    private String codeName;
+
 }

@@ -22,15 +22,15 @@
 
     <!-- 사용자 권한, 권한명 목록 전체 조회   -->
     <select id="retrieveUserInfoList" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT a.USER_EMAIL,
-               a.USER_PASSWORD,
-               a.USER_NAME,
-               a.ROLE_CD,
-               b.CODE_NAME
-        FROM SCH_INCU.USER a
-        LEFT JOIN SCH_INCU.CODE b
-         ON a.ROLE_CD = b.CODE_VAL
-        AND b.CODE_NAME = 'ROLE'
+        SELECT A.USER_EMAIL,
+               A.USER_PASSWORD,
+               A.USER_NAME,
+               A.ROLE_CD,
+               B.CODE_NAME
+        FROM SCH_INCU.USER A
+        LEFT JOIN SCH_INCU.CODE B
+         ON A.ROLE_CD = B.CODE_VAL
+        AND B.UPPER_CODE_NAME = 'ROLE'
     </select>
 
     <!-- 로그인 처리 :  0(로그인 성공), 1(비밀번호 불일치), 2(이메일 없음)  -->
@@ -64,17 +64,17 @@
 
     <!-- 로그인 성공 시 사용자 정보 조회  -->
     <select id="retrieveUserInfoForLogin" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT a.USER_EMAIL    AS userEmail,
-               a.USER_PASSWORD AS userPassword,
-               a.USER_NAME     AS userName,
-               a.ROLE_CD       AS roleCd,
-               b.CODE_NAME     AS codeName
-        FROM SCH_INCU.USER a
-        LEFT JOIN SCH_INCU.CODE b
-         ON a.ROLE_CD = b.CODE_VAL
-        AND b.CODE_NAME = 'ROLE'
-        WHERE a.USER_EMAIL = #{userEmail}
-          AND a.DEL_YN = 'N'
+        SELECT A.USER_EMAIL    AS userEmail,
+               A.USER_PASSWORD AS userPassword,
+               A.USER_NAME     AS userName,
+               A.ROLE_CD       AS roleCd,
+               B.CODE_NAME     AS codeName
+        FROM SCH_INCU.USER A
+        LEFT JOIN SCH_INCU.CODE B
+         ON A.ROLE_CD = B.CODE_VAL
+        AND B.UPPER_CODE_NAME = 'ROLE'
+        WHERE A.USER_EMAIL = #{userEmail}
+          AND A.DEL_YN = 'N'
     </select>
 
 
@@ -112,15 +112,17 @@
 
     <!-- 사용자 상세 정보 조회   -->
     <select id="userDetail" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT a.USER_EMAIL    AS userEmail,
-               a.USER_PASSWORD AS userPassword,
-               a.USER_NAME     AS userName,
-               a.ROLE_CD       AS roleCd,
-               b.CODE_NAME     AS codeName
-        FROM SCH_INCU.USER a
-        LEFT JOIN SCH_INCU.CODE b
-         ON a.ROLE_CD = b.CODE_VAL
-        WHERE a.USER_EMAIL = #{userEmail}
+        SELECT A.USER_EMAIL    AS userEmail,
+               A.USER_PASSWORD AS userPassword,
+               A.USER_NAME     AS userName,
+               A.ROLE_CD       AS roleCd,
+               B.CODE_NAME     AS codeName
+        FROM SCH_INCU.USER A
+        LEFT JOIN SCH_INCU.CODE B
+         ON A.ROLE_CD = B.CODE_VAL
+        AND B.UPPER_CODE_NAME = 'ROLE'
+        WHERE A.USER_EMAIL = #{userEmail}
+
     </select>
 
 

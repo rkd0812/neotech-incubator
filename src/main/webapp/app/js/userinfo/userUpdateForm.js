@@ -1,48 +1,42 @@
+
 $(function() {
     // 수정 버튼 클릭 시
     $("#updateSubmitBtn").click(function() {
-        var userEmail = $("#hiddenUserEmail").val();
         var password = $("#userPassword").val();
         var passwordConfirm = $("#passwordConfirm").val();
-        var roleCd = $("#roleCd").val();
+        var roleCd = $("#roleCd").val() || $("input[name='roleCd']").val();
 
-        if (password === "" && roleCd === "") {
-            alert("비밀번호 또는 권한 코드를 입력해주세요.");
+        // 입력값 확인
+        if (password === "" && !roleCd) {
+            alert("비밀번호 또는 권한 정보를 수정해주세요.");
+            return;
+        } else if (password !== "" && (password.length < 10 || password.length > 16)) {
+            alert("비밀번호는 10~16자리여야 합니다.");
+            $("#userPassword").focus();
+            return;
+        } else if (password !== "" && !(/[A-Za-z]/.test(password) && /[0-9]/.test(password) && /[!@#$%^&*()]/.test(password))) {
+            alert("비밀번호는 영문, 숫자, 특수문자(!@#$%^&*())를 모두 포함해야 합니다.");
+            $("#userPassword").focus();
+            return;
+        } else if (password !== "" && password !== passwordConfirm) {
+            alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+            $("#passwordConfirm").focus();
             return;
         }
 
-        if (password !== "") {
-            var passwordLength = password.length >= 10 && password.length <= 16;
-            var hasLetters = /[A-Za-z]/.test(password);
-            var hasNumbers = /[0-9]/.test(password);
-            var hasSpecialChars = /[!@#$%^&*()]/.test(password);
-
-            if (!passwordLength) {
-                alert("비밀번호는 10~16자리여야 합니다.");
-                return;
+        if (confirm("사용자 정보를 수정하시겠습니까?")) {
+            // 비밀번호가 비어있으면 해당 필드를 제거 (기존 비밀번호 유지)
+            if (password === "") {
+                $("#userPassword").remove();
             }
-
-            if (!(hasLetters && hasNumbers && hasSpecialChars)) {
-                alert("비밀번호는 영문, 숫자, 특수문자(!@#$%^&*())를 모두 포함해야 합니다.");
-                return;
-            }
-
-            if (password !== passwordConfirm) {
-                alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
-                return;
-            }
-        }
-
-        // 수정 확인
-        if (confirm("수정을 하시겠습니까?")) {
             $("#updateForm").submit();
-        } else {
-            alert("수정이 취소되었습니다.");
         }
     });
 
     // 취소 버튼 클릭 시
     $("#cancelBtn").click(function() {
-        history.back();
+        if (confirm("수정을 취소하고 이전 페이지로 돌아가시겠습니까?")) {
+            history.back();
+        }
     });
 });

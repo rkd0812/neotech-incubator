@@ -9,40 +9,82 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script src="<c:url value="/app/js/userinfo/userDetail.js"/>"></script> <%-- 필수 --%>
-<div>
-    <h2>사용자 상세 정보</h2>
-    <table border="1">
-        <tr>
-            <td>이메일</td>
-            <td id="displayEmail">${userInfo.userEmail}</td>
-        </tr>
-        <tr>
-            <td>비밀번호</td>
-            <td>${userInfo.userPassword}</td>
-        </tr>
-        <tr>
-            <td>권한코드</td>
-            <td>${userInfo.roleCd}</td>
-        </tr>
-        <tr>
-            <td>권한명</td>
-            <td>${userInfo.codeKr}</td>
-        </tr>
-    </table>
-</div>
-<div>
-    <form id="updateForm" action="/userinfo/updateForm.do" method="get" style="display:inline;">
-        <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
-        <button type="submit">수정</button>
-    </form>
-    <button id="deleteBtn">회원탈퇴</button>
-    <form method="get" action="/project/projectList.do" style="display: inline;">
-        <button type="submit" id="listBtn">HOME</button>
-    </form>
+<div id="page-wrapper">
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">사용자 상세 정보</h4>
+                </div>
+                <div class="card-body p-3">
 
+                    <!-- 사용자 정보 테이블 -->
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered table-hover">
+                            <tbody>
+                            <tr>
+                                <td class="bg-light fw-bold" style="width: 30%;">이메일</td>
+                                <td id="displayEmail">${userInfo.userEmail}</td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light fw-bold">비밀번호</td>
+                                <td>
+                                    <span class="text-muted">**********</span>
+                                    <small class="text-muted ms-2">(보안상 표시되지 않습니다)</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light fw-bold">권한코드</td>
+                                <td>
+                                    <span class="badge bg-secondary">${userInfo.roleCd}</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="bg-light fw-bold">권한명</td>
+                                <td>
+                                    <span class="badge bg-primary">${userInfo.codeName}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- 버튼 영역 -->
+                    <div class="d-grid gap-2">
+                        <!-- 수정 버튼 -->
+                        <form id="updateForm" action="/userinfo/updateForm.do" method="get">
+                            <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-edit me-1"></i>정보 수정
+                            </button>
+                        </form>
+
+                        <!-- 버튼 그룹 -->
+                        <div class="row g-2 mt-1">
+                            <div class="col-6">
+                                <!-- HOME 버튼 -->
+                                <form method="get" action="/project/projectList.do">
+                                    <button type="submit" id="listBtn" class="btn btn-info w-100">
+                                        <i class="fas fa-home me-1"></i>HOME
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-6">
+                                <!-- 회원탈퇴 버튼 -->
+                                <button id="deleteBtn" class="btn btn-danger w-100">
+                                    <i class="fas fa-user-times me-1"></i>회원탈퇴
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<form id="deleteForm" action="/userinfo/deleteUserInfo.do" method="post">
+
+<!-- 숨겨진 삭제 폼 -->
+<form id="deleteForm" action="/userinfo/deleteUserInfo.do" method="post" style="display: none;">
     <input type="hidden" name="userEmail" value="${userInfo.userEmail}">
 </form>
-<%--</body>--%>
-<%--</html>--%>

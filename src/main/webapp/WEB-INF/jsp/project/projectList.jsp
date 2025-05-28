@@ -41,18 +41,31 @@
                     </tr>
                         <th>심사 상태</th>
                     <td>
-                        <label style="margin-right: 15px;">
-                            <input type="checkbox" id="allStatus" checked> 전체
-                        </label>
-                        <label style="margin-right: 15px;">
+                        <%--<label style="margin-right: 15px;">--%>
+                        <%--    <input type="checkbox" id="allStatus" checked> 전체--%>
+                        <%--</label>--%>
+                        <%--<label style="margin-right: 15px;">--%>
 
-                            <input type="checkbox" value="01" id="status01"> 심사요청
+                        <%--    <input type="checkbox" value="01" id="status01"> 심사요청--%>
+                        <%--</label>--%>
+                        <%--<label style="margin-right: 15px;">--%>
+                        <%--    <input type="checkbox" value="02" id="status02"> 심사중--%>
+                        <%--</label>--%>
+                        <%--<label>--%>
+                        <%--    <input type="checkbox" value="03" id="status03"> 심사완료--%>
+                        <%--</label>--%>
+                        <!-- 라디오 버튼으로 변경 - 같은 name을 가져야 하나만 선택됨 -->
+                        <label style="margin-right: 15px">
+                            <input type="radio" name="displayEvaCd" value="" id="allStatus" checked> 전체
                         </label>
-                        <label style="margin-right: 15px;">
-                            <input type="checkbox" value="02" id="status02"> 심사중
+                        <label style="margin-right: 15px">
+                            <input type="radio" name="displayEvaCd" value="01" id="status01"> 심사요청
                         </label>
-                        <label>
-                            <input type="checkbox" value="03" id="status03"> 심사완료
+                        <label style="margin-right: 15px">
+                            <input type="radio" name="displayEvaCd" value="02" id="status02"> 심사중
+                        </label>
+                        <label style="margin-right: 15px">
+                            <input type="radio" name="displayEvaCd" value="03" id="status03"> 심사완료
                         </label>
                     </td>
                 </tbody>
