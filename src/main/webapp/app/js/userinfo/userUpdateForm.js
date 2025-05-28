@@ -7,8 +7,8 @@ $(function() {
         var roleCd = $("#roleCd").val() || $("input[name='roleCd']").val();
 
         // 입력값 확인
-        if (password === "" && !roleCd) {
-            alert("비밀번호 또는 권한 정보를 수정해주세요.");
+        if (password === "") {
+            alert("비밀번호 입력해주세요.");
             return;
         } else if (password !== "" && (password.length < 10 || password.length > 16)) {
             alert("비밀번호는 10~16자리여야 합니다.");

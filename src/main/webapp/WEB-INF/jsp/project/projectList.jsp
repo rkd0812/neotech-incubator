@@ -10,20 +10,20 @@
 <script src="<c:url value="/app/js/project/projectList.js"/>"></script> <%--필수 --%>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-title">프로젝트 목록</h1>
+        <h1 class="page-title">사용자 프로젝트 목록조회</h1>
     </div>
     <!-- 검색 영역 -->
     <div class="page-inner">
         <form id="searchForm" method="get" action="/project/projectList.do" style="text-align: center;">
             <!-- 페이징 정보 유지를 위한 hidden 필드 추가 -->
-            <input type="hidden" name="pageNum" id="pageNum" value="${empty paging.pageNum ? 1 : paging.pageNum}">
+            <input type="hidden" name="currentPageNo" id="currentPageNo" value="${empty paging.paginationInfo.currentPageNo ? 1 : paging.paginationInfo.currentPageNo}">
             <!-- 실제 검색에 사용되는 hidden 필드 (조회 버튼 눌렀을 때만 값이 설정됨) -->
             <input type="hidden" name="searchStartDate" id="hiddenStartDate" value="${paging.searchStartDate}">
             <input type="hidden" name="searchEndDate" id="hiddenEndDate" value="${paging.searchEndDate}">
             <input type="hidden" name="searchProjectName" id="hiddenProjectName" value="${paging.searchProjectName}">
             <input type="hidden" name="searchEvaCd" id="hiddenSearchEvaCd" value="${paging.searchEvaCd}">
 
-            <table style="width: 1000px; border: solid 1px black; margin: 0 auto; text-align: center;">
+            <table>
                 <tbody>
                     <tr>
                         <th>기간</th>
@@ -34,12 +34,12 @@
                         </td>
                         </tr>
                     <tr>
-                        <th>프로젝트 명</th>
+                        <th>프로젝트명</th>
                         <td>
-                            <input type="text" id="projectName" placeholder="프로젝트명 입력" value="">
+                            <input type="text" id="projectName" value="">
                         </td>
                     </tr>
-                        <th>심사 상태</th>
+                        <th>심사상태</th>
                     <td>
                         <%--<label style="margin-right: 15px;">--%>
                         <%--    <input type="checkbox" id="allStatus" checked> 전체--%>
@@ -57,6 +57,9 @@
                         <!-- 라디오 버튼으로 변경 - 같은 name을 가져야 하나만 선택됨 -->
                         <label style="margin-right: 15px">
                             <input type="radio" name="displayEvaCd" value="" id="allStatus" checked> 전체
+                        </label>
+                        <label style="margin-right: 15px">
+                            <input type="radio" name="displayEvaCd" value="00" id="status00"> 등록
                         </label>
                         <label style="margin-right: 15px">
                             <input type="radio" name="displayEvaCd" value="01" id="status01"> 심사요청
@@ -98,7 +101,7 @@
 
         <!-- 테이블 영역 -->
         <div class="table-area">
-            <table border="1">
+            <table>
                 <thead>
                 <tr>
                     <th>No</th>
@@ -119,7 +122,11 @@
                         <!-- 방법 1: 가장 안전한 방법 - 단순하게 status.index 사용 -->
                         <c:forEach var="project" items="${projectList}" varStatus="status">
                             <tr>
-                                <td>${project.projectId}</td>
+                                <td>
+                                    ${(paging.paginationInfo.currentPageNo - 1) * paging.paginationInfo.recordCountPerPage + status.index + 1}
+                                    <!-- 프로젝트 ID는 숨김 처리 -->
+                                    <span style="display: none;" data-project-id="${project.projectId}"></span>
+                                </td>
                                 <td>
                                     <a href="/project/projectDetail.do?projectId=${project.projectId}">
                                             ${project.projectName}
@@ -145,6 +152,7 @@
                                             <!-- 코드명이 없을 때 기본값 표시 -->
                                             <c:choose>
                                                 <c:when test="${project.evaCd eq 'A'}">대기중</c:when>
+                                                <c:when test="${project.evaCd eq '00'}">등록</c:when>
                                                 <c:when test="${project.evaCd eq '01'}">심사요청</c:when>
                                                 <c:when test="${project.evaCd eq '02'}">심사중</c:when>
                                                 <c:when test="${project.evaCd eq '03'}">심사완료</c:when>
@@ -175,12 +183,12 @@
 
         <!-- 페이징 영역 -->
         <div class="paging-area" style="text-align: center; margin: 20px 0;">
-            <c:if test="${not empty paging and paging.totalPages > 1}">
+            <c:if test="${not empty paging.paginationInfo and paging.paginationInfo.totalPageCount > 1}">
                 <div class="pagination" style="display: inline-block;">
 
                     <!-- 맨 처음 페이지 -->
-                    <c:if test="${paging.pageNum > 1}">
-                        <a href="javascript:void(0)" onclick="goToPage(1)"
+                    <c:if test="${paging.paginationInfo.currentPageNo > 1}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.paginationInfo.firstPageNo})"
                            style="display: inline-block; padding: 8px 12px; margin: 0 2px;
                                   border: 1px solid #ddd; text-decoration: none; color: #333;">
                             ≪
@@ -188,8 +196,8 @@
                     </c:if>
 
                     <!-- 이전 페이지 -->
-                    <c:if test="${paging.pageNum > 1}">
-                        <a href="javascript:void(0)" onclick="goToPage(${paging.pageNum - 1})"
+                    <c:if test="${paging.paginationInfo.currentPageNo > 1}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.paginationInfo.currentPageNo - 1})"
                            style="display: inline-block; padding: 8px 12px; margin: 0 2px;
                                   border: 1px solid #ddd; text-decoration: none; color: #333;">
                             ＜
@@ -197,17 +205,12 @@
                     </c:if>
 
                     <!-- 페이지 번호들 -->
-                    <c:set var="startPage" value="${paging.pageNum <= 3 ? 1 : paging.pageNum - 2}" />
-                    <c:set var="endPage" value="${startPage + 4 > paging.totalPages ? paging.totalPages : startPage + 4}" />
-
-                    <c:forEach var="pageNumber" begin="${startPage}" end="${endPage}">
+                    <c:forEach var="pageNumber" begin="${paging.paginationInfo.firstPageNoOnPageList}" end="${paging.paginationInfo.lastPageNoOnPageList}">
                         <c:choose>
-                            <c:when test="${pageNumber == paging.pageNum}">
+                            <c:when test="${pageNumber == paging.paginationInfo.currentPageNo}">
                                 <span style="display: inline-block; padding: 8px 12px; margin: 0 2px;
                                              border: 1px solid #007bff; background-color: #007bff;
-                                             color: white; font-weight: bold;">
-                                        ${pageNumber}
-                                </span>
+                                             color: white; font-weight: bold;">${pageNumber}</span>
                             </c:when>
                             <c:otherwise>
                                 <a href="javascript:void(0)" onclick="goToPage(${pageNumber})"
@@ -220,8 +223,8 @@
                     </c:forEach>
 
                     <!-- 다음 페이지 -->
-                    <c:if test="${paging.pageNum < paging.totalPages}">
-                        <a href="javascript:void(0)" onclick="goToPage(${paging.pageNum + 1})"
+                    <c:if test="${paging.paginationInfo.currentPageNo < paging.paginationInfo.totalPageCount}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.paginationInfo.currentPageNo + 1})"
                            style="display: inline-block; padding: 8px 12px; margin: 0 2px;
                                   border: 1px solid #ddd; text-decoration: none; color: #333;">
                             ＞
@@ -229,8 +232,8 @@
                     </c:if>
 
                     <!-- 맨 마지막 페이지 -->
-                    <c:if test="${paging.pageNum < paging.totalPages}">
-                        <a href="javascript:void(0)" onclick="goToPage(${paging.totalPages})"
+                    <c:if test="${paging.paginationInfo.currentPageNo < paging.paginationInfo.totalPageCount}">
+                        <a href="javascript:void(0)" onclick="goToPage(${paging.paginationInfo.lastPageNo})"
                            style="display: inline-block; padding: 8px 12px; margin: 0 2px;
                                   border: 1px solid #ddd; text-decoration: none; color: #333;">
                             ≫
@@ -240,8 +243,8 @@
 
                 <!-- 페이징 정보 -->
                 <div style="margin-top: 10px; color: #666; font-size: 14px;">
-                    총 ${paging.totalCount}개
-                    (${paging.pageNum} / ${paging.totalPages} 페이지)
+                    총 ${paging.paginationInfo.totalRecordCount}개
+                    (${paging.paginationInfo.currentPageNo} / ${paging.paginationInfo.totalPageCount} 페이지)
                 </div>
             </c:if>
         </div>

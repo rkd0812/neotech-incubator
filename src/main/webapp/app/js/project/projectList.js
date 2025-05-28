@@ -7,26 +7,26 @@ $(function (){
         return year + '-' + month + '-' + day;
     }
 
-    // 일주일 전 날짜 계산 함수
-    function getWeekAgoString() {
+    // 한달 전 날짜 계산 함수
+    function getOneMonthAgoString() {
         var today = new Date();
-        var weekAgo = new Date(today.getTime() - (6 * 24 * 60 * 60 * 1000)); // 7일 전
-        var year = weekAgo.getFullYear();
-        var month = (weekAgo.getMonth() + 1).toString().padStart(2, '0');
-        var day = weekAgo.getDate().toString().padStart(2, '0');
+        var oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+        var year = oneMonthAgo.getFullYear();
+        var month = (oneMonthAgo.getMonth() + 1).toString().padStart(2, '0');
+        var day = oneMonthAgo.getDate().toString().padStart(2, '0');
         return year + '-' + month + '-' + day;
     }
 
     // 날짜 관련 초기 설정
     var todayString = getTodayString();
-    var weekAgoString = getWeekAgoString();
+    var oneMonthAgoString = getOneMonthAgoString();
 
     // 날짜 입력 필드의 최대값을 오늘 날짜로 설정
     $('#startDate').attr('max', todayString);
     $('#endDate').attr('max', todayString);
 
     // 화면 표시용 필드에 기본값 설정
-    $('#startDate').val(weekAgoString);  // 일주일 전
+    $('#startDate').val(oneMonthAgoString);  // 한달 전
     $('#endDate').val(todayString);      // 오늘
 
     // 페이지 로드 시 검색 조건이 있으면 화면에 표시
@@ -42,7 +42,8 @@ $(function (){
     }
     if ($('#hiddenSearchEvaCd').val()) {
         var evaCd = $('#hiddenSearchEvaCd').val();
-        if (evaCd === '01') $('#status01').prop('checked', true);
+        if (evaCd === '00') $('#status00').prop('checked', true);
+        else if (evaCd === '01') $('#status01').prop('checked', true);
         else if (evaCd === '02') $('#status02').prop('checked', true);
         else if (evaCd === '03') $('#status03').prop('checked', true);
         else $('#allStatus').prop('checked', true);
@@ -74,7 +75,7 @@ $(function (){
         $('#hiddenSearchEvaCd').val(selectedEvaCd);
 
         // 검색할 때는 1페이지부터 시작
-        $('#pageNum').val(1);
+        $('#currentPageNo').val(1);
 
         $('#searchForm').submit();
     });
@@ -82,7 +83,7 @@ $(function (){
     // 초기화 버튼 클릭 이벤트
     $('#reset_btn').on('click', function(){
         // 모든 검색 조건을 기본값으로 초기화
-        $('#startDate').val(weekAgoString);  // 일주일 전
+        $('#startDate').val(oneMonthAgoString);  // 일주일 전
         $('#endDate').val(todayString);      // 오늘
         $('#projectName').val('');           // 프로젝트명 비우기
         $('#allStatus').prop('checked', true); // 심사 상태를 '전체'로 초기화
@@ -94,7 +95,7 @@ $(function (){
         $('#hiddenSearchEvaCd').val('');
 
         // 페이지를 1페이지로 초기화
-        $('#pageNum').val(1);
+        $('#currentPageNo').val(1);
     });
 
     // 프로젝트 등록 버튼
@@ -106,6 +107,8 @@ $(function (){
 
 // 페이징 부분 전역 함수로 선언
 function goToPage(pageNumber) {
-    $('#pageNum').val(pageNumber);
+    $('#currentPageNo').val(pageNumber);
     $('#searchForm').submit();
+
 }
+

@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -33,7 +34,27 @@ public class ProjectCtr {
         // 사용자 이메일 설정
         pagingVo.setUserEmail(userEmail);
 
-        // 심사 상태 체크 부분을 하나의 문자열로 합치는 작업
+        // 페이징 파라미터 처리 =====
+        String currentPageNoStr = request.getParameter("currentPageNo");
+        if (currentPageNoStr != null && !currentPageNoStr.isEmpty()) {
+            try {
+                int currentPageNo = Integer.parseInt(currentPageNoStr);
+                pagingVo.getPaginationInfo().setCurrentPageNo(currentPageNo);
+            } catch (NumberFormatException e) {
+                pagingVo.getPaginationInfo().setCurrentPageNo(1);
+            }
+        }
+
+        // 첫 페이지 로드 시 기본 기간 설정 (1달) =====
+        if (pagingVo.getSearchStartDate() == null || pagingVo.getSearchStartDate().isEmpty()) {
+            LocalDate today = LocalDate.now();
+            LocalDate oneMonthAgo = today.minusMonths(1);
+
+            pagingVo.setSearchStartDate(oneMonthAgo.toString());
+            pagingVo.setSearchEndDate(today.toString());
+        }
+
+        // 심사 상태 라디오버튼 처리
         String searchEvaCd = request.getParameter("searchEvaCd");
         if (searchEvaCd != null && !searchEvaCd.trim().isEmpty()) {
             pagingVo.setSearchEvaCd(searchEvaCd);
@@ -41,7 +62,7 @@ public class ProjectCtr {
 
         // 전체 데이터 개수 조회
         int totalCount = projectSvc.countProjectList(pagingVo);
-        pagingVo.setTotalCount(totalCount);  // 이때 totalPages도 자동 계산됨
+        pagingVo.getPaginationInfo().setTotalRecordCount(totalCount);
 
         // 페이징된 데이터 조회
         List<ProjectVo> projectList = projectSvc.retrieveProjectListPagiging(pagingVo);

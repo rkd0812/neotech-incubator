@@ -129,8 +129,7 @@
     <!--  사용자 정보 수정  -->
     <update id="updateUserInfo" parameterType="com.okestro.app.userinfo.UserInfoVo">
         UPDATE SCH_INCU.USER
-        SET USER_PASSWORD = #{userPassword},
---             ROLE_CD       = #{roleCd}
+        SET USER_PASSWORD = #{userPassword}
         WHERE USER_EMAIL = #{userEmail}
     </update>
 
