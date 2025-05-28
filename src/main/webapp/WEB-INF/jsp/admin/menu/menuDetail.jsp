@@ -23,6 +23,8 @@
         <form id="detailForm" name="detailForm" action="/admin/menu/update.do" method="post">
             <table>
                 <colgroup>
+                    <col style="width: 20%;" />
+                    <col />
                 </colgroup>
                 <thead>
                     <tr>

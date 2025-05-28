@@ -37,10 +37,8 @@ public class EvaProjectCtr {
 
         if(evaProjectVo.getStartDate() == null && evaProjectVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-//            evaProjectVo.setStartDate(LocalDate.now().minusMonths(1).toString());
-//            evaProjectVo.setEndDate(nowDate.toString());
-            evaProjectVo.setStartDate(nowDate.minusMonths(3).toString());
-            evaProjectVo.setEndDate(nowDate.plusMonths(3).toString());
+            evaProjectVo.setStartDate(LocalDate.now().minusMonths(1).toString());
+            evaProjectVo.setEndDate(nowDate.toString());
         }
         
         // 목록 개수 조회

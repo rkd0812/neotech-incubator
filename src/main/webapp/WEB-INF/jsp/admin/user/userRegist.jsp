@@ -14,10 +14,24 @@
             <div class="page-inner">
                 <form id="registForm" name="registForm" action="/admin/user/regist.do" method="post">
                     <table>
+                        <colgroup>
+                            <col style="width: 20%;" />
+                            <col />
+                        </colgroup>
                         <tbody>
                             <tr>
                                 <th>이메일</th>
-                                <td><input type="text" id="userEmail" name="userEmail" /></td>
+                                <td>
+                                    <input type="hidden" name="userEmail" />
+                                    <input type="text" id="userEmailId" style="width: 30%; display: inline-block;" />@<input type="text" id="userEmailDomain" style="width: 30%; display: inline-block;" />
+                                    <select id="domainList" class="form-select domain-select" style="width: 30%; display: inline-block;">
+                                        <option value="">직접 입력</option>
+                                        <option value="naver.com">naver.com</option>
+                                        <option value="google.com">google.com</option>
+                                        <option value="kakao.com">kakao.com</option>
+                                        <option value="daum.net">daum.net</option>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <th>비밀번호</th>

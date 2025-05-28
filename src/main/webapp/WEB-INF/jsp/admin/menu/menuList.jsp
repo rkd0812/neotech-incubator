@@ -17,15 +17,15 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-title">메뉴 목록조회</h1>
+        <h1 class="page-title">메뉴 관리</h1>
     </div>
     <div class="page-inner">
         <form id="searchForm" name="searchForm" action="/admin/menu/list.do" >
             <input type="hidden" name="currentPageNo" value=${currentPageNo}>
             <table>
                 <colgroup>
-                    <col style="width: 30%;"/>
-                    <col style="width: auto;" />
+                    <col style="width: 20%;"/>
+                    <col />
                 </colgroup>
                 <tbody>
                     <tr>
@@ -43,6 +43,11 @@
         <button id="searchBtn">검색</button>
         <table>
             <colgroup>
+                <col style="width: 10%;" />
+                <col />
+                <col />
+                <col />
+                <col style="width: 20%;" />
             </colgroup>
             <thead>
                 <tr>

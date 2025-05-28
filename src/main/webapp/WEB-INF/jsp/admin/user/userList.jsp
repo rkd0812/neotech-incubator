@@ -18,7 +18,7 @@
 <div id="page-wrapper">
     <div class="header">
         <h1 class="page-title">
-            사용자 목록조회
+            사용자 관리
         </h1>
     </div>
     <div class="page-inner">
@@ -26,8 +26,8 @@
             <input type="hidden" name="currentPageNo" value=${currentPageNo}>
             <table>
                 <colgroup>
-                    <col style="width: 30%;">
-                    <col style="width: auto;">
+                    <col style="width: 20%;" />
+                    <col />
                 </colgroup>
                 <tbody>
                     <tr>
@@ -54,6 +54,10 @@
         <button id="searchBtn">검색</button>
         <table>
             <colgroup>
+                <col style="width: 10%;" />
+                <col />
+                <col />
+                <col />
             </colgroup>
             <thead>
                 <tr>

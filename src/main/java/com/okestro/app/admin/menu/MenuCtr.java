@@ -61,7 +61,7 @@ public class MenuCtr {
 
         if(menuVo.getStartDate() == null && menuVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            menuVo.setStartDate(LocalDate.now().minusMonths(3).toString());
+            menuVo.setStartDate(LocalDate.now().minusMonths(1).toString());
             menuVo.setEndDate(nowDate.toString());
         }
 

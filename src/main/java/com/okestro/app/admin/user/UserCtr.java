@@ -30,7 +30,7 @@ public class UserCtr {
 
         if(userVo.getStartDate() == null && userVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            userVo.setStartDate(nowDate.minusMonths(3).toString());
+            userVo.setStartDate(nowDate.minusMonths(1).toString());
             userVo.setEndDate(nowDate.toString());
         }
 

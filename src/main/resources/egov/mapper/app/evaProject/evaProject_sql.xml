@@ -16,8 +16,8 @@
             AND EVA_CD = #{evaCd}
         </if>
         <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
-            AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+            AND TO_CHAR(EVA_START_DT, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+            AND TO_CHAR(EVA_END_DT, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
         </if>
     </select>
 
@@ -39,7 +39,7 @@
                      , FRST_RGSR_ID
                      , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
                      , LAST_CHNG_ID
-                     , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNF_DTL_DTTM
+                     , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
                      , USER_GROUP_ID
                      , EVA_GROUP_ID
                      , PROJECT_DETAIL
@@ -56,9 +56,10 @@
                     AND EVA_CD = #{evaCd}
                 </if>
                 <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
-                    AND TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
+                    AND TO_CHAR(EVA_START_DT, 'yyyy-mm-dd') <![CDATA[>=]]> #{startDate}
+                    AND TO_CHAR(EVA_END_DT, 'yyyy-mm-dd') <![CDATA[<=]]> #{endDate}
                 </if>
+                ORDER BY FRST_RGSR_DTL_DTTM DESC
             ) T1
         ) T2
         <if test="firstRecordIndex >= 0 and lastRecordIndex > 0">

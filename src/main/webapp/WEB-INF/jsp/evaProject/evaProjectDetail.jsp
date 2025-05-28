@@ -87,9 +87,9 @@
             </div>
             <table>
                 <colgroup>
-                    <col style="width: 5%;" />
+                    <col style="width: 10%;" />
                     <col />
-                    <col />
+                    <col style="width: 20%;" />
                     <col style="width: 20%;" />
                 </colgroup>
                 <thead>

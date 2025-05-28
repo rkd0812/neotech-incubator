@@ -15,7 +15,7 @@
 
 <div class="navbar bg-body-tertiary" >
     <div style="display: flex; justify-content: center;">
-        <img src="/assets/img/logo_02.png" style="height: 90px">
+        <img src="/assets/img/logo_02.png" style="height: 90px;" onclick="location.href='/project/projectList.do';">
     </div>
     <c:if test="${loginUser ne null}">
         <div>

@@ -16,7 +16,8 @@
         <form id="registForm" name="registForm" action="/admin/menu/regist.do" method="post">
             <table>
                 <colgroup>
-
+                    <col style="width: 20%;" />
+                    <col />
                 </colgroup>
                 <tbody>
                     <tr>

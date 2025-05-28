@@ -17,7 +17,7 @@
 </script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-title">코드 목록조회</h1>
+        <h1 class="page-title">코드 관리</h1>
     </div>
     <div class="page-inner">
         <form id="searchForm" name="searchForm" action="/admin/code/list.do">

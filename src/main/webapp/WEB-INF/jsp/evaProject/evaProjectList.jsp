@@ -11,13 +11,15 @@
 <script src="/app/js/evaProject/evaProjectList.js"></script>
 <div id="page-wrapper">
     <div class="header">
-        <h1 class="page-title">심사 프로젝트 목록조회</h1>
+        <h1 class="page-title">심사 프로젝트</h1>
     </div>
     <div class="page-inner">
         <form id="searchForm" name="searchForm" action="/evaProject/list.do" >
             <input type="hidden" name="currentPageNo" value=${currentPageNo}>
             <table>
                 <colgroup>
+                    <col style="width: 20%;" />
+                    <col />
                 </colgroup>
                 <tbody>
                     <tr>
@@ -47,6 +49,13 @@
         <button id="searchBtn">검색</button>
         <table>
             <colgroup>
+                <col style="width: 10%;" />
+                <col />
+                <col />
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+                <col style="width: 15%" />
+                <col style="width: 15%;" />
             </colgroup>
             <thead>
             <tr>
@@ -56,6 +65,7 @@
                 <th>심사시작일자</th>
                 <th>심사종료일자</th>
                 <th>심사위원단구성</th>
+                <th>등록일자</th>
             </tr>
             </thead>
             <tbody>
@@ -74,6 +84,7 @@
                         <td>${evaProj.evaStartDt}</td>
                         <td>${evaProj.evaEndDt}</td>
                         <td>${evaProj.evaFormYn}</td>
+                        <td>${evaProj.frstRgsrDtlDttm}</td>
                     </tr>
                 </c:forEach>
             </tbody>

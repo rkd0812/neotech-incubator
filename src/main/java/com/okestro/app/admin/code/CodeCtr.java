@@ -44,7 +44,7 @@ public class CodeCtr {
 
         if(codeVo.getStartDate() == null && codeVo.getEndDate() == null) {
             LocalDate nowDate = LocalDate.now();
-            codeVo.setStartDate(LocalDate.now().minusMonths(3).toString());
+            codeVo.setStartDate(LocalDate.now().minusMonths(1).toString());
             codeVo.setEndDate(nowDate.toString());
         }
 
