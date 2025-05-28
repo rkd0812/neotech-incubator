@@ -27,7 +27,7 @@
                         <th>상위메뉴</th>
                         <td>
                             <select id="upperMenuId" name="upperMenuId">
-                                <option value=""></option>
+                                <option value="">선택안함</option>
                                 <c:forEach items="${menuList}" var="menu" varStatus="status">
                                     <option value="${menu.menuId}">${menu.menuName}</option>
                                 </c:forEach>

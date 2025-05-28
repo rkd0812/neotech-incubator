@@ -96,7 +96,7 @@ public class UserCtr {
             redirectAttributes.addFlashAttribute("msg", "수정 실패");
         }
 
-        return "redirect:admin/user/detail.do?userEmail=" + userVo.getUserEmail();
+        return "redirect:/admin/user/detail.do?userEmail=" + userVo.getUserEmail();
     }
 
     @GetMapping("/admin/user/openRegist.do")

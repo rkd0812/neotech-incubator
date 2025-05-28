@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.okestro.app.userinfo.UserInfoVo" %><%--
   Created by IntelliJ IDEA.
   User: admin
   Date: 2025-04-16
@@ -293,9 +293,12 @@
             text-align: left;
             border-left: 4px solid #3498db;
             padding-left: 12px;
-            /*background-color: #f5f7fa;*/
-            display: inline-block;
             border-radius: 4px;
+        }
+
+        .div-comment {
+            /*padding-left: 160px;*/
+            padding-left: 15%;
         }
 
         .custom-pagination {
@@ -311,6 +314,7 @@
         .custom-pagination strong {
             padding: 5px 10px;
             border: 1px solid #dee2e6;
+            background-color: #fff;
             background-color: #fff;
             color: #007bff;
             text-decoration: none;
@@ -331,10 +335,15 @@
 
     </style>
 </head>
+<%
+    UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+%>
 <body id="body-pd">
     <div class="wrap">
         <tiles:insertAttribute name="navBar" />
-        <tiles:insertAttribute name="sideBar" />
+        <c:if test="${loginUser ne null}">
+            <tiles:insertAttribute name="sideBar" />
+        </c:if>
         <tiles:insertAttribute name="body" />
     </div>
 </body>

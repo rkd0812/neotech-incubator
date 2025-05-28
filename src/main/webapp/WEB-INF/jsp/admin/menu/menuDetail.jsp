@@ -29,14 +29,14 @@
                         <th>메뉴명</th>
                         <td>
                             <input type="hidden" id="menuId" name="menuId" value="${menuDetail.menuId}">
-                            <input type="text" id="menuName" name="menuName" value="${menuDetail.menuName}">
+                            ${menuDetail.menuName}
                         </td>
                     </tr>
                     <tr>
                         <th>상위메뉴</th>
                         <td>
                             <select id="upperMenuId" name="upperMenuId">
-                                <option value=""></option>
+                                <option value="">선택안함</option>
                                 <c:forEach items="${menuList}" var="menu" varStatus="status">
                                     <c:if test="${menuDetail.menuName ne menu.menuName}">
                                         <option value="${menu.menuId}" <c:if test="${menu.menuId eq menuDetail.upperMenuId}">selected</c:if> >${menu.menuName}</option>

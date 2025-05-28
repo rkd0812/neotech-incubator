@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.okestro.app.userinfo.UserInfoVo" %><%--
   Created by IntelliJ IDEA.
   User: admin
   Date: 2025-04-16
@@ -8,6 +8,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
+<%
+    UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+    String userEmail = (String) session.getAttribute("userEmail");
+    String roleCd = (String) session.getAttribute("roleCd");
+%>
+
 <%--        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-light">--%>
 <%--            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">--%>
 <%--                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">--%>
@@ -48,30 +54,33 @@
 <%--                <a href="#" class="nav__logo">Bedimcode</a>--%>
             </div>
 
-
             <div class="nav__list">
                 <a href="/project/projectList.do" class="nav__link">
                     <ion-icon name="home-outline" class="nav__icon"></ion-icon>
                     <span class="nav_name">사용자 프로젝트</span>
                 </a>
 
-                <a href="/evaProject/list.do" class="nav__link">
-                    <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">관리자 프로젝트</span>
-                </a>
+                <c:if test="${roleCd eq  'B' or roleCd eq 'C' or roleCd eq 'Z'}">
+                    <a href="/evaProject/list.do" class="nav__link">
+                        <ion-icon name="folder-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">심사 프로젝트</span>
+                    </a>
+                </c:if>
 
-                <div href="#" onclick="location.href='/admin/user/list.do'" class="nav__link collapse">
-                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">관리자</span>
+                <c:if test="${roleCd eq 'Z'}">
+                    <div href="#" onclick="location.href='/admin/user/list.do'" class="nav__link collapse">
+                        <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">관리자</span>
 
-                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+                        <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 
-                    <ul class="collapse__menu">
-                        <a href="/admin/user/list.do" class="collapse__sublink">사용자 관리</a>
-                        <a href="/admin/menu/list.do" class="collapse__sublink">메뉴 관리</a>
-                        <a href="/admin/code/list.do" class="collapse__sublink">코드 관리</a>
-                    </ul>
-                </div>
+                        <ul class="collapse__menu">
+                            <a href="/admin/user/list.do" class="collapse__sublink">사용자 관리</a>
+                            <a href="/admin/menu/list.do" class="collapse__sublink">메뉴 관리</a>
+                            <a href="/admin/code/list.do" class="collapse__sublink">코드 관리</a>
+                        </ul>
+                    </div>
+                </c:if>
             </div>
         </div>
     </nav>

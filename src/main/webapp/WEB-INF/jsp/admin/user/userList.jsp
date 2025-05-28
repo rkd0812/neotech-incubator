@@ -77,7 +77,7 @@
                         <td>
                             <a href="/admin/user/detail.do?userEmail=${user.userEmail}" class="userEmail">${user.userEmail}</a>
                         </td>
-                        <td>${user.codeName}</td>
+                        <td>${user.roleCdNm}</td>
                         <td>${user.frstRgsrDtlDttm}</td>
                     </tr>
                 </c:forEach>

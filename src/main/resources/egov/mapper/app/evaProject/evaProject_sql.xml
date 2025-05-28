@@ -79,6 +79,7 @@
              , EVA_GROUP_ID
              , PROJECT_DETAIL
              , URL
+             , CASE WHEN EVA_GROUP_ID IS NULL THEN 'N' ELSE 'Y' END AS EVA_FORM_YN
         FROM SCH_INCU.PROJECT
         WHERE 1=1
         <if test="projectId != null and projectId != ''">
