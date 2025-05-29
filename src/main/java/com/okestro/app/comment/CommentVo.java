@@ -13,4 +13,5 @@ public class CommentVo {
     private String frstRgsrDtlDttm;
     private String lastChngId;
     private String lastChngDtlDttm;
+    private String userName;
 }

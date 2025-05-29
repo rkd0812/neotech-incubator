@@ -12,7 +12,8 @@
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd hh24:mi') AS FRST_RGSR_DTL_DTTM
              , LAST_CHNG_ID
              , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd hh24:mi') AS LAST_CHNG_DTL_DTTM
-        FROM SCH_INCU.COMMENT
+             , (SELECT USER_NAME FROM SCH_INCU.USER B WHERE A.FRST_RGSR_ID = B.USER_EMAIL)  AS USER_NAME
+        FROM SCH_INCU.COMMENT A
         WHERE 1=1
         AND DEL_YN = 'N'
         <if test="projectId != null and projectId != ''">
