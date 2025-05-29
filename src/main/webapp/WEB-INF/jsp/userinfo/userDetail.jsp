@@ -26,10 +26,14 @@
                             <td id="displayEmail">${userInfo.userEmail}</td>
                         </tr>
                         <tr>
+                            <td class="bg-light fw-bold" style="width: 30%;">이름</td>
+                            <td id="displayName">${userInfo.userName}</td>
+                        </tr>
+                        <tr>
                             <td class="bg-light fw-bold">비밀번호</td>
                             <td>
                                 <span class="text-muted">**********</span>
-                                <small class="text-muted ms-2">(보안상 표시되지 않습니다)</small>
+                                <small class="text-muted ms-2">(보안상 표시되지 않습니다.)</small>
                             </td>
                         </tr>
                         <tr>
@@ -70,7 +74,7 @@
                         </div>
                         <div class="col-6">
                             <!-- 회원탈퇴 버튼 -->
-                            <button id="deleteBtn" class="btn btn-danger w-100">
+                            <button id="deleteBtn" style="background-color: #dc3545; color: white;" class="btn w-100">
                                 <i class="fas fa-user-times me-1"></i>회원탈퇴
                             </button>
                         </div>

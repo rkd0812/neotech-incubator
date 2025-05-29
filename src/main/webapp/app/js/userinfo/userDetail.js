@@ -17,7 +17,7 @@ $(function() {
     $("#deleteBtn").click(function() {
         if (confirm("정말로 삭제하시겠습니까?")) {
             $("#deleteForm").submit();
-            alert("삭제가 완료되었습니다.");
+            alert("회원탈퇴가 완료되었습니다.");
         } else {
             alert("취소되었습니다.");
         }

@@ -1,10 +1,9 @@
-
-$(function() {
+$(function () {
     // 수정 버튼 클릭 시
-    $("#updateSubmitBtn").click(function() {
+    $("#updateSubmitBtn").click(function () {
         var password = $("#userPassword").val();
         var passwordConfirm = $("#passwordConfirm").val();
-        var roleCd = $("#roleCd").val() || $("input[name='roleCd']").val();
+
 
         // 입력값 확인
         if (password === "") {
@@ -34,7 +33,7 @@ $(function() {
     });
 
     // 취소 버튼 클릭 시
-    $("#cancelBtn").click(function() {
+    $("#cancelBtn").click(function () {
         if (confirm("수정을 취소하고 이전 페이지로 돌아가시겠습니까?")) {
             history.back();
         }

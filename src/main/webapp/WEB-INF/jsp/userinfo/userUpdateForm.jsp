@@ -31,6 +31,11 @@
                         <input type="text" class="form-control bg-light" value="${userInfo.userEmail}" readonly>
                         <small class="text-muted">이메일은 변경할 수 없습니다.</small>
                     </div>
+                    <!-- 이름 -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">이름</label>
+                        <input type="text" class="form-control bg-light" value="${userInfo.userName}" readonly>
+                    </div>
 
                     <!-- 비밀번호 -->
                     <div class="mb-3">

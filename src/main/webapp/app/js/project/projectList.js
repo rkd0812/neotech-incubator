@@ -1,4 +1,4 @@
-$(function (){
+$(function () {
     function getTodayString() {
         var today = new Date();
         var year = today.getFullYear();
@@ -71,17 +71,17 @@ $(function (){
     });
 
     // 검색 버튼 클릭 이벤트 (여기서 조건을 hidden 필드로 복사!)
-    $('#searchBtn').on('click', function(){
+    $('#searchBtn').on('click', function () {
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
 
-        if(startDate && endDate && startDate > endDate) {
+        if (startDate && endDate && startDate > endDate) {
             alert('종료일은 시작일보다 이후여야 합니다.');
             return;
-        } else if(startDate > todayString) {
+        } else if (startDate > todayString) {
             alert('시작일은 오늘 날짜보다 미래일 수 없습니다.');
             return;
-        } else if(endDate > todayString) {
+        } else if (endDate > todayString) {
             alert('종료일은 오늘 날짜보다 미래일 수 없습니다.');
             return;
         }
@@ -102,7 +102,7 @@ $(function (){
     });
 
     // 초기화 버튼 클릭 이벤트
-    $('#resetBtn').on('click', function(){
+    $('#resetBtn').on('click', function () {
         // 모든 검색 조건을 기본값으로 초기화
         $('#startDate').val(oneMonthAgoString);  // 일주일 전
         $('#endDate').val(todayString);      // 오늘
@@ -120,7 +120,7 @@ $(function (){
     });
 
     // 프로젝트 등록 버튼
-    $('#registerBtn').on('click', function(){
+    $('#registerBtn').on('click', function () {
         location.href = '/project/registProjectForm.do';
     });
 
