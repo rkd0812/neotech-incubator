@@ -332,6 +332,45 @@
             pointer-events: none;
         }
 
+        .date-input-short {
+            width: 140px;
+        }
+
+        .range-btn-group {
+            display: inline-flex;
+            gap: 5px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 10vh auto;
+            padding: 20px;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 10vh auto;
+            padding: 20px;
+        }
+
+        .user-detail-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 10vh auto;
+            padding: 20px;
+        }
+
+        .user-update-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 10vh auto;
+            padding: 20px;
+        }
+
         #initBtn, #listBtn, #btnCancel {
             background-color: #6c757d;
             color: white;
@@ -362,6 +401,30 @@
             cursor: pointer;
             font-size: 16px;
         }
+
+        #resetBtn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;"
+        }
+
+        #dateRangeBtn {
+            background-color: #778899;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;"
+          }
+
+
 
     </style>
 </head>

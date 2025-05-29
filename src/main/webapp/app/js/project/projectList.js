@@ -17,6 +17,17 @@ $(function (){
         return year + '-' + month + '-' + day;
     }
 
+    // 특정 일 수 전의 날짜 구하는 함수
+    function getDaysAgoString(days) {
+        var today = new Date();
+        var pastDate = new Date(today);
+        pastDate.setDate(today.getDate() - days);
+        var year = pastDate.getFullYear();
+        var month = (pastDate.getMonth() + 1).toString().padStart(2, '0');
+        var day = pastDate.getDate().toString().padStart(2, '0');
+        return year + '-' + month + '-' + day;
+    }
+
     // 날짜 관련 초기 설정
     var todayString = getTodayString();
     var oneMonthAgoString = getOneMonthAgoString();
@@ -49,8 +60,18 @@ $(function (){
         else $('#allStatus').prop('checked', true);
     }
 
+    // 버튼 클릭 시 날짜 조정
+    $('.date_range_btn').on('click', function () {
+        var days = parseInt($(this).data('range')); // data-range 읽기
+        var todayString = getTodayString();
+        var fromDate = getDaysAgoString(days);
+
+        $('#startDate').val(fromDate);
+        $('#endDate').val(todayString);
+    });
+
     // 검색 버튼 클릭 이벤트 (여기서 조건을 hidden 필드로 복사!)
-    $('#search_btn').on('click', function(){
+    $('#searchBtn').on('click', function(){
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
 
@@ -81,7 +102,7 @@ $(function (){
     });
 
     // 초기화 버튼 클릭 이벤트
-    $('#reset_btn').on('click', function(){
+    $('#resetBtn').on('click', function(){
         // 모든 검색 조건을 기본값으로 초기화
         $('#startDate').val(oneMonthAgoString);  // 일주일 전
         $('#endDate').val(todayString);      // 오늘
@@ -99,7 +120,7 @@ $(function (){
     });
 
     // 프로젝트 등록 버튼
-    $('#register_btn').on('click', function(){
+    $('#registerBtn').on('click', function(){
         location.href = '/project/registProjectForm.do';
     });
 

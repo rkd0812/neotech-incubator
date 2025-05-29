@@ -29,67 +29,69 @@
 <%--<body>--%>
 <script src="<c:url value="/app/js/userinfo/registForm.js"/>"></script> <%-- 필수 --%>
 <div id="page-wrapper">
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-8 col-lg-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="mb-0">회원가입</h4>
-                </div>
-                <div class="card-body p-4">
-                    <form id="userForm" action="/userinfo/registerUserInfo.do" method="post">
+    <div class="register-container">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">회원가입</h4>
+            </div>
+            <div class="card-body p-4">
+                <form id="userForm" action="/userinfo/registerUserInfo.do" method="post">
 
-                        <div class="mb-4">
-                            <label class="form-label">이메일</label>
-                            <div class="input-group email-group">
-                                <input type="text" class="form-control email-input" id="userEmail" placeholder="아이디를 입력하세요">
-                                <span class="input-group-text">@</span>
-                                <input type="text" class="form-control domain-input" id="userDomain" name="userDomain" placeholder="도메인">
-                                <select id="domainList" class="form-select domain-select">
-                                    <option value="">직접 입력</option>
-                                    <option value="naver.com">naver.com</option>
-                                    <option value="google.com">google.com</option>
-                                    <option value="kakao.com">kakao.com</option>
-                                    <option value="daum.net">daum.net</option>
-                                </select>
-                                <button type="button" id="checkemailBtn" class="btn btn-outline-primary check-button">중복확인</button>
-                            </div>
-                            <%-- 중복 확인 후 상태 표시 --%>
-                            <div id="duplicateResult" style="margin-top: 5px;"></div>
-                            <input type="hidden" id="dbEmail" name="userEmail">
+                    <div class="mb-4">
+                        <label class="form-label">이메일</label>
+                        <div class="input-group email-group">
+                            <input type="text" class="form-control email-input" id="userEmail" maxlength="20" placeholder="아이디를 입력하세요">
+                            <span class="input-group-text">@</span>
+                            <input type="text" class="form-control domain-input" id="userDomain" name="userDomain" maxlength="20" placeholder="도메인">
+                            <select id="domainList" class="form-select domain-select">
+                                <option value="">직접 입력</option>
+                                <option value="naver.com">naver.com</option>
+                                <option value="google.com">google.com</option>
+                                <option value="kakao.com">kakao.com</option>
+                                <option value="daum.net">daum.net</option>
+                            </select>
+                            <button type="button" id="checkemailBtn" class="btn btn-outline-primary check-button">중복확인
+                            </button>
                         </div>
+                        <%-- 중복 확인 후 상태 표시 --%>
+                        <div id="duplicateResult" style="margin-top: 5px;"></div>
+                        <input type="hidden" id="dbEmail" name="userEmail">
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="userName" class="form-label">이름</label>
-                            <input type="text" class="form-control" id="userName" name="userName" maxlength="10" placeholder="이름을 입력하세요">
-                            <small class="text-muted">
-                                * 최대 10자리까지 입력 가능
-                            </small>
-                        </div>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">이름</label>
+                        <input type="text" class="form-control" id="userName" name="userName" maxlength="10"
+                               placeholder="이름을 입력하세요">
+                        <small class="text-muted">
+                            * 최대 10자리까지 입력 가능
+                        </small>
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="userPassword" class="form-label">비밀번호</label>
-                            <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
-                        </div>
+                    <div class="mb-3">
+                        <label for="userPassword" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" id="userPassword" name="userPassword" maxlength="20"
+                               placeholder="비밀번호를 입력하세요">
+                    </div>
 
-                        <div class="mb-3">
-                            <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
-                            <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" placeholder="비밀번호를 입력하세요">
-                        </div>
+                    <div class="mb-3">
+                        <label for="passwordConfirm" class="form-label">비밀번호 확인</label>
+                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"
+                               maxlength="20" placeholder="비밀번호를 입력하세요">
+                    </div>
 
-                        <div class="mb-4">
-                            <small class="text-muted">
-                                * 10~16자리 영문/숫자/특수문자[!@#$%^&*()]혼용
-                            </small>
-                        </div>
+                    <div class="mb-4">
+                        <small class="text-muted">
+                            * 10~16자리 영문/숫자/특수문자[!@#$%^&*()]혼용
+                        </small>
+                    </div>
 
-                        <input type="hidden" name="roleCd" value="A">
+                    <input type="hidden" name="roleCd" value="A">
 
-                        <div class="d-grid gap-2">
-                            <button type="button" id="registerBtn" class="btn btn-primary">회원가입</button>
-                            <a href="/userinfo/loginForm.do" class="btn btn-outline-secondary">이미 계정이 있으신가요? 로그인</a>
-                        </div>
-                    </form>
-                </div>
+                    <div class="d-grid gap-2">
+                        <button type="button" id="registerBtn" class="btn btn-primary">회원가입</button>
+                        <a href="/userinfo/loginForm.do" class="btn btn-outline-secondary">이미 계정이 있으신가요? 로그인</a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

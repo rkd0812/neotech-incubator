@@ -26,34 +26,27 @@
             <table>
                 <tbody>
                     <tr>
-                        <th>기간</th>
-                        <td>
-                            <input type="date" id="startDate" value="">
+                        <th style="width: 20%;">기간</th>
+                        <td style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
+                            <input type="date" id="startDate" class="date-input-short" value="">
                             ~
-                            <input type="date" id="endDate" value="">
+                            <input type="date" id="endDate" class="date-input-short" value="">
+                            <span class="range-btn-group">
+                                <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="6" style="white-space: nowrap; width: 60px">7일</button>
+                                <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="13" style="white-space: nowrap; width: 60px">14일</button>
+                                <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="29" style="white-space: nowrap; width: 60px">1개월</button>
+                            </span>
                         </td>
+
                         </tr>
                     <tr>
-                        <th>프로젝트명</th>
+                        <th style="width: 20%;">프로젝트명</th>
                         <td>
-                            <input type="text" id="projectName" value="">
+                            <input type="text" style="width: 430px;"  id="projectName" value="">
                         </td>
                     </tr>
-                        <th>심사상태</th>
+                        <th style="width: 20%;">심사상태</th>
                     <td>
-                        <%--<label style="margin-right: 15px;">--%>
-                        <%--    <input type="checkbox" id="allStatus" checked> 전체--%>
-                        <%--</label>--%>
-                        <%--<label style="margin-right: 15px;">--%>
-
-                        <%--    <input type="checkbox" value="01" id="status01"> 심사요청--%>
-                        <%--</label>--%>
-                        <%--<label style="margin-right: 15px;">--%>
-                        <%--    <input type="checkbox" value="02" id="status02"> 심사중--%>
-                        <%--</label>--%>
-                        <%--<label>--%>
-                        <%--    <input type="checkbox" value="03" id="status03"> 심사완료--%>
-                        <%--</label>--%>
                         <!-- 라디오 버튼으로 변경 - 같은 name을 가져야 하나만 선택됨 -->
                         <label style="margin-right: 15px">
                             <input type="radio" name="displayEvaCd" value="" id="allStatus" checked> 전체
@@ -75,25 +68,9 @@
             </table>
 
             <div style="width: 1000px; margin: 10px auto; text-align: center;">
-                <button type="button" id="reset_btn" style="
-                    background-color: #6c757d;
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 14px;
-                    margin-left: 10px;">초기화
-                </button>
+                <button type="button" id="resetBtn">초기화</button>
 
-                <button type="button" id="search_btn" style="
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    padding: 8px 16px;
-                    border-radius: 4px;
-                    cursor: pointer;
-                    font-size: 14px;">조회</button>
+                <button type="button" id="searchBtn">조회</button>
             </div>
 
         </form>
@@ -170,15 +147,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 30px; margin-bottom: 20px;" >
-            <button type="button" id="register_btn" style="
-                background-color: #28a745;
-                color: white;
-                border: none;
-                padding: 10px 20px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-            ">프로젝트 등록</button>
+            <button type="button" id="registBtn">프로젝트 등록</button>
         </div>
 
         <!-- 페이징 영역 -->
