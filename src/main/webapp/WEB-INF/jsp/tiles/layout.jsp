@@ -382,7 +382,7 @@
             margin-left: 10px;
         }
 
-        #searchBtn, #updateBtn, #deleteBtn, #btnRegist {
+        #searchBtn, #updateBtn, #deleteBtn, #btnRegist, #evaBtn, #evaGroupBtn {
             background-color: #007bff;
             color: white;
             border: none;
