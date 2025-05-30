@@ -119,10 +119,10 @@ $(function () {
         $('#currentPageNo').val(1);
     });
 
-    // 프로젝트 등록 버튼
-    $('#registerBtn').on('click', function () {
-        location.href = '/project/registProjectForm.do';
-    });
+    // // 프로젝트 등록 버튼
+    // $('#registerBtn').on('click', function () {
+    //     location.href = '/project/registProjectForm.do';
+    // });
 
 });
 
