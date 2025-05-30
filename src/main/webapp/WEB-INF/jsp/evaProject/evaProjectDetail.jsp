@@ -91,6 +91,7 @@
                     <col />
                     <col style="width: 20%;" />
                     <col style="width: 20%;" />
+<%--                    <col style="width: 12%;" />--%>
                 </colgroup>
                 <thead>
                     <th>No</th>
@@ -103,12 +104,17 @@
                         <tr>
                             <td>${status.count}</td>
                             <td>${cmt.commentContent}</td>
-                            <td>${cmt.frstRgsrId}</td>
+                            <td>
+                                <input type="hidden" id="userEmail" value="${cmt.frstRgsrId}" />
+                                ${cmt.userName}
+                            </td>
                             <td>${cmt.frstRgsrDtlDttm}</td>
                         </tr>
                     </c:forEach>
                 </tbody>
             </table>
+<%--            <button id="updateBtn" style="margin-bottom: 0.1rem;">수정</button>--%>
+<%--            <button id="deleteBtn" style="margin-top: 0.1rem;">삭제</button>--%>
         </c:if>
 
     </div>

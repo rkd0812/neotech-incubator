@@ -13,7 +13,20 @@ $(function() {
         setMonth();
     }
 
-    // 검색 폼
+    // 버튼 클릭 시 날짜 조정
+    $('.date_range_btn').on('click', function () {
+        var days = parseInt($(this).data('range')); // data-range 읽기
+
+        const today = new Date();
+        const day = today.getDate();
+        const month = today.getMonth();
+        const year = today.getFullYear();
+
+        const startDate = new Date(year, month, day - days).toISOString();
+        $('#startDate').val(startDate.substring(0, 10));
+    });
+
+    // 검색
     $('#searchBtn').on('click', function() {
         const startDate = $('#startDate').val().replaceAll('-', '');
         const endDate = $('#endDate').val().replaceAll('-', '');

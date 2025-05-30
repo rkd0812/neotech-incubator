@@ -30,7 +30,15 @@
                 <tbody>
                     <tr>
                         <th>기간</th>
-                        <td><input type="date" id="startDate" name="startDate" value="${codeVo.startDate}">~<input type="date" id="endDate" name="endDate" value="${codeVo.endDate}"></td>
+                        <td>
+                            <input type="date" id="startDate" name="startDate" value="${codeVo.startDate}" style="width: 25%;" /> ~
+                            <input type="date" id="endDate" name="endDate" value="${codeVo.endDate}" style="width: 25%;" />
+                            <span class="range-btn-group">
+                                <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="6" style="white-space: nowrap; width: 60px">7일</button>
+                                <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="13" style="white-space: nowrap; width: 60px">14일</button>
+                                <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="29" style="white-space: nowrap; width: 60px">1개월</button>
+                            </span>
+                        </td>
                     </tr>
                     <tr>
                         <th>상위코드명</th>
