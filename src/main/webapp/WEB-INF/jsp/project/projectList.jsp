@@ -111,7 +111,7 @@
                                     <span style="display: none;" data-project-id="${project.projectId}"></span>
                                 </td>
                                 <td>
-                                    <a href="/project/projectDetail.do?projectId=${project.projectId}">
+<%--                                    <a href="/project/projectDetail.do?projectId=${project.projectId}">--%>
                                             ${project.projectName}
                                     </a>
                                 </td>
