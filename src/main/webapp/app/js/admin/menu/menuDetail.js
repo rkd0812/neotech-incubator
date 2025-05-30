@@ -2,9 +2,9 @@ $(function() {
 
     // 수정
     $('#updateBtn').click(function() {
-        if(confirm("수정하시겠습니까?")) {
-            $('#detailForm').submit();
-        }
+        // if(confirm("수정하시겠습니까?")) {
+        //     $('#detailForm').submit();
+        // }
     })
 
     // 삭제
