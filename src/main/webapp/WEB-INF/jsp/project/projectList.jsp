@@ -24,10 +24,14 @@
             <input type="hidden" name="searchEvaCd" id="hiddenSearchEvaCd" value="${paging.searchEvaCd}">
 
             <table>
+                <colgroup>
+                    <col style="width: 20%;" />
+                    <col />
+                </colgroup>
                 <tbody>
                     <tr>
-                        <th style="width: 20%;">기간</th>
-                        <td style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: nowrap;">
+                        <th style="width: 20%;">심사기간</th>
+                        <td>
                             <input type="date" id="startDate" class="date-input-short" style="width: 25%;" value="">
                             ~
                             <input type="date" id="endDate" class="date-input-short" style="width: 25%;" value="">
@@ -42,28 +46,30 @@
                     <tr>
                         <th style="width: 20%;">프로젝트명</th>
                         <td>
-                            <input type="text" style="width: 430px;"  id="projectName" value="">
+                            <input type="text" id="projectName" value="">
                         </td>
                     </tr>
+                    <tr>
                         <th style="width: 20%;">심사상태</th>
-                    <td>
-                        <!-- 라디오 버튼으로 변경 - 같은 name을 가져야 하나만 선택됨 -->
-                        <label style="margin-right: 15px">
-                            <input type="radio" name="displayEvaCd" value="" id="allStatus" checked> 전체
-                        </label>
-                        <label style="margin-right: 15px">
-                            <input type="radio" name="displayEvaCd" value="00" id="status00"> 등록
-                        </label>
-                        <label style="margin-right: 15px">
-                            <input type="radio" name="displayEvaCd" value="01" id="status01"> 심사요청
-                        </label>
-                        <label style="margin-right: 15px">
-                            <input type="radio" name="displayEvaCd" value="02" id="status02"> 심사중
-                        </label>
-                        <label style="margin-right: 15px">
-                            <input type="radio" name="displayEvaCd" value="03" id="status03"> 심사완료
-                        </label>
-                    </td>
+                        <td>
+                            <!-- 라디오 버튼으로 변경 - 같은 name을 가져야 하나만 선택됨 -->
+                            <label style="margin-right: 15px">
+                                <input type="radio" name="displayEvaCd" value="" id="allStatus" checked> 전체
+                            </label>
+                            <label style="margin-right: 15px">
+                                <input type="radio" name="displayEvaCd" value="00" id="status00"> 등록
+                            </label>
+                            <label style="margin-right: 15px">
+                                <input type="radio" name="displayEvaCd" value="01" id="status01"> 심사요청
+                            </label>
+                            <label style="margin-right: 15px">
+                                <input type="radio" name="displayEvaCd" value="02" id="status02"> 심사중
+                            </label>
+                            <label style="margin-right: 15px">
+                                <input type="radio" name="displayEvaCd" value="03" id="status03"> 심사완료
+                            </label>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 

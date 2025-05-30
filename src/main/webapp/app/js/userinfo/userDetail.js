@@ -15,7 +15,7 @@ $(function() {
     });
     // 삭제 버튼 클릭 시
     $("#deleteBtn").click(function() {
-        if (confirm("정말로 삭제하시겠습니까?")) {
+        if (confirm("회원정보를 정말로 삭제하시겠습니까?")) {
             $("#deleteForm").submit();
             alert("회원탈퇴가 완료되었습니다.");
         } else {
