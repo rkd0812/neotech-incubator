@@ -27,10 +27,10 @@
                 <tbody>
                     <tr>
                         <th style="width: 20%;">기간</th>
-                        <td style="display: flex; align-items: center; gap: 10px; flex-wrap: nowrap;">
-                            <input type="date" id="startDate" class="date-input-short" value="">
+                        <td style="display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: nowrap;">
+                            <input type="date" id="startDate" class="date-input-short" style="width: 25%;" value="">
                             ~
-                            <input type="date" id="endDate" class="date-input-short" value="">
+                            <input type="date" id="endDate" class="date-input-short" style="width: 25%;" value="">
                             <span class="range-btn-group">
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="6" style="white-space: nowrap; width: 60px">7일</button>
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="13" style="white-space: nowrap; width: 60px">14일</button>
@@ -82,10 +82,10 @@
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>프로젝트 명</th>
+                    <th>프로젝트명</th>
                     <th>작성자</th>
                     <th>요청 일자</th>
-                    <th>심사 상태</th>
+                    <th>심사상태</th>
                 </tr>
                 </thead>
                 <tbody>
