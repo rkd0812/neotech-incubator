@@ -42,6 +42,10 @@
                         <label for="userPassword" class="form-label fw-bold">새 비밀번호</label>
                         <input type="password" class="form-control" id="userPassword" name="userPassword" maxlength="20"
                                placeholder="새 비밀번호를 입력하세요">
+                        <small>
+                            <i class="fas fa-info-circle me-1"></i>
+                            10~16자리 영문/숫자/특수문자 혼용 (특수문자 : \'"<>`%=₩ 사용불가)
+                        </small>
                     </div>
 
                     <!-- 비밀번호 확인 -->
@@ -49,16 +53,6 @@
                         <label for="passwordConfirm" class="form-label fw-bold">비밀번호 확인</label>
                         <input type="password" class="form-control" id="passwordConfirm" maxlength="20"
                                placeholder="비밀번호를 다시 입력하세요">
-                    </div>
-
-                    <!-- 비밀번호 안내 -->
-                    <div class="mb-4">
-                        <div class="alert alert-info py-2">
-                            <small>
-                                <i class="fas fa-info-circle me-1"></i>
-                                10~16자리 영문/숫자/특수문자[!@#$%^&*()]혼용
-                            </small>
-                        </div>
                     </div>
 
                     <!-- 버튼 영역 -->

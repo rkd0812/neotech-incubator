@@ -71,6 +71,9 @@
                         <label for="userPassword" class="form-label">비밀번호</label>
                         <input type="password" class="form-control" id="userPassword" name="userPassword" maxlength="20"
                                placeholder="비밀번호를 입력하세요">
+                        <small class="text-muted">
+                             * 10~16자리 영문/숫자/특수문자 혼용 (특수문자 : \'"<>`%=₩ 사용불가)
+                        </small>
                     </div>
 
                     <div class="mb-3">
@@ -79,11 +82,6 @@
                                maxlength="20" placeholder="비밀번호를 입력하세요">
                     </div>
 
-                    <div class="mb-4">
-                        <small class="text-muted">
-                            * 10~16자리 영문/숫자/특수문자[!@#$%^&*()]혼용
-                        </small>
-                    </div>
 
                     <input type="hidden" name="roleCd" value="A">
 

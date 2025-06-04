@@ -40,8 +40,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="userPassword" class="form-label">비밀번호</label>
-                        <input type="password" class="form-control" id="userPassword" name="userPassword" maxlength="20"
-                               placeholder="비밀번호를 입력하세요">
+                        <input type="password" class="form-control" id="userPassword" name="userPassword" placeholder="비밀번호를 입력하세요">
                     </div>
                     <div>
                         <%--                            <a>--%>
