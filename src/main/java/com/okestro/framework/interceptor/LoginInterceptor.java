@@ -1,4 +1,4 @@
-package com.okestro.app.interceptor;
+package com.okestro.framework.interceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

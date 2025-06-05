@@ -17,19 +17,91 @@ import java.util.List;
 @Controller
 public class UserInfoCtr {
 
+    // 로그인  페이지
+    @GetMapping("/userinfo/loginForm.do")
+    public String loginForm() {
+        return "userinfo/userinfoLogin";
+    }
+
+    // 로그인 처리
+    @PostMapping("/userinfo/login.do")
+    public String login(UserInfoVo userInfoVo, HttpSession session, RedirectAttributes redirectAttr,
+                        @RequestParam(value = "userEmailId") String userEmailId,
+                        @RequestParam(value = "userDomain") String userDomain) {
+        String userEmail = userInfoVo.getUserEmail();
+        String userPassword = userInfoVo.getUserPassword();
+
+        if (userEmail.isBlank() || userPassword.isBlank()) {
+            redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
+
+            // 이메일 관련 정보 유지
+            if (!userEmailId.isBlank()) {
+                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            }
+            if (!userDomain.isBlank()) {
+                redirectAttr.addFlashAttribute("userDomain", userDomain);
+            }
+            return "redirect:/userinfo/loginForm.do";
+
+        } else if (userEmail.isBlank()) {
+            redirectAttr.addFlashAttribute("errorMessage", "이메일을 입력해주세요.");
+            return "redirect:/userinfo/loginForm.do";
+
+        } else if (userPassword.isBlank()) {
+            redirectAttr.addFlashAttribute("errorMessage", "비밀번호를 입력해주세요.");
+            // 아이디 입력 후 비밀번호 미 입력 시 아이디 초기화 방지
+            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            redirectAttr.addFlashAttribute("userDomain", userDomain);
+            return "redirect:/userinfo/loginForm.do";
+
+        } else if (userPassword.length() < 10) {
+            redirectAttr.addFlashAttribute("errorMessage", "비밀번호는 최소 10자 이상이어야 합니다.");
+            // 아이디 입력 후 비밀번호 잘못 입력시 아이디 초기화 방지
+            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            redirectAttr.addFlashAttribute("userDomain", userDomain);
+            return "redirect:/userinfo/loginForm.do";
+        }
+
+        try {
+            int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
+
+            if (loginResult == 0) {
+                UserInfoVo userInfo = userinfoSvc.retrieveUserInfoForLogin(userEmail);
+                session.setAttribute("loginUser", userInfo);  // 사용자 객체 전체 저장
+                session.setAttribute("userEmail", userInfo.getUserEmail());  // 이메일만 따로 저장
+                session.setAttribute("roleCd", userInfo.getRoleCd());   // 역할 코드만 저장
+                return "redirect:/project/projectList.do";   // 저장 후 프로젝트 목록 페이지로 리다이렉트
+            } else if (loginResult == 1) {
+                redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
+                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+                redirectAttr.addFlashAttribute("userDomain", userDomain);
+                return "redirect:/userinfo/loginForm.do";
+            } else {
+                redirectAttr.addFlashAttribute("errorMessage", "존재하지 않는 사용자입니다.");
+                return "redirect:/userinfo/loginForm.do";
+            }
+        } catch (Exception e) { // 오류 발생 시 프로그램이 멈추지 않고 "안전하게 처리" → 'e'는 error 약자
+            redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
+            redirectAttr.addFlashAttribute("userDomain", userDomain);
+            return "redirect:/userinfo/loginForm.do";
+        }
+    }
+
+    // 로그아웃
+    @GetMapping("/userinfo/logout.do")
+    public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttr) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+            session.invalidate();
+        }
+        redirectAttr.addFlashAttribute("message", "로그아웃 되었습니다.");
+        return "redirect:/userinfo/loginForm.do";
+    }
+
     @Resource(name = "userinfoSvc")
     UserInfoSvc userinfoSvc;
-
-//    @GetMapping("/userinfo/userinfoList.do")
-//    // [타입 변수명]으로 만들어줌.
-//    public String retrieveUserInfoList(Model model) {
-//        // 빈 UserInfoVo 객체 생성하여 전달
-//        UserInfoVo userInfoVo = new UserInfoVo();
-//        List<UserInfoVo> userinfoList = userinfoSvc.retrieveUserInfoList(userInfoVo);
-//        model.addAttribute("userinfoList", userinfoList);
-//
-//        return "userinfo/userinfoLidst";
-//    }
 
     @GetMapping("/userinfo/registForm.do")
     public String registForm() {
@@ -48,7 +120,8 @@ public class UserInfoCtr {
         // 등록 후 목록 페이지로 리다이렉트
         return "redirect:/userinfo/loginForm.do";
     }
-
+    
+    // 이메일 중복 확인
     @PostMapping("/userinfo/checkEmailDuplicate.do")
     @ResponseBody
     public boolean checkEmailDuplicate(@RequestParam("userEmail") String userEmail) {
@@ -103,93 +176,5 @@ public class UserInfoCtr {
     public String deleteUserInfo(@RequestParam("userEmail") String userEmail, RedirectAttributes redirectAttr) {
         userinfoSvc.deleteUserInfo(userEmail);
         return "redirect:/userinfo/loginForm.do";
-    }
-
-    // 로그인  페이지
-    @GetMapping("/userinfo/loginForm.do")
-    public String loginForm() {
-        return "userinfo/userinfoLogin";
-    }
-
-    // 로그인 처리
-    @PostMapping("/userinfo/login.do")
-    public String login(UserInfoVo userInfoVo, HttpSession session, RedirectAttributes redirectAttr,
-                        @RequestParam(value = "userEmailId") String userEmailId,
-                        @RequestParam(value = "userDomain") String userDomain) {
-        String userEmail = userInfoVo.getUserEmail();
-        String userPassword = userInfoVo.getUserPassword();
-
-        if (userEmail.isBlank() || userPassword.isBlank()) {
-            redirectAttr.addFlashAttribute("errorMessage", "이메일과 비밀번호를 입력해주세요.");
-
-            // 이메일 관련 정보 유지
-            if (!userEmailId.isBlank()) {
-                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
-            }
-            if (!userDomain.isBlank()) {
-                redirectAttr.addFlashAttribute("userDomain", userDomain);
-            }
-            return "redirect:/userinfo/loginForm.do";
-
-        } else if (userEmail.isBlank()) {
-            redirectAttr.addFlashAttribute("errorMessage", "이메일을 입력해주세요.");
-            return "redirect:/userinfo/loginForm.do";
-        } else if (userPassword.isBlank()) {
-            redirectAttr.addFlashAttribute("errorMessage", "비밀번호를 입력해주세요.");
-            // 아이디 입력 후 비밀번호 미 입력 시 아이디 초기화 방지
-            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
-            redirectAttr.addFlashAttribute("userDomain", userDomain);
-            return "redirect:/userinfo/loginForm.do";
-        } else if (userPassword.length() < 10) {
-            redirectAttr.addFlashAttribute("errorMessage", "비밀번호는 최소 10자 이상이어야 합니다.");
-            // 아이디 입력 후 비밀번호 잘못 입력시 아이디 초기화 방지
-            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
-            redirectAttr.addFlashAttribute("userDomain", userDomain);
-            return "redirect:/userinfo/loginForm.do";
-        }
-
-//
-//        String  errorMsg = "";
-//
-//        if(userEmail.isEmpty()) {
-//            errorMsg = "이메일 잘못 옴"
-//        }
-
-        try {
-            int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
-            if (loginResult == 0) {
-                UserInfoVo userInfo = userinfoSvc.retrieveUserInfoForLogin(userEmail);
-                session.setAttribute("loginUser", userInfo);  // 사용자 객체 전체 저장
-                session.setAttribute("userEmail", userInfo.getUserEmail());  // 이메일만 따로 저장
-                session.setAttribute("roleCd", userInfo.getRoleCd());   // 역할 코드만 저장
-                return "redirect:/project/projectList.do";   // 저장 후 프로젝트 목록 페이지로 리다이렉트
-            } else if (loginResult == 1) {
-                redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
-                redirectAttr.addFlashAttribute("userDomain", userDomain);
-                return "redirect:/userinfo/loginForm.do";
-            } else {
-                redirectAttr.addFlashAttribute("errorMessage", "존재하지 않는 사용자입니다.");
-                return "redirect:/userinfo/loginForm.do";
-            }
-        } catch (Exception e) {
-            redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
-            redirectAttr.addFlashAttribute("userEmailId", userEmailId);
-            redirectAttr.addFlashAttribute("userDomain", userDomain);
-            return "redirect:/userinfo/loginForm.do";
-        }
-    }
-
-    // 로그아웃
-    @GetMapping("/userinfo/logout.do")
-    public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttr) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-            session.invalidate();
-        }
-            redirectAttr.addFlashAttribute("message", "로그아웃 되었습니다.");
-            return "redirect:/userinfo/loginForm.do";
-
     }
 }

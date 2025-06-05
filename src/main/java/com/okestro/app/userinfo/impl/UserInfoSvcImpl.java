@@ -14,6 +14,22 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
     @Resource(name = "cmmnDao")
     CmmnAbstractDao dao;
 
+    // 유저 로그인 시
+    @Override
+    public int userLoginCheck(String userEmail, String userPassword) { //유저 로그인 시
+        UserInfoVo loginVo = new UserInfoVo();
+        loginVo.setUserEmail(userEmail);
+        loginVo.setUserPassword(userPassword);
+
+        Integer result = (Integer) dao.selectOne("userinfo.userLogin", loginVo);
+        return result != null ? result : 2;
+    }
+
+    @Override
+    public UserInfoVo retrieveUserInfoForLogin(String userEmail) {
+        return (UserInfoVo) dao.selectOne("userinfo.retrieveUserInfoForLogin", userEmail);
+    }
+
     // 사용자를 DB에 등록 시 어떻게 할지 (회원가입시 권한은 기본적으로 'A'로 하게끔)
     @Override
     public void insertUserInfo(UserInfoVo userInfoVo) {
@@ -52,19 +68,4 @@ public class UserInfoSvcImpl extends EgovAccessServiceImpl implements UserInfoSv
         dao.update(("userinfo.deleteUserInfo"), userEmail);
     }
 
-    // 유저 로그인 시
-    @Override
-    public int userLoginCheck(String userEmail, String userPassword) { //유저 로그인 시
-        UserInfoVo loginVo = new UserInfoVo();
-        loginVo.setUserEmail(userEmail);
-        loginVo.setUserPassword(userPassword);
-
-        Integer result = (Integer) dao.selectOne("userinfo.userLogin", loginVo);
-        return result != null ? result : 2;
-    }
-
-    @Override
-    public UserInfoVo retrieveUserInfoForLogin(String userEmail) {
-        return (UserInfoVo) dao.selectOne("userinfo.retrieveUserInfoForLogin", userEmail);
-    }
 }

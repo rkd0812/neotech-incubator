@@ -60,7 +60,7 @@
             <mvc:exclude-mapping path="/app/js/**" />
             <!-- 리소스 제외 -->
             <mvc:exclude-mapping path="/assets/**" />
-            <bean class="com.okestro.app.interceptor.LoginInterceptor" />
+            <bean class="com.okestro.framework.interceptor.LoginInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
 
