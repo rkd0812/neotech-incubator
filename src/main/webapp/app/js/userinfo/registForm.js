@@ -14,10 +14,7 @@ $(function () {
             $("#userDomain").val(domain).prop("readonly", true);
         }
 
-        // 도메인이 변경되면 중복 확인 초기화
-        isEmailChecked = false;
-        isEmailAvailable = false;
-        $("#emailResult").html(""); // 결과 메시지 초기화
+        resetEmailCheckStatus();
     });
 
     var isTyping = false;
@@ -26,18 +23,17 @@ $(function () {
     // 허용할 키코드들 : 8=Backspace, 46=Delete, 9=Tab, 27=Escape, 13=Enter, 37=좌화살표, 39=우화살표, 38=위화살표, 40=아래화살표, 36=Home, 35=End, 33=PageUp, 34=PageDown
     //                16=Shift, 17=Ctrl, 18=Alt, 20=CapsLock, 91=좌Windows키, 93=우Windows키, 112~123=F1~F12키, 144=NumLock, 145=ScrollLock
     var allowedKeys = [
-        8, 46, 9, 27, 13, 37, 39, 38, 40, 36, 35, 33, 34, 16, 17, 18, 20, 91, 93
-        , 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 144, 145];
-    
-    
+        8, 46, 9, 27, 13, 37, 39, 38, 40, 36, 35, 33, 34, 16, 17, 18, 20, 91, 93, 144, 145];
+
+
     // 한글 조합 시작
-    $('#userName').on("compositionstart", function() {
+    $('#userName').on("compositionstart", function () {
         isTyping = true;
         savedValue = $(this).val(); // 현재 입력된 값 저장
     });
 
     // 한글 조합 완료
-    $('#userName').on("compositionend", function() {
+    $('#userName').on("compositionend", function () {
         isTyping = false;
 
         var currentValue = $(this).val();
@@ -51,7 +47,7 @@ $(function () {
     });
 
     // 실시간으로 입력 차단
-    $('#userName').on("beforeinput", function(event) {
+    $('#userName').on("beforeinput", function (event) {
         var currentLength = $(this).val().length;
 
         // 삽입 타입이고 이미 10글자면 차단
@@ -69,7 +65,7 @@ $(function () {
     $('#userName').on("input", function () {
         // 한글 조합 중이 아닐 때만 길이 체크
         if (!isTyping) {
-            var currentValue  = $(this).val();
+            var currentValue = $(this).val();
 
             if (inputValue.length > 10) {
                 $(this).val(currentValue.substring(0, 10));
@@ -122,14 +118,56 @@ $(function () {
         isEmailChecked = false;
         isEmailAvailable = false;
         $("#duplicateResult").html(""); // 결과 메시지 초기화
+
+        resetEmailCheckStatus();
     });
 
     // 사용자 도메인 입력 시 중복확인 초기화
     $('#userDomain').on("input", function () {
+        resetEmailCheckStatus();
+    });
+
+    // 중복확인 상태 리셋
+    function resetEmailCheckStatus() {
         isEmailChecked = false;
         isEmailAvailable = false;
-        $("#duplicateResult").html(""); // 결과 메시지 초기화
-    });
+        $('#duplicateResult').html("");
+
+        // 버튼을 원래 상태로 되될림
+        $('#checkemailBtn')
+            .prop("disabled", false)
+            .removeClass("btn-success btn-secondary")
+            .addClass("btn-outline-primary")
+            .text("중복확인")
+    }
+
+    // 중복확인 버튼 로딩 상태로 변경
+    function setButtonLoading() {
+        $("#checkemailBtn")
+            .prop("disabled", true)
+            .removeClass("btn-outline-primary btn-success")
+            .addClass("btn-secondary")
+            .html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>확인중...');
+    }
+
+    // 중복확인 완료 후 버튼 상태 설정
+    function setButtonResult(isAvailable) {
+        if (isAvailable) {
+            // 사용 가능한 경우 - 버튼 비활성화 및 성공 상태로 변경
+            $("#checkemailBtn")
+                .prop("disabled", true)
+                .removeClass("btn-outline-primary btn-secondary")
+                .addClass("btn-success")
+                .html('<i class="fas fa-check me-1"></i>확인완료');
+        } else {
+            // 사용 불가능한 경우 - 버튼 다시 활성화
+            $("#checkemailBtn")
+                .prop("disabled", false)
+                .removeClass("btn-secondary btn-success")
+                .addClass("btn-outline-primary")
+                .text("중복확인");
+        }
+    }
 
     // 중복 확인 버튼 클릭
     $("#checkemailBtn").click(function () {
@@ -152,29 +190,40 @@ $(function () {
         var fullEmail = email + "@" + domain;
         $("#dbEmail").val(fullEmail);
 
-        // 서버 중복 확인
-        $.ajax({
-            url: "/userinfo/checkEmailDuplicate.do",
-            method: "POST",
-            data: {userEmail: fullEmail},
-            success: function (isDuplicate) {
-                isEmailChecked = true; // 중복 확인
+        // 로딩 상태로 버튼 변경
+        setButtonLoading();
 
-                if (isDuplicate) {
-                    $("#duplicateResult").html("이미 사용 중인 이메일입니다.").css("color", "red");
-                    isEmailAvailable = false; // 사용 불가능
-                } else {
-                    $("#duplicateResult").html("사용 가능한 이메일입니다.").css("color", "green");
-                    isEmailAvailable = true; // 사용 가능
+        // 실제 서버 요청 전에 2초 대기
+        setTimeout(function () {
+            // 서버 중복 확인
+            $.ajax({
+                url: "/userinfo/checkEmailDuplicate.do",
+                method: "POST",
+                data: {userEmail: fullEmail},
+                success: function (isDuplicate) {
+                    isEmailChecked = true; // 중복 확인
+
+                    if (isDuplicate) {
+                        $("#duplicateResult").html("이미 사용 중인 이메일입니다.").css("color", "red");
+                        isEmailAvailable = false; // 사용 불가능
+                        setButtonResult(false); // 버튼 다시 활성화
+                    } else {
+                        $("#duplicateResult").html("사용 가능한 이메일입니다.").css("color", "green");
+                        isEmailAvailable = true; // 사용 가능
+                        setButtonResult(true); // 버튼을 비활성화하고 성공 상태로 변경
+
+                    }
+                },
+                error: function () {
+                    alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
+                    isEmailChecked = false;
+                    isEmailAvailable = false;
+                    $("#duplicateResult").html("");
+
+                    resetEmailCheckStatus();
                 }
-            },
-            error: function() {
-                alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
-                isEmailChecked = false;
-                isEmailAvailable = false;
-                $("#duplicateResult").html("");
-            }
-        });
+            });
+        }, 2000);
     });
 
     // 비밀번호 유효성 검사 함수

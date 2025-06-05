@@ -37,7 +37,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="bg-light fw-bold">권한명</td>
+                            <td class="bg-light fw-bold">권한</td>
                             <td>
                                 <span class="badge bg-primary">${userInfo.codeName}</span>
                             </td>

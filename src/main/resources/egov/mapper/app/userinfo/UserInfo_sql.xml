@@ -4,56 +4,26 @@
 <!-- mapper의 namespace는?? → 어떤것과 관련이 있는지를 (한식 또는 이탈리안 요리) 같은 요리들의 그룹-->
 <mapper namespace="userinfo">
     <!--  id  → 실제로 이게 무엇인지 (김치째개 또는 피자 같은 실제 요리)  -->
-    <!-- 로그인 처리 :  0(로그인 성공), 1(비밀번호 불일치), 2(이메일 없음)  -->
-    <select id="userLogin" parameterType="com.okestro.app.userinfo.UserInfoVo" resultType="int">
-        SELECT CASE
-                   WHEN (SELECT COUNT(1)
-                         FROM SCH_INCU.USER
-                         WHERE USER_EMAIL = #{userEmail}
-                           AND DEL_YN = 'N') = 0 THEN 2 -- 이메일 없을 시
-                   WHEN (SELECT COUNT(1)
-                         FROM SCH_INCU.USER
-                         WHERE USER_EMAIL = #{userEmail}
-                           AND USER_PASSWORD = #{userPassword}
-                           AND DEL_YN = 'N') = 0 THEN 1 -- 비밀번호 불일치 시
-                   ELSE 0 -- 로그인 성공시
-                   END
-    </select>
-
-<!--    &lt;!&ndash;  비밀번호 일치 여부만 확인  &ndash;&gt;-->
-<!--    <select id="checkPassword" parameterType="com.okestro.app.userinfo.LoginUserInfoVo" resultType="int">-->
-<!--        SELECT-->
-<!--            COUNT(1)-->
-<!--        FROM SCH_INCU.USER-->
-<!--        WHERE USER_EMAIL = #{userEmail}-->
-<!--        AND USER_PASSWORD = #{userPassword}-->
-<!--        AND DEL_YN = 'N'-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash;  이메일 존재 여부만 확인  &ndash;&gt;-->
-<!--    <select id="existEmail" parameterType="com.okestro.app.userinfo.LoginUserInfoVo" resultType="int">-->
-<!--        SELECT-->
-<!--            COUNT(1)-->
-<!--        FROM SCH_INCU.USER-->
-<!--        WHERE USER_EMAIL = #{userEmail}-->
-<!--          AND DEL_YN = 'N'-->
-<!--    </select>-->
-
-    <!-- 로그인 성공 시 사용자 정보 조회  -->
-    <select id="retrieveUserInfoForLogin" parameterType="String" resultType="com.okestro.app.userinfo.UserInfoVo">
-        SELECT A.USER_EMAIL    AS userEmail,
-               A.USER_PASSWORD AS userPassword,
-               A.USER_NAME     AS userName,
-               A.ROLE_CD       AS roleCd,
-               B.CODE_NAME     AS codeName
+    <!-- 로그인 검증 -->
+    <select id="retrieveUserInfoForLogin" parameterType="com.okestro.app.userinfo.LoginUserInfoVo" resultType="com.okestro.app.userinfo.UserInfoVo">
+        SELECT
+            A.USER_EMAIL    AS userEmail,
+            A.USER_PASSWORD AS userPassword,
+            A.USER_NAME     AS userNmae,
+            A.ROLE_CD       As roleCd,
+            B.CODE_NAME     AS codeName
         FROM SCH_INCU.USER A
         LEFT JOIN SCH_INCU.CODE B
          ON A.ROLE_CD = B.CODE_VAL
         AND B.UPPER_CODE_NAME = 'ROLE'
-        WHERE A.USER_EMAIL = #{userEmail}
-          AND A.DEL_YN = 'N'
+        <where>
+            A.DEL_YN = 'N'
+        AND A.USER_EMAIL = #{userEmail}
+        <if test="userPassword != null and userPassword != ''">
+            AND A.USER_PASSWORD = #{userPassword}
+        </if>
+        </where>
     </select>
-
 
     <!-- 사용자 등록 insert   -->
     <!--  해당하는 조건의 유저 정보만 찾아서 가져옴  -->

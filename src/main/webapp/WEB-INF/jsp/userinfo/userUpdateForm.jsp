@@ -34,7 +34,7 @@
                     <!-- 이름 -->
                     <div class="mb-3">
                         <label class="form-label fw-bold">이름</label>
-                        <input type="text" class="form-control bg-light" value="${userInfo.userName}" readonly>
+                        <input type="text" class="form-control" value="${userInfo.userName}">
                     </div>
 
                     <!-- 비밀번호 -->

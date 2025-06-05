@@ -62,30 +62,22 @@ public class UserInfoCtr {
             return "redirect:/userinfo/loginForm.do";
         }
 
-        try {
-            int loginResult = userinfoSvc.userLoginCheck(userEmail, userPassword);
+        UserInfoVo loginUser = userinfoSvc.retrieveUserInfoForLogin(userInfoVo);
 
-            if (loginResult == 0) {
-                UserInfoVo userInfo = userinfoSvc.retrieveUserInfoForLogin(userEmail);
-                session.setAttribute("loginUser", userInfo);  // 사용자 객체 전체 저장
-                session.setAttribute("userEmail", userInfo.getUserEmail());  // 이메일만 따로 저장
-                session.setAttribute("roleCd", userInfo.getRoleCd());   // 역할 코드만 저장
-                return "redirect:/project/projectList.do";   // 저장 후 프로젝트 목록 페이지로 리다이렉트
-            } else if (loginResult == 1) {
-                redirectAttr.addFlashAttribute("errorMessage", "비밀번호가 일치하지 않습니다.");
-                redirectAttr.addFlashAttribute("userEmailId", userEmailId);
-                redirectAttr.addFlashAttribute("userDomain", userDomain);
-                return "redirect:/userinfo/loginForm.do";
-            } else {
-                redirectAttr.addFlashAttribute("errorMessage", "존재하지 않는 사용자입니다.");
-                return "redirect:/userinfo/loginForm.do";
-            }
-        } catch (Exception e) { // 오류 발생 시 프로그램이 멈추지 않고 "안전하게 처리" → 'e'는 error 약자
-            redirectAttr.addFlashAttribute("errorMessage", "시스템 오류가 발생했습니다.");
+        if (loginUser == null) {
+            // 로그인 실패 (이메일이 없거나 비밀번호가 틀림)
+            redirectAttr.addFlashAttribute("errorMessage", "이메일 또는 비밀번호가 일치하지 않습니다.");
             redirectAttr.addFlashAttribute("userEmailId", userEmailId);
             redirectAttr.addFlashAttribute("userDomain", userDomain);
             return "redirect:/userinfo/loginForm.do";
         }
+
+        // 로그인 성공 → 세션 저장
+        session.setAttribute("loginUser", loginUser);
+        session.setAttribute("userEmail", loginUser.getUserEmail());
+        session.setAttribute("roleCd", loginUser.getRoleCd());
+
+        return "redirect:/project/projectList.do";
     }
 
     // 로그아웃

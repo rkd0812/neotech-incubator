@@ -21,9 +21,8 @@ public interface UserInfoSvc {
     // 사용자 정보 삭제(DEL_YN 을 'N'에서 'Y'로 변경
     void deleteUserInfo(String userEmail);
 
+    // 로그인 검증 (이메일 , 비밀번호, 로그인 성공 시)
+    UserInfoVo retrieveUserInfoForLogin(UserInfoVo userInfoVo);
 
-    int userLoginCheck(String userEmail, String userPassword);
-
-    // 로그인 성공 시 사용자 정보 조회
-    UserInfoVo retrieveUserInfoForLogin(String userEmail);
+    UserInfoVo retrieveUserInfoForLogin(LoginUserInfoVo loginUserInfoVo);
 }
