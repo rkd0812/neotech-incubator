@@ -9,7 +9,7 @@
         SELECT
             A.USER_EMAIL    AS userEmail,
             A.USER_PASSWORD AS userPassword,
-            A.USER_NAME     AS userNmae,
+            A.USER_NAME     AS userName,
             A.ROLE_CD       As roleCd,
             B.CODE_NAME     AS codeName
         FROM SCH_INCU.USER A

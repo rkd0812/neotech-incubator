@@ -32,6 +32,10 @@ $(function () {
     var todayString = getTodayString();
     var oneMonthAgoString = getOneMonthAgoString();
 
+    // 날짜 입력 필듸의 최소값을 설정
+    $('#startDate').attr('min', '2010-01-01')
+    $('#endDate').attr('min', '2010-01-01')
+
     // 날짜 입력 필드의 최대값을 오늘 날짜로 설정
     $('#startDate').attr('max', todayString);
     $('#endDate').attr('max', todayString);
@@ -70,20 +74,18 @@ $(function () {
         $('#endDate').val(todayString);
     });
 
+    // 날짜 선택 시 유효성 자동 체크 및 리셋
     // 검색 버튼 클릭 이벤트 (여기서 조건을 hidden 필드로 복사!)
-    $('#searchBtn').on('click', function () {
+    $('#startDate, #endDate').on('change', function () {
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
 
         if (startDate && endDate && startDate > endDate) {
             alert('종료일은 시작일보다 이후여야 합니다.');
-            return;
-        } else if (startDate > todayString) {
-            alert('시작일은 오늘 날짜보다 미래일 수 없습니다.');
-            return;
-        } else if (endDate > todayString) {
-            alert('종료일은 오늘 날짜보다 미래일 수 없습니다.');
-            return;
+
+            // 날짜 되돌리기
+            $('#startDate').val(oneMonthAgoString);
+            $('#endDate').val(todayString);
         }
 
         // 조회 버튼 클릭 시에만 화면 값을 hidden 필드로 복사 (실제 검색 조건으로 만들기)

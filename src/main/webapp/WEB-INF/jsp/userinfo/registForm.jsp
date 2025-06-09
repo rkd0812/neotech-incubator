@@ -72,8 +72,14 @@
                         <input type="password" class="form-control" id="userPassword" name="userPassword" maxlength="20"
                                placeholder="비밀번호를 입력하세요">
                         <small class="text-muted">
-                             * 10~16자리 영문/숫자/특수문자 혼용 (특수문자 : \'"<>`%=₩ 사용불가)
+                            <div id="req-length">* 10~16자리</div>
+                            <div id="req-letter">* 영문자 포함</div>
+                            <div id="req-number">* 숫자 포함</div>
+                            <div id="req-special">* 특수문자 포함 (단, \'"<>`%=₩ 제외)</div>
                         </small>
+<%--                        <small class="text-muted">--%>
+<%--                             * 10~16자리 영문/숫자/특수문자 혼용 (특수문자 : \'"<>`%=₩ 사용불가)--%>
+<%--                        </small>--%>
                     </div>
 
                     <div class="mb-3">

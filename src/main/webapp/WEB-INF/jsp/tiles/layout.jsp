@@ -424,6 +424,15 @@
             margin-left: 10px;"
           }
 
+        #req-length, #req-letter, #req-number, #req-special {
+            color: #6c757d;
+            transition: color 0.3s ease;
+        }
+
+        #req-length.satisfied, #req-letter.satisfied, #req-number.satisfied, #req-special.satisfied {
+            color: #28a745;
+        }
+
 
 
     </style>

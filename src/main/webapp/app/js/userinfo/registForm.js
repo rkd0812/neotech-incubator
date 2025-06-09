@@ -14,7 +14,7 @@ $(function () {
             $("#userDomain").val(domain).prop("readonly", true);
         }
 
-        resetEmailCheckStatus();
+        resetEmailCheckStatus();  // 값이 바뀌었으므로 상태 리셋
     });
 
     var isTyping = false;
@@ -119,12 +119,12 @@ $(function () {
         isEmailAvailable = false;
         $("#duplicateResult").html(""); // 결과 메시지 초기화
 
-        resetEmailCheckStatus();
+        resetEmailCheckStatus();  // 값이 바뀌었으므로 상태 리셋
     });
 
     // 사용자 도메인 입력 시 중복확인 초기화
     $('#userDomain').on("input", function () {
-        resetEmailCheckStatus();
+        resetEmailCheckStatus();  // 값이 바뀌었으므로 상태 리셋
     });
 
     // 중복확인 상태 리셋
@@ -220,11 +220,54 @@ $(function () {
                     isEmailAvailable = false;
                     $("#duplicateResult").html("");
 
-                    resetEmailCheckStatus();
+                    resetEmailCheckStatus(); // 값이 바뀌었으므로 상태 리셋
                 }
             });
         }, 2000);
     });
+
+    function checkPasswordRequirements(password) {
+        // 길이 체크 (10~16자리)
+        var lengthOk = password.length >= 10 && password.length <= 16;
+        updateRequirement('req-length', lengthOk);
+
+        // 영문자 체크
+        var letterOk = /[a-zA-Z]/.test(password);
+        updateRequirement('req-letter', letterOk);
+
+        // 숫자 체크
+        var numberOk = /[0-9]/.test(password);
+        updateRequirement('req-number', numberOk);
+
+        // 특수문자 체크 (금지된 특수문자는 제외)
+        var allowSpecialChar = /[!@#$%^&*()\-_+=.\[\]{}|;:,?~]/;
+        var forbiddenchar = /[\\'"<>`%=₩]/;
+
+        var hasAllowedSpecialChar = allowSpecialChar.test(password);
+        var hasForbiddenChar = forbiddenchar.test(password);
+        var specialOk = hasAllowedSpecialChar && !hasForbiddenChar;
+        updateRequirement('req-special', specialOk)
+
+        return lengthOk && letterOk && numberOk && specialOk
+    }
+
+    function updateRequirement(elementId, satisfied) {
+        var element = $('#' + elementId);
+
+        if (satisfied) {
+            // 조건 만족 시 - 녹색으로 변경
+            element.addClass('satisfied');
+        } else {
+            // 조건 불만족 시 - 회색으로 변경
+            element.removeClass('satisfied');
+        }
+    }
+
+    $('#userPassword').on('input', function() {
+        var password = $(this).val();
+        checkPasswordRequirements(password);
+    });
+
 
     // 비밀번호 유효성 검사 함수
     function validatePassword(password) {
