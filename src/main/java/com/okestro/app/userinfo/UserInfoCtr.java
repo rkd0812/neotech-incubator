@@ -75,8 +75,10 @@ public class UserInfoCtr {
         // 로그인 성공 → 세션 저장
         session.setAttribute("loginUser", loginUser);
         session.setAttribute("userEmail", loginUser.getUserEmail());
-        session.setAttribute("roleCd", loginUser.getRoleCd());
+        session.setAttribute("userName", loginUser.getUserName());
+        session.setAttribute("codeName", loginUser.getCodeName());
 
+        
         return "redirect:/project/projectList.do";
     }
 
