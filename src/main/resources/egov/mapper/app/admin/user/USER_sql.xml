@@ -7,7 +7,6 @@
         SELECT COUNT(*)
         FROM SCH_INCU.USER
         WHERE 1=1
-        AND DEL_YN = 'N'
         <if test="userEmail != null and userEmail != ''">
             AND USER_EMAIL LIKE '%' || #{userEmail} || '%'
         </if>
@@ -35,9 +34,9 @@
                      , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
                      , LAST_CHNG_ID
                      , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
+                     , TO_CHAR(QUIT_DTL_DTTM, 'yyyy-mm-dd') AS QUIT_DTL_DTTM
                 FROM SCH_INCU.USER
                 WHERE 1=1
-                AND DEL_YN = 'N'
                 <if test="userEmail != null and userEmail != ''">
                     AND USER_EMAIL LIKE '%' || #{userEmail} || '%'
                 </if>
@@ -54,16 +53,20 @@
         <if test="firstRecordIndex >= 0 and lastRecordIndex > 0">
             WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
         </if>
+        ORDER BY FRST_RGSR_DTL_DTTM DESC, USER_EMAIL
     </select>
 
     <!--사용자 상세조회-->
     <select id="retrieveUserDetail" parameterType="com.okestro.app.admin.user.UserVo" resultType="com.okestro.app.admin.user.UserVo">
-        SELECT USER_EMAIL
+        SELECT USER_NAME
+             , USER_EMAIL
              , USER_PASSWORD
              , ROLE_CD
              , DEL_YN
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
              , TO_CHAR(LAST_CHNG_DTL_DTTM, 'yyyy-mm-dd') AS LAST_CHNG_DTL_DTTM
+             , TO_CHAR(QUIT_DTL_DTTM, 'yyyy-mm-dd') AS QUIT_DTL_DTTM
+             , (SELECT CODE_NAME FROM SCH_INCU.CODE WHERE UPPER_CODE_NAME = 'ROLE' AND CODE_VAL = ROLE_CD) AS ROLE_CD_NM
         FROM SCH_INCU.USER
         WHERE 1=1
         AND USER_EMAIL = #{userEmail}
@@ -90,7 +93,9 @@
                 'SYSTEM',
                 CURRENT_TIMESTAMP,
                 'SYSTEM',
-                CURRENT_TIMESTAMP
+                CURRENT_TIMESTAMP,
+                #{userName},
+                NULL
                )
     </insert>
 
@@ -98,7 +103,8 @@
     <delete id="deleteUser" parameterType="string">
         UPDATE SCH_INCU.USER
         SET DEL_YN = 'Y',
-            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
+            LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP,
+            QUIT_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
         AND USER_EMAIL = #{userEmail}
     </delete>

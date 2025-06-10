@@ -10,7 +10,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>tiles</title>
+    <title>NEOTECH</title>
     <link href="<c:url value="/assets/lib/bootstrap-5.3.5-dist/css/bootstrap-grid.min.css"/>"  rel="stylesheet" />
     <link href="<c:url value="/assets/lib/bootstrap-5.3.5-dist/css/bootstrap-reboot.min.css"/>"  rel="stylesheet" />
     <link href="<c:url value="/assets/lib/bootstrap-5.3.5-dist/css/bootstrap-utilities.min.css"/>"  rel="stylesheet" />
@@ -144,7 +144,8 @@
         }
 
         .nav__link:hover {
-            background-color: var(--first-color);
+            /*background-color: var(--first-color);*/
+            background-color: var(--sub-color);
         }
 
         .nav__icon {
@@ -188,7 +189,8 @@
         }
 
         .collapse__sublink {
-            color: var(--sub-color);
+            /*color: var(--sub-color);*/
+            color: black;
             font-size: var(--small-font-size);
             white-space: nowrap;
         }
@@ -233,7 +235,8 @@
         }
 
         .page-inner {
-            text-align: center;
+            /*width: 70%;*/
+            text-align: right;
         }
 
         table {
@@ -252,7 +255,7 @@
         th, td {
             padding: 16px;
             border-bottom: 1px solid #e0e0e0;
-            text-align: center;
+            /*text-align: center;*/
         }
 
         th {
@@ -260,15 +263,24 @@
             font-weight: 600;
             color: #2c3e50;
             width: 180px;
+            text-align: center;
         }
 
-        td input[type="text"],
-        td input[type="date"] {
+        td input[type="text"] {
             padding: 8px 12px;
             border: 1px solid #ccc;
             border-radius: 4px;
             width: 45%;
             font-size: 14px;
+        }
+
+        td input[type="date"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 15%;
+            font-size: 14px;
+            cursor: pointer;
         }
 
         td input[type="radio"] {
@@ -396,7 +408,8 @@
             background-color: #28a745;
             color: white;
             border: none;
-            padding: 10px 20px;
+            /*padding: 10px 20px;*/
+            padding: 8px 16px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
@@ -417,22 +430,17 @@
             background-color: #778899;
             color: white;
             border: none;
-            padding: 8px 16px;
+            /*padding: 8px 16px;*/
+            padding: 8px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 14px;
             margin-left: 10px;"
           }
 
-        #req-length, #req-letter, #req-number, #req-special {
-            color: #6c757d;
-            transition: color 0.3s ease;
+        .btnDiv {
+            margin-right: 15%;
         }
-
-        #req-length.satisfied, #req-letter.satisfied, #req-number.satisfied, #req-special.satisfied {
-            color: #28a745;
-        }
-
 
 
     </style>

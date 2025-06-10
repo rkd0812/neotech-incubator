@@ -31,8 +31,8 @@
                     <tr>
                         <th>기간</th>
                         <td>
-                            <input type="date" id="startDate" name="startDate" value="${menuVo.startDate}" style="width: 25%;" /> ~
-                            <input type="date" id="endDate" name="endDate" value="${menuVo.endDate}" style="width: 25%;" />
+                            <input type="date" id="startDate" name="startDate" value="${menuVo.startDate}" min="2025-01-01" /> ~
+                            <input type="date" id="endDate" name="endDate" value="${menuVo.endDate}" min="2025-01-01" />
                             <span class="range-btn-group">
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="6" style="white-space: nowrap; width: 60px">7일</button>
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="13" style="white-space: nowrap; width: 60px">14일</button>
@@ -47,8 +47,10 @@
                 </tbody>
             </table>
         </form>
-        <button id="initBtn">초기화</button>
-        <button id="searchBtn">검색</button>
+        <div class="btnDiv">
+            <button id="initBtn">초기화</button>
+            <button id="searchBtn">검색</button>
+        </div>
         <table>
             <colgroup>
                 <col style="width: 10%;" />
@@ -85,7 +87,9 @@
                 </c:forEach>
             </tbody>
         </table>
-        <button id="registBtn">등록</button>
+        <div class="btnDiv">
+            <button id="registBtn">등록</button>
+        </div>
     </div>
     <c:if test="${menuList.size() ne 0}">
         <div class="paging custom-pagination">

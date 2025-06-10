@@ -20,6 +20,12 @@
                         </colgroup>
                         <tbody>
                             <tr>
+                                <th>이름</th>
+                                <td>
+                                    <input type="text" id="userName" name="userName" />
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>이메일</th>
                                 <td>
                                     <input type="hidden" name="userEmail" />
@@ -50,8 +56,10 @@
                         </tbody>
                     </table>
                 </form>
-                <button id="btnCancel" onclick=location.href="/admin/user/list.do">취소</button>
-                <button id="btnRegist">등록</button>
+                <div class="btnDiv">
+                    <button id="btnCancel" onclick=location.href="/admin/user/list.do">취소</button>
+                    <button id="btnRegist">등록</button>
+                </div>
             </div>
     </div>
 </div>

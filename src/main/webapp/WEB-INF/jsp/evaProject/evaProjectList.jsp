@@ -25,8 +25,8 @@
                     <tr>
                         <th>심사기간</th>
                         <td>
-                            <input type="date" id="startDate" name="startDate" value="${evaProjectVo.startDate}" style="width: 25%;" /> ~
-                            <input type="date" id="endDate" name="endDate" value="${evaProjectVo.endDate}" style="width: 25%;" />
+                            <input type="date" id="startDate" name="startDate" value="${evaProjectVo.startDate}" min="2025-01-01" /> ~
+                            <input type="date" id="endDate" name="endDate" value="${evaProjectVo.endDate}" min="2025-01-01" />
                             <span class="range-btn-group">
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="6" style="white-space: nowrap; width: 60px">7일</button>
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="13" style="white-space: nowrap; width: 60px">14일</button>
@@ -53,17 +53,19 @@
                 </tbody>
             </table>
         </form>
-        <button id="initBtn">초기화</button>
-        <button id="searchBtn">검색</button>
+        <div class="btnDiv">
+            <button id="initBtn">초기화</button>
+            <button id="searchBtn">검색</button>
+        </div>>
         <table>
             <colgroup>
+                <col style="width: 5%;" />
+                <col />
                 <col style="width: 10%;" />
-                <col />
-                <col />
-                <col style="width: 15%;" />
-                <col style="width: 15%;" />
-                <col style="width: 15%" />
-                <col style="width: 15%;" />
+                <col style="width: 10%;" />
+                <col style="width: 10%;" />
+                <col style="width: 10%" />
+                <col style="width: 10%;" />
             </colgroup>
             <thead>
             <tr>
@@ -79,20 +81,20 @@
             <tbody>
                 <c:if test="${evaProjectList.size() eq 0}">
                     <tr>
-                        <td colspan="6">
+                        <td colspan="6" style="text-align: center;">
                             조회된 데이터가 없습니다
                         </td>
                     </tr>
                 </c:if>
                 <c:forEach var="evaProj" items="#{evaProjectList}" varStatus="status">
                     <tr>
-                        <td>${evaProj.rnum}</td>
+                        <td style="text-align: center;">${evaProj.rnum}</td>
                         <td><a href="/evaProject/detail.do?projectId=${evaProj.projectId}">${evaProj.projectName}</td>
-                        <td>${evaProj.evaCdNm}</td>
-                        <td>${evaProj.evaStartDt}</td>
-                        <td>${evaProj.evaEndDt}</td>
-                        <td>${evaProj.evaFormYn}</td>
-                        <td>${evaProj.frstRgsrDtlDttm}</td>
+                        <td style="text-align: center;">${evaProj.evaCdNm}</td>
+                        <td style="text-align: center;">${evaProj.evaStartDt}</td>
+                        <td style="text-align: center;">${evaProj.evaEndDt}</td>
+                        <td style="text-align: center;">${evaProj.evaFormYn}</td>
+                        <td style="text-align: center;">${evaProj.frstRgsrDtlDttm}</td>
                     </tr>
                 </c:forEach>
             </tbody>

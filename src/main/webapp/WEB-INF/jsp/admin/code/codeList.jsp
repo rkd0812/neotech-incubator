@@ -84,6 +84,10 @@
             <div class="paging custom-pagination">
                 <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging" />
             </div>
+            <div style="margin-top: 10px; color: #666; font-size: 14px;">
+                총 ${totalPageCount}개
+                (${currentPageNo} / ${totalPageCount} 페이지)
+            </div>
         </c:if>
         <button id="registBtn">등록</button>
 

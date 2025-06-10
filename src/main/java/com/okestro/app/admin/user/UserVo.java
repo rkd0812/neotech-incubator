@@ -21,4 +21,5 @@ public class UserVo extends PaginationInfo {
     private String startDate;
     private String endDate;
     private String rnum;
+    private String quitDtlDttm;
 }
