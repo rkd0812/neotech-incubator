@@ -77,9 +77,6 @@
                             <div id="req-number">* 숫자 포함</div>
                             <div id="req-special">* 특수문자 포함 (단, \'"<>`%=₩ 제외)</div>
                         </small>
-<%--                        <small class="text-muted">--%>
-<%--                             * 10~16자리 영문/숫자/특수문자 혼용 (특수문자 : \'"<>`%=₩ 사용불가)--%>
-<%--                        </small>--%>
                     </div>
 
                     <div class="mb-3">

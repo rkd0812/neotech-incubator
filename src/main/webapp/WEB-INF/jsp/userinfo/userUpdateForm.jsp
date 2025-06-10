@@ -34,7 +34,7 @@
                     <!-- 이름 -->
                     <div class="mb-3">
                         <label class="form-label fw-bold">이름</label>
-                        <input type="text" class="form-control" value="${userInfo.userName}">
+                        <input type="text" class="form-control" name="userName" value="${userInfo.userName}">
                     </div>
 
                     <!-- 비밀번호 -->
@@ -43,8 +43,12 @@
                         <input type="password" class="form-control" id="userPassword" name="userPassword" maxlength="20"
                                placeholder="새 비밀번호를 입력하세요">
                         <small>
-                            <i class="fas fa-info-circle me-1"></i>
-                            10~16자리 영문/숫자/특수문자 혼용 (특수문자 : \'"<>`%=₩ 사용불가)
+                            <small class="text-muted">
+                                <div id="req-length">* 10~16자리</div>
+                                <div id="req-letter">* 영문자 포함</div>
+                                <div id="req-number">* 숫자 포함</div>
+                                <div id="req-special">* 특수문자 포함 (단, \'"<>`%=₩ 제외)</div>
+                            </small>
                         </small>
                     </div>
 

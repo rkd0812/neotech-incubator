@@ -17,8 +17,8 @@ $(function () {
         resetEmailCheckStatus();  // 값이 바뀌었으므로 상태 리셋
     });
 
-    var isTyping = false;
-    var savedValue = "";
+    var isTyping = false; // 한글 조합 플래그 변수
+    var savedValue = ""; // 세이브 포인트
 
     // 허용할 키코드들 : 8=Backspace, 46=Delete, 9=Tab, 27=Escape, 13=Enter, 37=좌화살표, 39=우화살표, 38=위화살표, 40=아래화살표, 36=Home, 35=End, 33=PageUp, 34=PageDown
     //                16=Shift, 17=Ctrl, 18=Alt, 20=CapsLock, 91=좌Windows키, 93=우Windows키, 112~123=F1~F12키, 144=NumLock, 145=ScrollLock
@@ -50,15 +50,13 @@ $(function () {
     $('#userName').on("beforeinput", function (event) {
         var currentLength = $(this).val().length;
 
-        // 삽입 타입이고 이미 10글자면 차단
+        // 삽입 타입이고 이미 10글자면 차단 (영어)
         if (event.originalEvent.inputType === 'insertText' && currentLength >= 10) {
             event.preventDefault();
-            return false;
         }
-        // 조합 중이고 길이 초과 예상되면 차단
+        // 조합 중이고 길이 초과 예상되면 차단 (한글)
         else if (isTyping && currentLength >= 10) {
             event.preventDefault();
-            return false;
         }
     });
 
@@ -67,7 +65,7 @@ $(function () {
         if (!isTyping) {
             var currentValue = $(this).val();
 
-            if (inputValue.length > 10) {
+            if (currentValue.length > 10) {
                 $(this).val(currentValue.substring(0, 10));
             } else {
                 savedValue = currentValue;
@@ -104,12 +102,12 @@ $(function () {
     });
 
     // 이메일 입력 필터링
-    var specialChar = /[ \{\}\[\]\/?.,;:|\)*~`!^\_+┼<>@\#$%&\'\"\\\(\=]/gi;
-    var koreanChar = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi;
+    var specialChar = /[ \{\}\[\]\/?.,;:|\)*~`!^\_+┼<>@\#$%&\'\"\\\(\=]/gi; //gi → 전체에서 대소문자 구분안하고 찾기
+    var koreanChar = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi; //gi → 전체에서 대소문자 구분안하고 찾기
     $('#userEmail').on("input", function () {
         var emailInput = $(this).val();
 
-        if (specialChar.test(emailInput) || koreanChar.test(emailInput)) {
+        if (specialChar.test(emailInput) || koreanChar.test(emailInput)) {    // 금지 문자 검사
             alert('영문과 숫자만 입력 가능합니다.');
             $(this).val(""); //입력값 초기화
             $(this).focus();
@@ -129,24 +127,24 @@ $(function () {
 
     // 중복확인 상태 리셋
     function resetEmailCheckStatus() {
-        isEmailChecked = false;
-        isEmailAvailable = false;
-        $('#duplicateResult').html("");
+        isEmailChecked = false;      // 중복확인
+        isEmailAvailable = false;    // 이메일 사용 가능 여부 확인
+        $('#duplicateResult').html("");  // 결과 메세지 초기화
 
         // 버튼을 원래 상태로 되될림
         $('#checkemailBtn')
-            .prop("disabled", false)
-            .removeClass("btn-success btn-secondary")
-            .addClass("btn-outline-primary")
+            .prop("disabled", false)      // 버튼 활성화
+            .removeClass("btn-success btn-secondary")  // 기존 색깔 클래스 제거
+            .addClass("btn-outline-primary")   // 원래 색으로 변경
             .text("중복확인")
     }
 
     // 중복확인 버튼 로딩 상태로 변경
     function setButtonLoading() {
         $("#checkemailBtn")
-            .prop("disabled", true)
-            .removeClass("btn-outline-primary btn-success")
-            .addClass("btn-secondary")
+            .prop("disabled", true)  // 버튼 비활성화
+            .removeClass("btn-outline-primary btn-success")  // 기존 색 제거
+            .addClass("btn-secondary")  // 회색으로 변경
             .html('<span class="spinner-border spinner-border-sm me-2" role="status"></span>확인중...');
     }
 
@@ -178,12 +176,10 @@ $(function () {
         if (email === "") {
             alert("이메일을 입력해주세요.");
             $("#userEmail").focus();
-            return;
         }
-        if (domain === "") {
+        else if (domain === "") {
             alert("도메인을 입력하거나 선택해주세요.");
             $("#userDomain").focus();
-            return;
         }
 
         // 이메일 조합
@@ -223,7 +219,7 @@ $(function () {
                     resetEmailCheckStatus(); // 값이 바뀌었으므로 상태 리셋
                 }
             });
-        }, 2000);
+        }, 2000);  // 2초 후에 실제로 요청 (로딩 하기 위해)
     });
 
     function checkPasswordRequirements(password) {
@@ -245,7 +241,7 @@ $(function () {
 
         var hasAllowedSpecialChar = allowSpecialChar.test(password);
         var hasForbiddenChar = forbiddenchar.test(password);
-        var specialOk = hasAllowedSpecialChar && !hasForbiddenChar;
+        var specialOk = hasAllowedSpecialChar && !hasForbiddenChar;  // 허용된 문자는 있어야 하고 금지된 문자는 없어야 함
         updateRequirement('req-special', specialOk)
 
         return lengthOk && letterOk && numberOk && specialOk
@@ -263,7 +259,7 @@ $(function () {
         }
     }
 
-    $('#userPassword').on('input', function() {
+    $('#userPassword').on('input', function() {  // 실시간 조건 체크
         var password = $(this).val();
         checkPasswordRequirements(password);
     });

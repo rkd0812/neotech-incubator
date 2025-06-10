@@ -76,6 +76,7 @@ public class UserInfoCtr {
         session.setAttribute("loginUser", loginUser);
         session.setAttribute("userEmail", loginUser.getUserEmail());
         session.setAttribute("userName", loginUser.getUserName());
+        session.setAttribute("roleCd", loginUser.getRoleCd());
         session.setAttribute("codeName", loginUser.getCodeName());
 
         
