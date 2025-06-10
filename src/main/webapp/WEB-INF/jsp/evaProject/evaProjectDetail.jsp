@@ -78,8 +78,10 @@
                 </tr>
             </tbody>
         </table>
-        <button id="listBtn" onclick=location.href="/evaProject/list.do">목록</button>
-        <c:if test="${evaProjectDetail.evaFormYn eq 'Y' and evaProjectDetail.evaCd eq '01'}"><button id="evaBtn">심사하기</button></c:if>
+        <div class="btnDiv">
+            <button id="listBtn" onclick=location.href="/evaProject/list.do">목록</button>
+            <c:if test="${evaProjectDetail.evaFormYn eq 'Y' and evaProjectDetail.evaCd eq '01'}"><button id="evaBtn">심사하기</button></c:if>
+        </div>
 
         <c:if test="${commentList.size() ne 0}">
             <div class="div-comment">
@@ -102,13 +104,13 @@
                 <tbody>
                     <c:forEach items="${commentList}" var="cmt" varStatus="status">
                         <tr>
-                            <td>${status.count}</td>
+                            <td style="text-align: center;">${status.count}</td>
                             <td>${cmt.commentContent}</td>
-                            <td>
+                            <td style="text-align: center;">
                                 <input type="hidden" id="userEmail" value="${cmt.frstRgsrId}" />
                                 ${cmt.userName}
                             </td>
-                            <td>${cmt.frstRgsrDtlDttm}</td>
+                            <td style="text-align: center;">${cmt.frstRgsrDtlDttm}</td>
                         </tr>
                     </c:forEach>
                 </tbody>

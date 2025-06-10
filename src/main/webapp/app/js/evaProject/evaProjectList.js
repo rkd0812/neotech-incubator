@@ -24,6 +24,7 @@ $(function() {
 
         const startDate = new Date(year, month, day - days).toISOString();
         $('#startDate').val(startDate.substring(0, 10));
+        $('#endDate').val(today.toISOString().substring(0, 10));
     });
 
     // 초기화 버튼

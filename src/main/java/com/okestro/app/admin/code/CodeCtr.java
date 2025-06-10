@@ -63,10 +63,6 @@ public class CodeCtr {
         codeVo.setPageSize(10);                     // 페이지 리스트에 게시되는 페이지 건수
 
         int totalPageCount = codeVo.getTotalPageCount();                    // 페이지 개수
-//        int firstPageNoOnPageList = codeVo.getFirstPageNoOnPageList();      // 시작 페이지
-//        int lastPageNoOnPageList = codeVo.getLastPageNoOnPageList();        // 마지막 페이지
-//        int firstRecordIndex = codeVo.getFirstRecordIndex();                // 글 시작 번호
-//        int lastRecordIndex = codeVo.getLastRecordIndex();                  // 글 마지막 번호
 
         model.addAttribute("currentPageNo", currentPageNo);
         model.addAttribute("totalPageCount", totalPageCount);
