@@ -4,7 +4,7 @@
 <!--namespace = 테이블 이름-->
 <mapper namespace="project">
     <!--  전체 데이터 개수 조회 (페이징)  -->
-    <select id="countProjectList" parameterType="com.okestro.app.project.ProjectPagingVo" resultType="int">
+    <select id="countProjectList" parameterType="com.okestro.app.project.ProjectVo" resultType="int">
         SELECT
             COUNT(*)
         FROM SCH_INCU.PROJECT
@@ -30,7 +30,7 @@
     </select>
 
     <!--  검색 조건이 포함된 쿼리 + 페이징  -->
-    <select id="retrieveProjectListPagiging" parameterType="com.okestro.app.project.ProjectPagingVo" resultType="com.okestro.app.project.ProjectVo">
+    <select id="retrieveProjectList" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
         SELECT
             A.PROJECT_ID    AS projectId,
             A.PROJECT_NAME  AS projectName,
@@ -76,7 +76,7 @@
         </if>
 
         ORDER BY A.FRST_RGSR_DTL_DTTM DESC
-        LIMIT #{paginationInfo.recordCountPerPage} OFFSET #{paginationInfo.firstRecordIndex}
+        LIMIT #{recordCountPerPage} OFFSET #{firstRecordIndex}
     </select>
 
     <!-- 로그인한 사용자가 프로젝트 등록   -->

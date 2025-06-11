@@ -1,16 +1,18 @@
 package com.okestro.app.project;
-import com.okestro.app.cmmn.vo.BaseVo;
+
 
 
 import lombok.Getter;
 import lombok.Setter;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import java.time.LocalDateTime;
 
 @Getter @Setter
-public class ProjectVo extends BaseVo {
+public class ProjectVo extends PaginationInfo {
     // 테이블 컬럼 필드 설정
     // project 테이블 필드
+    private String projectId;
     private String projectName;
     private String userGroupId;
     private String evaGroupId;
@@ -20,6 +22,11 @@ public class ProjectVo extends BaseVo {
     private String url;
     private LocalDateTime evaStartDt;
     private LocalDateTime evaEndDt;
+    private String delYn;
+    private String frstRgsrId;
+    private String frstRgsrDtlDttm;
+    private String lastChngId;
+    private String lastChngDtlDttm;
 
 
     // project_detail 테이블 필드
@@ -35,7 +42,7 @@ public class ProjectVo extends BaseVo {
     private String searchStartDate;    // 프로젝트 등록 날짜 검색 시 사용하기 위해 만든 필드
     private String searchEndDate;      // 프로젝트 최종 등록 날짜 검색 시 사용하기 위해 만든 필드
     private String searchEvaCd;        // 프로젝트 평가 상태를 검색 시 사용하기 위해 만든 필드
-
+    private String userEmail;
 
 
 
