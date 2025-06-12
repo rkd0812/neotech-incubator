@@ -9,13 +9,13 @@ $(function() {
         $('input[name="userEmail"]').val(userEmailId + '@' + userEmailDomain);
 
         // validation
-        if (userEmailId === null || userEmailId === '' || userEmailDomain === null || userEmailDomain === '') {
+        if (userEmailId === '' || userEmailDomain === '') {
             alert("이메일을 입력해주세요");
-        } else if (userPassword === null || userPassword === '') {
+        } else if (userPassword === '') {
             alert("비밀번호를 입력해주세요");
         } else {
             if(confirm("등록하시겠습니까?")) {
-                $('#registForm').submit();
+                $('#userRegistForm').submit();
             }
         }
     })

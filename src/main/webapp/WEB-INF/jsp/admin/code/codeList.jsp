@@ -31,8 +31,8 @@
                     <tr>
                         <th>기간</th>
                         <td>
-                            <input type="date" id="startDate" name="startDate" value="${codeVo.startDate}" style="width: 25%;" /> ~
-                            <input type="date" id="endDate" name="endDate" value="${codeVo.endDate}" style="width: 25%;" />
+                            <input type="date" id="startDate" name="startDate" value="${codeVo.startDate}" min="2025-01-01" /> ~
+                            <input type="date" id="endDate" name="endDate" value="${codeVo.endDate}" min="2025-01-01" />
                             <span class="range-btn-group">
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="6" style="white-space: nowrap; width: 60px">7일</button>
                                 <button type="button" class="date_range_btn" id="dateRangeBtn" data-range="13" style="white-space: nowrap; width: 60px">14일</button>
@@ -47,8 +47,10 @@
                 </tbody>
             </table>
         </form>
-        <button id="initBtn">초기화</button>
-        <button id="searchBtn">검색</button>
+        <div class="btnDiv">
+            <button id="initBtn">초기화</button>
+            <button id="searchBtn">검색</button>
+        </div>
         <table>
             <colgroup>
             </colgroup>
@@ -71,11 +73,11 @@
                 </c:if>
                 <c:forEach var="code" items="${codeList}" varStatus="status">
                     <a><tr>
-                        <td>${code.rnum}</td>
-                        <td>${code.upperCodeName}</td>
-                        <td><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
-                        <td>${code.codeName}</td>
-                        <td>${code.frstRgsrDtlDttm}</td>
+                        <td style="text-align: center;">${code.rnum}</td>
+                        <td style="text-align: center;">${code.upperCodeName}</td>
+                        <td style="text-align: center;"><a href="/admin/code/detail.do?upperCodeName=${code.upperCodeName}&codeVal=${code.codeVal}">${code.codeVal}</a></td>
+                        <td style="text-align: center;">${code.codeName}</td>
+                        <td style="text-align: center;">${code.frstRgsrDtlDttm}</td>
                     </tr></a>
                 </c:forEach>
             </tbody>
@@ -84,12 +86,14 @@
             <div class="paging custom-pagination">
                 <ui:pagination paginationInfo="${codeVo}" type="text" jsFunction="fnPaging" />
             </div>
-            <div style="margin-top: 10px; color: #666; font-size: 14px;">
-                총 ${totalPageCount}개
-                (${currentPageNo} / ${totalPageCount} 페이지)
-            </div>
+<%--            <div style="margin-top: 10px; color: #666; font-size: 14px;">--%>
+<%--                총 ${totalPageCount}개--%>
+<%--                (${currentPageNo} / ${totalPageCount} 페이지)--%>
+<%--            </div>--%>
         </c:if>
-        <button id="registBtn">등록</button>
+        <div class="btnDiv">
+            <button id="registBtn">등록</button>
+        </div>
 
         <%-- 페이징 --%>
 <%--        <c:if test="${codeList.size() ne 0}">--%>

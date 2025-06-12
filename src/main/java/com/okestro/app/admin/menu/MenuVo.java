@@ -22,4 +22,5 @@ public class MenuVo extends PaginationInfo {
     private String upperMenuId;
     private String upperMenuName;
     private String rnum;
+    private String useYn;
 }

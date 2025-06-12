@@ -15,8 +15,16 @@
                    CURRENT_TIMESTAMP,
                    'SYSTEM',
                    CURRENT_TIMESTAMP,
-                   #{upperMenuId},
-                   #{upperMenuName}
+                    <choose>
+                        <when test="upperMenuId != ''">
+                            #{upperMenuId},
+                        </when>
+                        <otherwise>
+                            NULL,
+                        </otherwise>
+                    </choose>
+                   #{upperMenuName},
+                'Y'
                )
     </insert>
 
@@ -47,6 +55,7 @@
                 , MENU_LEVEL
                 , UPPER_MENU_ID
                 , UPPER_MENU_NAME
+                , USE_YN
                 , DEL_YN
                 , FRST_RGSR_ID
                 , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
@@ -67,7 +76,7 @@
         <if test="firstRecordIndex >= 0 and lastRecordIndex > 0">
             WHERE RNUM <![CDATA[>]]> #{firstRecordIndex} AND RNUM <![CDATA[<=]]> #{lastRecordIndex}
         </if>
-        ORDER BY MENU_ID
+        ORDER BY MENU_ID DESC
     </select>
 
     <!-- 메뉴 상세조회-->
@@ -77,6 +86,7 @@
              , MENU_LEVEL
              , UPPER_MENU_ID
              , UPPER_MENU_NAME
+             , USE_YN
              , DEL_YN
              , FRST_RGSR_ID
              , TO_CHAR(FRST_RGSR_DTL_DTTM, 'yyyy-mm-dd') AS FRST_RGSR_DTL_DTTM
@@ -95,7 +105,14 @@
         UPDATE SCH_INCU.MENU
         SET MENU_NAME = #{menuName},
             MENU_LEVEL = #{menuLevel},
-            UPPER_MENU_ID = #{upperMenuId},
+            <choose>
+                <when test="upperMenuId != ''">
+                    UPPER_MENU_ID = #{upperMenuId},
+                </when>
+                <otherwise>
+                    UPPER_MENU_ID = NULL,
+                </otherwise>
+            </choose>
             UPPER_MENU_NAME = #{upperMenuName},
             DEL_YN = 'N',
             LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
@@ -107,6 +124,7 @@
     <delete id="deleteMenu" parameterType="string">
         UPDATE SCH_INCU.MENU
         SET DEL_YN = 'Y',
+            USE_YN = 'N',
             LAST_CHNG_DTL_DTTM = CURRENT_TIMESTAMP
         WHERE 1=1
         AND MENU_ID = #{menuId}

@@ -78,11 +78,11 @@
             </c:if>
                 <c:forEach var="menu" items="${menuList}" varStatus="status">
                     <tr>
-                        <td>${status.count}</td>
+                        <td style="text-align: center;">${status.count}</td>
                         <td><a href="/admin/menu/detail.do?menuId=${menu.menuId}">${menu.menuName}</a></td>
-                        <td>${menu.upperMenuName}</td>
-                        <td>${menu.menuLevel}</td>
-                        <td>${menu.frstRgsrDtlDttm}</td>
+                        <td style="text-align: center;">${menu.upperMenuName}</td>
+                        <td style="text-align: center;">${menu.menuLevel}</td>
+                        <td style="text-align: center;">${menu.frstRgsrDtlDttm}</td>
                     </tr>
                 </c:forEach>
             </tbody>

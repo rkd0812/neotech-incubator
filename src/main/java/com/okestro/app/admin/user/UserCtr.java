@@ -68,7 +68,6 @@ public class UserCtr {
 
     // 사용자 상세조회
     @GetMapping("/admin/user/detail.do")
-//    public String detailUser(HttpServletRequest request, Model model) {
     public String detailUser(@RequestParam String userEmail, Model model) {
 
         UserVo user = new UserVo();
@@ -86,6 +85,7 @@ public class UserCtr {
         return "admin/user/userDetail";
     }
 
+    // 사용자 수정
     @PostMapping("/admin/user/update.do")
     public String updateUser(@ModelAttribute UserVo userVo, RedirectAttributes redirectAttributes) {
         int cnt = userSvc.updateUser(userVo);
@@ -99,6 +99,7 @@ public class UserCtr {
         return "redirect:/admin/user/detail.do?userEmail=" + userVo.getUserEmail();
     }
 
+    // 사용자 등록 화면 이동
     @GetMapping("/admin/user/openRegist.do")
     public String openRegistUser(Model model) {
         // 사용자 권한 조회 (ROLE)
@@ -109,6 +110,7 @@ public class UserCtr {
         return "admin/user/userRegist";
     }
 
+    // 사용자 등록
     @PostMapping("/admin/user/regist.do")
     public String registerUser(@ModelAttribute UserVo userVo, RedirectAttributes redirectAttributes) {
         int cnt = userSvc.registUser(userVo);
@@ -122,7 +124,8 @@ public class UserCtr {
         return "redirect:/admin/user/list.do";
     }
 
-    @GetMapping("/admin/user/delete.do")
+    // 사용자 삭제
+    @PostMapping("/admin/user/delete.do")
     public String deleteUser(@RequestParam("userEmail") String userEmail, RedirectAttributes redirectAttributes) {
         int cnt = userSvc.deleteUser(userEmail);
 

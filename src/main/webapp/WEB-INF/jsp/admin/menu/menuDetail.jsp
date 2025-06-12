@@ -20,7 +20,7 @@
         <h1 class="page-title">메뉴 상세</h1>
     </div>
     <div class="page-inner">
-        <form id="detailForm" name="detailForm" action="/admin/menu/update.do" method="post">
+        <form id="menuInfoForm" name="menuInfoForm">
             <table>
                 <colgroup>
                     <col style="width: 20%;" />
@@ -31,7 +31,7 @@
                         <th>메뉴명</th>
                         <td>
                             <input type="hidden" id="menuId" name="menuId" value="${menuDetail.menuId}">
-                            ${menuDetail.menuName}
+                            <input type="text" id="menuName" name="menuName" value="${menuDetail.menuName}">
                         </td>
                     </tr>
                     <tr>
@@ -58,8 +58,10 @@
                 </thead>
             </table>
         </form>
-        <button id="listBtn" onclick=location.href="/admin/menu/list.do">목록</button>
-        <button id="updateBtn">수정</button>
-        <button id="deleteBtn">삭제</button>
+        <div class="btnDiv">
+            <button id="listBtn" onclick=location.href="/admin/menu/list.do">목록</button>
+            <button id="updateBtn">수정</button>
+            <button id="deleteBtn">삭제</button>
+        </div>
     </div>
 </div>

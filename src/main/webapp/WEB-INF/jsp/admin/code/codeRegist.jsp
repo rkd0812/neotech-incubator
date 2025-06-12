@@ -13,7 +13,7 @@
         <h1 class="page-title">코드 등록</h1>
     </div>
     <div class="page-inner">
-        <form id="registForm" name="registForm" action="/admin/code/regist.do" method="post">
+        <form id="codeRegistForm" name="codeRegistForm" action="/admin/code/regist.do" method="post">
             <table>
                 <colgroup></colgroup>
                 <tbody>
@@ -32,7 +32,9 @@
                 </tbody>
             </table>
         </form>
-        <button id="btnCancel" onclick=location.href="/admin/code/list.do">취소</button>
-        <button id="btnRegist">등록</button>
+        <div class="btnDiv">
+            <button id="btnCancel" onclick=location.href="/admin/code/list.do">취소</button>
+            <button id="btnRegist">등록</button>
+        </div>
     </div>
 </div>
