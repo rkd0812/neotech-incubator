@@ -6,10 +6,10 @@
     <!--  전체 데이터 개수 조회 (페이징)  -->
     <select id="countProjectList" parameterType="com.okestro.app.project.ProjectVo" resultType="int">
         SELECT
-            COUNT(*)
+        COUNT(*)
         FROM SCH_INCU.PROJECT
         WHERE
-            LAST_CHNG_ID = #{userEmail}
+        LAST_CHNG_ID = #{userEmail}
         AND DEL_YN = 'N'
         <!-- 프로젝트명 검색 조건 -->
         <if test="searchProjectName != null and searchProjectName != ''">
@@ -32,29 +32,25 @@
     <!--  검색 조건이 포함된 쿼리 + 페이징  -->
     <select id="retrieveProjectList" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
         SELECT
-            A.PROJECT_ID    AS projectId,
-            A.PROJECT_NAME  AS projectName,
-            B.USER_NAME     AS userName,
-            A.EVA_START_DT  AS evaStartDt,
-            A.EVA_END_DT    AS evaEndDt,
-            C.CODE_NAME     AS codeName,
-            A.EVA_CD        AS evaCd,
-            A.SCORE_FIN     AS scoreFin,
-            A.DEL_YN        AS delYn,
-            A.FRST_RGSR_ID  AS firstRgsrId,
-            A.FRST_RGSR_DTL_DTTM    AS frstRgsrDtlDttm,
-            A.LAST_CHNG_ID  AS lastChngId,
-            A.LAST_CHNG_DTL_DTTM    AS lastChngDtlDttm,
-            A.USER_GROUP_ID AS userGroupId,
-            A.EVA_GROUP_ID  AS evaGroupId,
-            A.PROJECT_DETAIL    AS projectDetail,
-            A.URL           AS url
+        A.PROJECT_ID    AS projectId,
+        A.PROJECT_NAME  AS projectName,
+        B.USER_NAME     AS userName,
+        A.EVA_START_DT  AS evaStartDt,
+        A.EVA_END_DT    AS evaEndDt,
+        A.EVA_CD        AS evaCd,
+        A.SCORE_FIN     AS scoreFin,
+        A.DEL_YN        AS delYn,
+        A.FRST_RGSR_ID  AS frstRgsrId,
+        A.FRST_RGSR_DTL_DTTM    AS frstRgsrDtlDttm,
+        A.LAST_CHNG_ID  AS lastChngId,
+        A.LAST_CHNG_DTL_DTTM    AS lastChngDtlDttm,
+        A.USER_GROUP_ID AS userGroupId,
+        A.EVA_GROUP_ID  AS evaGroupId,
+        A.PROJECT_DETAIL    AS projectDetail,
+        A.URL           AS url
         FROM SCH_INCU.PROJECT A
         LEFT JOIN SCH_INCU.USER B
         ON A.LAST_CHNG_ID = B.USER_EMAIL
-        LEFT JOIN SCH_INCU.CODE C
-        ON A.EVA_CD = C.CODE_VAL
-        AND C.UPPER_CODE_NAME = 'EVALUATION'
         WHERE
         A.LAST_CHNG_ID = #{userEmail}
         AND A.DEL_YN = 'N'
@@ -79,80 +75,6 @@
         LIMIT #{recordCountPerPage} OFFSET #{firstRecordIndex}
     </select>
 
-    <!-- 로그인한 사용자가 프로젝트 등록   -->
-    <insert id="insertUserProject" parameterType="com.okestro.app.project.ProjectVo">
-        <selectKey keyProperty="projectId" resultType="String" order="BEFORE">
-            SELECT
-                CASE
-                WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS UNSIGNED)) IS NULL THEN 'PRJ0001'
-                ELSE CONCAT('PRJ', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS UNSIGNED)) + 1, 4, '0'))
-                END
-            FROM SCH_INCU.PROJECT
-            WHERE PROJECT_ID LIKE 'PRJ%'
-        </selectKey>
-        INSERT INTO SCH_INCU.PROJECT (
-            PROJECT_ID,
-            PROJECT_NAME,
-            EVA_CD,
-            SCORE_FIN,
-            EVA_START_DT,
-            EVA_END_DT,
-            USER_GROUP_ID,
-            EVA_GROUP_ID,
-            PROJECT_DETAIL,
-            URL,
-            DEL_YN,
-            FRST_RGSR_ID,
-            FRST_RGSR_DTL_DTTM,
-            LAST_CHNG_ID,
-            LAST_CHNG_DTL_DTTM
-            ) VALUES (
-            #{projectId},
-            #{projectName},
-            'A',
-            NULL,
-            #{evaStartDt},
-            #{evaEndDt},
-            #{userGroupId},
-            #{evaGroupId},
-            #{projectDetail},
-            #{url},
-            'N',
-            #{lastChngId},
-            NOW(),
-            #{lastChngId},
-            NOW()
-        )
-    </insert>
-    <!--  프로젝트 수정  -->
-    <update id="updateProject" parameterType="com.okestro.app.project.ProjectVo">
-        UPDATE SCH_INCU.PROJECT
-        SET
-            PROJECT_NAME = #{projectName},
-            PROJECT_DETAIL = #{projectDetail},
-            URL = #{url},
-            LAST_CHNG_ID = #{userEmail},
-            LAST_CHNG_DTL_DTTM = NOW()
-        WHERE
-            PROJECT_ID = #{projectId}
-        AND LAST_CHNG_ID = #{userEmail}
-        AND DEL_YN = 'N'
-
-    </update>
-
-    <!-- 프로젝트 삭제 -->
-    <update id="deleteProject" parameterType="com.okestro.app.project.ProjectVo">
-        UPDATE SCH_INCU.PROJECT
-        SET
-        DEL_YN = 'Y',
-        LAST_CHNG_ID = #{userEmail},
-        LAST_CHNG_DTL_DTTM = NOW()
-        WHERE
-        PROJECT_ID = #{projectId}
-        AND LAST_CHNG_ID = #{userEmail}
-        AND DEL_YN = 'N'
-    </update>
-
     <!-- 프로젝트 상세 조회  -->
     <select id="retrieveProjectDetail" parameterType="String" resultType="com.okestro.app.project.ProjectVo">
         SELECT
@@ -175,5 +97,86 @@
         WHERE PROJECT_ID = #{projectId}
           AND DEL_YN = 'N'
     </select>
+
+    <!-- 로그인한 사용자가 프로젝트 등록   -->
+    <insert id="insertUserProject" parameterType="com.okestro.app.project.ProjectVo">
+        <selectKey keyProperty="projectId" resultType="String" order="BEFORE">
+            SELECT
+            CASE
+            WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS UNSIGNED)) IS NULL THEN 'PRJ0001'
+            ELSE CONCAT('PRJ', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS UNSIGNED)) + 1, 4, '0'))
+            END
+            FROM SCH_INCU.PROJECT
+            WHERE PROJECT_ID LIKE 'PRJ%'
+        </selectKey>
+        INSERT INTO SCH_INCU.PROJECT (
+        PROJECT_ID,
+        PROJECT_NAME,
+        EVA_CD,
+        SCORE_FIN,
+        EVA_START_DT,
+        EVA_END_DT,
+        USER_GROUP_ID,
+        EVA_GROUP_ID,
+        PROJECT_DETAIL,
+        URL,
+        DEL_YN,
+        FRST_RGSR_ID,
+        FRST_RGSR_DTL_DTTM,
+        LAST_CHNG_ID,
+        LAST_CHNG_DTL_DTTM
+        ) VALUES (
+        #{projectId},
+        #{projectName},
+        <choose>
+            <when test="actionType != null and actionType == 'submit'">
+                '01'
+            </when>
+            <otherwise>
+                '00'
+            </otherwise>
+        </choose>,
+        NULL,
+        #{evaStartDt},
+        #{evaEndDt},
+        #{userGroupId},
+        #{evaGroupId},
+        #{projectDetail},
+        #{url},
+        'N',
+        #{lastChngId},
+        NOW(),
+        #{lastChngId},
+        NOW()
+        )
+    </insert>
+
+    <!--  프로젝트 수정  -->
+    <update id="updateProject" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.PROJECT
+        SET
+            PROJECT_NAME = #{projectName},
+            PROJECT_DETAIL = #{projectDetail},
+            URL = #{url},
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+          AND LAST_CHNG_ID = #{lastChngId}
+          AND DEL_YN = 'N'
+    </update>
+
+    <!-- 프로젝트 삭제 -->
+    <update id="deleteProject" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.PROJECT
+        SET
+            DEL_YN = 'Y',
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+          AND LAST_CHNG_ID = #{lastChngId}
+          AND DEL_YN = 'N'
+    </update>
 
 </mapper>

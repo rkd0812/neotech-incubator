@@ -17,86 +17,61 @@ $(function () {
         resetEmailCheckStatus();  // 값이 바뀌었으므로 상태 리셋
     });
 
-    var isTyping = false; // 한글 조합 플래그 변수
-    var savedValue = ""; // 세이브 포인트
-
     // 허용할 키코드들 : 8=Backspace, 46=Delete, 9=Tab, 27=Escape, 13=Enter, 37=좌화살표, 39=우화살표, 38=위화살표, 40=아래화살표, 36=Home, 35=End, 33=PageUp, 34=PageDown
     //                16=Shift, 17=Ctrl, 18=Alt, 20=CapsLock, 91=좌Windows키, 93=우Windows키, 112~123=F1~F12키, 144=NumLock, 145=ScrollLock
     var allowedKeys = [
         8, 46, 9, 27, 13, 37, 39, 38, 40, 36, 35, 33, 34, 16, 17, 18, 20, 91, 93, 144, 145];
 
 
-    // 한글 조합 시작
-    $('#userName').on("compositionstart", function () {
-        isTyping = true;
-        savedValue = $(this).val(); // 현재 입력된 값 저장
-    });
-
-    // 한글 조합 완료
-    $('#userName').on("compositionend", function () {
-        isTyping = false;
-
-        var currentValue = $(this).val();
-
-        // 길이 초과하면 저장된 값으로 되돌리기
-        if (currentValue.length > 10) {
-            $(this).val(savedValue);
-        } else {
-            savedValue = currentValue; // 유효하면 저장
-        }
-    });
-
     // 실시간으로 입력 차단
     $('#userName').on("beforeinput", function (event) {
         var currentLength = $(this).val().length;
 
         // 삽입 타입이고 이미 10글자면 차단 (영어)
-        if (event.originalEvent.inputType === 'insertText' && currentLength >= 10) {
+        if (currentLength >= 10) {
+            var inputType = event.originalEvent.inputType;
+
+            // 삭제 관련 입력만 허용
+            if (inputType && (
+                inputType.includes('delete') ||
+                inputType.includes('backward') ||
+                inputType === 'deleteContentBackward' ||
+                inputType === 'deleteContentForward'
+            )) {
+                return true; // 삭제는 허용
+            }
+
+            console.log('11번째 글자 차단:', inputType);
             event.preventDefault();
-        }
-        // 조합 중이고 길이 초과 예상되면 차단 (한글)
-        else if (isTyping && currentLength >= 10) {
-            event.preventDefault();
+            return false;
         }
     });
 
     $('#userName').on("input", function () {
-        // 한글 조합 중이 아닐 때만 길이 체크
-        if (!isTyping) {
-            var currentValue = $(this).val();
+        var currentValue = $(this).val();
 
-            if (currentValue.length > 10) {
-                $(this).val(currentValue.substring(0, 10));
-            } else {
-                savedValue = currentValue;
-            }
-        }
-    })
-
-    // 글자 수 입력 제한 (20자에서 추가 입력 방지)
-    $('#userEmail, #userDomain').on("keydown", function (event) {
-        var currentLength = $(this).val().length;
-
-        // Ctrl이나 Cmd 키와 함께 누른 조합키는 허용 (복사, 붙여넣기 등)
-        if (event.ctrlKey || event.metaKey) {
-        }
-        // 허용된 키가 아니고, 현재 길이가 최대값에 도달했으면 입력 막기
-        else if (allowedKeys.indexOf(event.keyCode) === -1 && currentLength >= 20) {
-            event.preventDefault();
+        if (currentValue.length > 10) {
+            $(this).val(currentValue.substring(0, 10));
         }
     });
 
     $('#userName').on("keydown", function (event) {
         var currentLength = $(this).val().length;
 
-        // 한글 조합 중이면 키보드 제한 안함
-        if (isTyping) {
+        // Ctrl 이나 Cmd 키 조합 허용 (복사, 붙여넣기 등)
+        if (event.ctrlKey || event.metaKey) {
+            return true;
         }
-        // Ctrl이나 Cmd 키 조합은 허용 (복사, 붙여넣기 등)
-        else if (event.ctrlKey || event.metaKey) {
+    });
+
+    // 글자 수 입력 제한 (20자에서 추가 입력 방지)
+    $('#userEmail, #userDomain').on("keydown", function (event) {
+        var currentLength = $(this).val().length;
+
+        if (event.ctrlKey || event.metaKey) {
+            return true;
         }
-        // 10글자 도달했고 허용되지 않은 키면 차단
-        else if (allowedKeys.indexOf(event.keyCode) === -1 && currentLength >= 10) {
+        else if (allowedKeys.indexOf(event.keyCode) === -1 && currentLength >= 20) {
             event.preventDefault();
         }
     });

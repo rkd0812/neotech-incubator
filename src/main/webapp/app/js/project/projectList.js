@@ -33,36 +33,22 @@ $(function () {
     var oneMonthAgoString = getOneMonthAgoString();
 
     // 날짜 입력 필듸의 최소값을 설정
-    $('#startDate').attr('min', '2010-01-01')
-    $('#endDate').attr('min', '2010-01-01')
+    $('#startDate').attr('min', '2010-01-01');
+    $('#endDate').attr('min', '2010-01-01');
 
     // 날짜 입력 필드의 최대값을 오늘 날짜로 설정
     $('#startDate').attr('max', todayString);
     $('#endDate').attr('max', todayString);
 
-    // 화면 표시용 필드에 기본값 설정
-    $('#startDate').val(oneMonthAgoString);  // 한달 전
-    $('#endDate').val(todayString);      // 오늘
-
     // 페이지 로드 시 검색 조건이 있으면 화면에 표시
     // 이미 검색한 상태라면 검색 조건을 화면에 복원
-    if ($('#hiddenStartDate').val()) {
-        $('#startDate').val($('#hiddenStartDate').val());
+    if (!$('#startDate').val()) {
+        $('#startDate').val(oneMonthAgoString);  // 한달 전
     }
-    if ($('#hiddenEndDate').val()) {
-        $('#endDate').val($('#hiddenEndDate').val());
+    if (!$('#endDate').val()) {
+        $('#endDate').val(todayString);      // 오늘
     }
-    if ($('#hiddenProjectName').val()) {
-        $('#projectName').val($('#hiddenProjectName').val());
-    }
-    if ($('#hiddenSearchEvaCd').val()) {
-        var evaCd = $('#hiddenSearchEvaCd').val();
-        if (evaCd === '00') $('#status00').prop('checked', true);
-        else if (evaCd === '01') $('#status01').prop('checked', true);
-        else if (evaCd === '02') $('#status02').prop('checked', true);
-        else if (evaCd === '03') $('#status03').prop('checked', true);
-        else $('#allStatus').prop('checked', true);
-    }
+
 
     // 버튼 클릭 시 날짜 조정
     $('.date_range_btn').on('click', function () {
@@ -74,8 +60,7 @@ $(function () {
         $('#endDate').val(todayString);
     });
 
-    // 날짜 선택 시 유효성 자동 체크 및 리셋
-    // 검색 버튼 클릭 이벤트 (여기서 조건을 hidden 필드로 복사!)
+    // 날짜 선택 시 유효성 자동 체크
     $('#startDate, #endDate').on('change', function () {
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
@@ -87,51 +72,38 @@ $(function () {
             $('#startDate').val(oneMonthAgoString);
             $('#endDate').val(todayString);
         }
+    });
 
-        // 조회 버튼 클릭 시에만 화면 값을 hidden 필드로 복사 (실제 검색 조건으로 만들기)
-        $('#hiddenStartDate').val($('#startDate').val());
-        $('#hiddenEndDate').val($('#endDate').val());
-        $('#hiddenProjectName').val($('#projectName').val());
-
-        // 심사 상태 처리
-        var selectedEvaCd = $('input[name="displayEvaCd"]:checked').val();
-        $('#hiddenSearchEvaCd').val(selectedEvaCd);
-
+    // 검색 버튼 클릭 이벤트
+    $('#searchBtn').on('click', function () {
         // 검색할 때는 1페이지부터 시작
-        $('#currentPageNo').val(1);
+        $('input[name="currentPageNo"]').val(1);
 
         $('#searchForm').submit();
     });
 
     // 초기화 버튼 클릭 이벤트
-    $('#resetBtn').on('click', function () {
+    $('#initBtn').on('click', function () {
         // 모든 검색 조건을 기본값으로 초기화
-        $('#startDate').val(oneMonthAgoString);  // 일주일 전
+        $('#startDate').val(oneMonthAgoString);  // 한달 전
         $('#endDate').val(todayString);      // 오늘
         $('#projectName').val('');           // 프로젝트명 비우기
-        $('#allStatus').prop('checked', true); // 심사 상태를 '전체'로 초기화
-
-        // hidden 필드는 비우기 (검색 조건 제거)
-        $('#hiddenStartDate').val('');
-        $('#hiddenEndDate').val('');
-        $('#hiddenProjectName').val('');
-        $('#hiddenSearchEvaCd').val('');
+        $('#All').prop('checked', true);     // 심사 상태를 '전체'로 초기화
 
         // 페이지를 1페이지로 초기화
-        $('#currentPageNo').val(1);
+        $('input[name="currentPageNo"]').val(1);
     });
 
-    // // 프로젝트 등록 버튼
-    // $('#registerBtn').on('click', function () {
-    //     location.href = '/project/registProjectForm.do';
-    // });
+    // 프로젝트 등록 버튼
+    $('#registBtn').on('click', function () {
+        location.href = '/project/projectRegist.do';
+    });
 
 });
 
-// 페이징 부분 전역 함수로 선언
-function goToPage(pageNumber) {
-    $('#currentPageNo').val(pageNumber);
+//  페이징
+function fnPaging(pageNo) {
+    $('input[name="currentPageNo"]').val(pageNo);
     $('#searchForm').submit();
-
 }
 

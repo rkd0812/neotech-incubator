@@ -45,6 +45,13 @@ public class ProjectVo extends PaginationInfo {
     private String userEmail;
 
 
+    // 팀 구성원 필드
+    private String teamMembers;  // 팀 구성원 이메일
+    private String teamMemberNames;  // 팀 구성원 이름
+
+    // 폼 처리용 임시 필드
+    private String actionType;
+
 
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
@@ -52,6 +59,11 @@ public class ProjectVo extends PaginationInfo {
 
     public String getEvaEndDtString() {
         return evaEndDt != null ? evaEndDt.toLocalDate().toString() : "";
+    }
+
+    // 등록일시 문자열 변환 메서드
+    public String getFrstRgsrDtlDttmString() {
+        return frstRgsrDtlDttm != null ? frstRgsrDtlDttm.substring(0, 10) : "";
     }
 
 }

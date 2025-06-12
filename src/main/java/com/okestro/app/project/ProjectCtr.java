@@ -65,21 +65,14 @@ public class ProjectCtr {
         return "project/projectList";
     }
 
-//    // 프로젝트 등록
-//    @GetMapping("/project/registProjectForm.do")
-//    public String registProjectForm(HttpServletRequest request, Model model) {
-//        // 세션 체크
-//        HttpSession session = request.getSession(false);
-//        if (session == null || session.getAttribute("loginUser") == null) {
-//            return "redirect:/userinfo/loginForm.do";
-//        }
-//
-//        // 로그인 사용자 정보 가져옴
-//        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-//        model.addAttribute("loginUser", loginUser);
-//
-//        return "project/projectRegistForm";
-//    }
+    // 프로젝트 등록
+    @GetMapping("/project/projectRegist.do")
+    public String registProjectForm(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+        model.addAttribute("loginUser", loginUser);
+        return "project/projectRegist";
+    }
 
 
 
