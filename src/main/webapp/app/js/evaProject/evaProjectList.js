@@ -13,6 +13,18 @@ $(function() {
         setMonth();
     }
 
+    // 달력 onchange
+    $('input[type="date"]').on('change', function() {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+
+        if(startDate > endDate) {
+            alert('종료일은 시작일보다 이후여야 합니다.');
+            setMonth();
+        }
+    });
+
+
     // 버튼 클릭 시 날짜 조정
     $('.date_range_btn').on('click', function () {
         var days = parseInt($(this).data('range')); // data-range 읽기
@@ -41,7 +53,7 @@ $(function() {
         const endDate = $('#endDate').val().replaceAll('-', '');
 
         if(startDate > endDate) {
-            alert("기간 입력이 잘못 되었습니다.");
+            alert('종료일은 시작일보다 이후여야 합니다.');
         } else {
             $('input[name="currentPageNo"]').val(1);
             $('#searchForm').submit();

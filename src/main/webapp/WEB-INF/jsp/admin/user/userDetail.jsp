@@ -18,7 +18,7 @@
     <div class="header">
         <h1 class="page-title">사용자 상세</h1>
         <div class="page-inner">
-            <form id="detailForm" name="detailForm" action="/admin/user/update.do" method="post">
+            <form id="userInfoForm" name="userInfoForm">
                 <table>
                     <colgroup>
                         <col style="width: 20%;" />

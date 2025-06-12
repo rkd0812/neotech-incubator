@@ -130,7 +130,7 @@ public class MenuCtr {
     }
 
     // 메뉴 삭제
-    @GetMapping("/admin/menu/delete.do")
+    @PostMapping("/admin/menu/delete.do")
     public String deleteMenu(@RequestParam String menuId, RedirectAttributes redirectAttributes) {
         int cnt = menuSvc.deleteMenu(menuId);
 

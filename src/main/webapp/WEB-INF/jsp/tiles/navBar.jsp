@@ -11,6 +11,8 @@
 <%
     UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
     String userEmail = (String) session.getAttribute("userEmail");
+    String userName = (String) session.getAttribute("userName");
+    String codeName = (String) session.getAttribute("codeName");
 %>
 
 <div class="navbar bg-body-tertiary" >
@@ -19,6 +21,7 @@
     </div>
     <c:if test="${loginUser ne null}">
         <div>
+            <span><strong><%=userName%></strong> (<%=codeName%>)</span> &nbsp;
             <button class="btn btn-outline-primary" type="button" onclick="location.href='/userinfo/userDetail.do?userEmail=<%=userEmail%>'">내 정보</button>
             <button class="btn btn-outline-primary" type="button" onclick="location.href='/userinfo/logout.do'">로그아웃</button>
         </div>

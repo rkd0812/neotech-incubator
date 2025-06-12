@@ -19,7 +19,7 @@
         <h1 class="page-title">코드 상세조회</h1>
     </div>
     <div class="page-inner">
-        <form id="detailForm" name="detailForm" action="/admin/code/update.do" method="post">
+        <form id="codeInfoForm" name="codeInfoForm">
             <table>
                 <tbody>
                     <tr>
@@ -54,8 +54,10 @@
                 </tbody>
             </table>
         </form>
-        <button id="listBtn" onclick=location.href="/admin/code/list.do">목록</button>
-        <button id="updateBtn">수정</button>
-        <button id="deleteBtn">삭제</button>
+        <div class="btnDiv">
+            <button id="listBtn" onclick=location.href="/admin/code/list.do">목록</button>
+            <button id="updateBtn">수정</button>
+            <button id="deleteBtn">삭제</button>
+        </div>
     </div>
 </div>

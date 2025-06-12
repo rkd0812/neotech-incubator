@@ -12,7 +12,7 @@
     <div class="header">
         <h1 class="page-title">사용자 등록</h1>
             <div class="page-inner">
-                <form id="registForm" name="registForm" action="/admin/user/regist.do" method="post">
+                <form id="userRegistForm" name="userRegistForm" action="/admin/user/regist.do" method="post">
                     <table>
                         <colgroup>
                             <col style="width: 20%;" />

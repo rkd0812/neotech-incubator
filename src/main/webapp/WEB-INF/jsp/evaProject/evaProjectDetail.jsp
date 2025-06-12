@@ -27,7 +27,7 @@
                 <col style="width: 30%;" />
             </colgroup>
             <tbody>
-                <form id="detailForm" name="detailForm" action="/evaProject/update.do" method="post">
+                <form id="evaProjInfoForm" name="evaProjInfoForm" action="/evaProject/update.do" method="post">
                     <tr>
                         <c:if test="${evaProjectDetail.evaCd ne 03}">
                             <th>심사상태</th>
