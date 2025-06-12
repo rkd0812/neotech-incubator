@@ -85,7 +85,7 @@
         FROM SCH_INCU.CODE
         WHERE 1=1
         AND DEL_YN = 'N'
-        <if test="codeName != null and codeName != ''">
+        <if test="upperCodeName != null and upperCodeName != ''">
             AND UPPER_CODE_NAME LIKE '%' || #{upperCodeName} || '%'
         </if>
         <if test="codeVal != null and codeVal != ''">

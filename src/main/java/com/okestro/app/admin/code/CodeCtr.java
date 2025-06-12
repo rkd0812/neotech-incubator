@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -103,7 +102,7 @@ public class CodeCtr {
     }
 
     // 코드 삭제
-    @GetMapping("/admin/code/delete.do")
+    @PostMapping("/admin/code/delete.do")
     public String deleteCode(@ModelAttribute CodeVo codeVo, RedirectAttributes redirectAttributes) {
 
         int cnt = codeSvc.deleteCode(codeVo);
