@@ -23,7 +23,7 @@
             <div class="alert alert-error">${errorMessage}</div>
         </c:if>
 
-        <form id="projectForm" method="post" action="/project/insertProject.do">
+        <form id="projectForm" method="post" action="/project/insertProject.do" enctype="multipart/form-data">
             <!-- 저장 or 심사요청 구분 -->
             <input type="hidden" id="actionType" name="actionType" value="save" />
 
@@ -36,8 +36,8 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <th>프로젝트명 *</th>
-                    <td>
+                    <th>프로젝트명</th>
+                    <td colspan="3">
                         <input type="text" id="projectName" name="projectName"
                                value="${projectVo.projectName}"
                                placeholder="프로젝트명을 입력하세요"
@@ -46,7 +46,7 @@
                 </tr>
                 <tr>
                     <th>팀 구성원</th>
-                    <td>
+                    <td colspan="3">
                         <span>${loginUser.userName}</span>
                         <button type="button">팀원 추가</button>
                     </td>
@@ -57,7 +57,7 @@
                         <textarea id="projectDetail" name="projectDetail"
                                   placeholder="프로젝트 설명을 입력하세요"
                                   rows="5" maxlength="1000"
-                                  style="width: 100%;">${projectVo.projectDetail}</textarea>
+                                  style="width: 100%; height: 250px; resize: none; overflow: auto;">${projectVo.projectDetail}</textarea>
                         <div><span id="charCount">0</span> / 1000자</div>
                     </td>
                 </tr>
@@ -82,8 +82,7 @@
 
             <div class="btnDiv">
                 <button type="button" id="listBtn">목록</button>
-                <button type="button" id="saveBtn">저장</button>
-                <button type="button" id="submitBtn">등록 및 심사요청</button>
+                <button type="button" id="submitBtn">등록</button>
             </div>
         </form>
     </div>

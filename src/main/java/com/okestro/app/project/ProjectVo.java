@@ -30,7 +30,11 @@ public class ProjectVo extends PaginationInfo {
 
 
     // project_detail 테이블 필드
-    private String attachmentID;
+//    private String attachmentID;
+
+    // attachment 테이블 필드
+    private String attachmentId;
+    private String attachmentName;
 
     // Join 하기 위해 사용할 다른 테이블 필드
     private String userName;         // user 테이블의 사용자 이름

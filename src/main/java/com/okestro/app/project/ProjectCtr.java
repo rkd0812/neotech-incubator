@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -78,7 +79,7 @@ public class ProjectCtr {
 
     // 프로젝트 등록될 때
     @PostMapping("/project/insertProject.do")
-    public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+    public String insertProject(ProjectVo projectVo, HttpServletRequest request, MultipartFile multipartFile, RedirectAttributes redirectAttr) {
         //세션 체크
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("loginUser") == null) {
@@ -93,7 +94,7 @@ public class ProjectCtr {
         projectVo.setLastChngId(userEmail);
 
         try {
-            projectSvc.insertUserProject(projectVo);
+            projectSvc.insertUserProject(projectVo, multipartFile);
             redirectAttr.addFlashAttribute("message", "프로젝트가 등록되었습니다.");
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
         } catch (Exception e) {

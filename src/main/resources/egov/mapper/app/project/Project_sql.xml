@@ -78,24 +78,29 @@
     <!-- 프로젝트 상세 조회  -->
     <select id="retrieveProjectDetail" parameterType="String" resultType="com.okestro.app.project.ProjectVo">
         SELECT
-            PROJECT_ID AS projectId,
-            PROJECT_NAME AS projectName,
-            EVA_CD AS evaCd,
-            SCORE_FIN AS scoreFin,
-            EVA_START_DT AS evaStartDt,
-            EVA_END_DT AS evaEndDt,
-            USER_GROUP_ID AS userGroupId,
-            EVA_GROUP_ID AS evaGroupId,
-            PROJECT_DETAIL AS projectDetail,
-            URL AS url,
-            DEL_YN AS delYn,
-            FRST_RGSR_ID AS frstRgsrId,
-            FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
-            LAST_CHNG_ID AS lastChngId,
-            LAST_CHNG_DTL_DTTM AS lastChngDtlDttm
-        FROM SCH_INCU.PROJECT
-        WHERE PROJECT_ID = #{projectId}
-          AND DEL_YN = 'N'
+            A.PROJECT_ID AS projectId,
+            A.PROJECT_NAME AS projectName,
+            A.EVA_CD AS evaCd,
+            A.SCORE_FIN AS scoreFin,
+            A.EVA_START_DT AS evaStartDt,
+            A.EVA_END_DT AS evaEndDt,
+            A.USER_GROUP_ID AS userGroupId,
+            A.EVA_GROUP_ID AS evaGroupId,
+            A.PROJECT_DETAIL AS projectDetail,
+            A.URL AS url,
+            B.ATTACHMENT_ID AS attachmentId,
+            B.ATTACHMENT_NAME AS attachmentName,
+            A.DEL_YN AS delYn,
+            A.FRST_RGSR_ID AS frstRgsrId,
+            A.FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
+            A.LAST_CHNG_ID AS lastChngId,
+            A.LAST_CHNG_DTL_DTTM AS lastChngDtlDttm
+        FROM SCH_INCU.PROJECT A
+        LEFT JOIN SCH_INCU.ATTACHMENT B
+         ON A.PROJECT_ID = B.PROJECT_ID
+        AND A.DEL_YN = 'N'
+        WHERE A.PROJECT_ID = #{projectId}
+          AND B.DEL_YN = 'N'
     </select>
 
     <!-- 로그인한 사용자가 프로젝트 등록   -->
@@ -151,6 +156,28 @@
         )
     </insert>
 
+    <insert id="insertAttachment" parameterType="com.okestro.app.project.ProjectVo">
+        INSERT INTO SCH_INCU.ATTACHMENT (
+            ATTACHMENT_ID,
+            ATTACHMENT_NAME,
+            PROJECT_ID,
+            DEL_YN,
+            FRST_RGSR_ID,
+            FRST_RGSR_DTL_DTTM,
+            LAST_CHNG_ID,
+            LAST_CHNG_DTL_DTTM
+        ) VALUES (
+        #{attachmentId},
+        #{attachmentName},
+        #{projectId},
+        'N',
+        #{lastChngId},
+        NOW(),
+        #{lastChngId},
+        NOW()
+        )
+    </insert>
+
     <!--  프로젝트 수정  -->
     <update id="updateProject" parameterType="com.okestro.app.project.ProjectVo">
         UPDATE SCH_INCU.PROJECT
@@ -158,12 +185,15 @@
             PROJECT_NAME = #{projectName},
             PROJECT_DETAIL = #{projectDetail},
             URL = #{url},
-            LAST_CHNG_ID = #{lastChngId},
-            LAST_CHNG_DTL_DTTM = NOW()
+        <if test="actionType != null and actionType == 'submit'">
+            EVA_CD = '01',
+        </if>
+        LAST_CHNG_ID = #{lastChngId},
+        LAST_CHNG_DTL_DTTM = NOW()
         WHERE
-            PROJECT_ID = #{projectId}
-          AND LAST_CHNG_ID = #{lastChngId}
-          AND DEL_YN = 'N'
+        PROJECT_ID = #{projectId}
+        AND LAST_CHNG_ID = #{lastChngId}
+        AND DEL_YN = 'N'
     </update>
 
     <!-- 프로젝트 삭제 -->

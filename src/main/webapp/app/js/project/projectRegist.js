@@ -23,25 +23,13 @@ $(function() {
         }
     });
 
-    // 저장 버튼
-    $('#saveBtn').on('click', function() {
-        if (!checkForm()) {
-            return;
-        }
-
-        if (confirm('프로젝트를 저장하시겠습니까?')) {
-            $('#actionType').val('save');
-            $('#projectForm').submit();
-        }
-    });
-
-    // 등록 및 심사요청 버튼
+    // 등록
     $('#submitBtn').on('click', function() {
         if (!checkForm()) {
             return;
         }
 
-        if (confirm('프로젝트를 등록하고 심사요청하시겠습니까?')) {
+        if (confirm('프로젝트를 등록하시겠습니까?')) {
             $('#actionType').val('submit');
             $('#projectForm').submit();
         }
