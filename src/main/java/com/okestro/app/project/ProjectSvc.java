@@ -13,10 +13,10 @@ public interface ProjectSvc {
     List<ProjectVo> retrieveProjectList(ProjectVo projectVo);
 
     // 프로젝트 등록
-    void insertUserProject(ProjectVo projectVo, MultipartFile attachmentFile);
+    void insertUserProject(ProjectVo projectVo);
 
     //    // 프로젝트 상세 조회
-//    ProjectVo retrieveProjectDetail(String projectId);
+    ProjectVo retrieveProjectDetail(String projectId);
 
     // 프로젝트 수정
     void updateProject(ProjectVo projectVo);

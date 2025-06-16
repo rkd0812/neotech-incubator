@@ -88,6 +88,7 @@
             A.EVA_GROUP_ID AS evaGroupId,
             A.PROJECT_DETAIL AS projectDetail,
             A.URL AS url,
+            A.FILE_PATH AS filePath,
             B.ATTACHMENT_ID AS attachmentId,
             B.ATTACHMENT_NAME AS attachmentName,
             A.DEL_YN AS delYn,
@@ -98,9 +99,9 @@
         FROM SCH_INCU.PROJECT A
         LEFT JOIN SCH_INCU.ATTACHMENT B
          ON A.PROJECT_ID = B.PROJECT_ID
-        AND A.DEL_YN = 'N'
+        AND B.DEL_YN = 'N'
         WHERE A.PROJECT_ID = #{projectId}
-          AND B.DEL_YN = 'N'
+          AND A.DEL_YN = 'N'
     </select>
 
     <!-- 로그인한 사용자가 프로젝트 등록   -->
@@ -108,8 +109,8 @@
         <selectKey keyProperty="projectId" resultType="String" order="BEFORE">
             SELECT
             CASE
-            WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS UNSIGNED)) IS NULL THEN 'PRJ0001'
-            ELSE CONCAT('PRJ', LPAD(MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS UNSIGNED)) + 1, 4, '0'))
+            WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) IS NULL THEN 'PRJ0001'
+            ELSE 'PRJ' || LPAD((MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) + 1)::TEXT, 4, '0')
             END
             FROM SCH_INCU.PROJECT
             WHERE PROJECT_ID LIKE 'PRJ%'
@@ -125,6 +126,7 @@
         EVA_GROUP_ID,
         PROJECT_DETAIL,
         URL,
+        FILE_PATH,
         DEL_YN,
         FRST_RGSR_ID,
         FRST_RGSR_DTL_DTTM,
@@ -133,21 +135,15 @@
         ) VALUES (
         #{projectId},
         #{projectName},
-        <choose>
-            <when test="actionType != null and actionType == 'submit'">
-                '01'
-            </when>
-            <otherwise>
-                '00'
-            </otherwise>
-        </choose>,
+        '00',
         NULL,
-        #{evaStartDt},
-        #{evaEndDt},
+        NOW(),
+        NOW(),
         #{userGroupId},
         #{evaGroupId},
         #{projectDetail},
         #{url},
+        #{filePath},
         'N',
         #{lastChngId},
         NOW(),

@@ -31,17 +31,10 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return  dao.selectList("project.retrieveProjectList", projectVo);
     }
 
-//    // 프로젝트 상세 조회
-//    @Override
-//    public ProjectVo retrieveProjectDetail(String projectId) {
-//        if (projectId == null || projectId.trim().isEmpty()) {
-//            throw new IllegalArgumentException("프로젝트 ID는 필수입니다.");
-//        }
-//        return dao.selectOne("project.retrieveProjectDetail", projectId);
-//    }
+
     // 프로젝트 등록 시 사용
     @Override
-    public void insertUserProject(ProjectVo projectVo, MultipartFile attachmentFile) {
+    public void insertUserProject(ProjectVo projectVo) {
         if (projectVo.getProjectName() == null || projectVo.getProjectName().trim().isEmpty()) {
             throw new IllegalArgumentException("프로젝트명은 필수 입력 항목입니다.");
         }
@@ -73,26 +66,17 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         }
 
         dao.insert("project.insertUserProject", projectVo);
-
-        // 첨부파일이 있을 시 저장
-        if (attachmentFile != null && !attachmentFile.isEmpty()) {
-            try {
-                String uuid = UUID.randomUUID().toString();   // 파일 저장용 이름
-                String uploadpath = "/upload/" + uuid;  //실제 저장 경로
-
-                File file = new File(uploadpath);
-                attachmentFile.transferTo(file);
-
-                projectVo.setAttachmentId("ATT" + System.currentTimeMillis());
-                projectVo.setAttachmentName(attachmentFile.getOriginalFilename());
-                // 첨부파일 정보 저장
-                dao.insert("project.insertAttachment", projectVo);
-            } catch (IOException e) {
-                throw new RuntimeException("파일 저장 실패", e);
-            }
-        }
     }
-    
+
+    // 프로젝트 상세 조회
+    @Override
+    public ProjectVo retrieveProjectDetail(String projectId) {
+        if (projectId == null || projectId.trim().isEmpty()) {
+            throw new IllegalArgumentException("프로젝트 ID는 필수입니다.");
+        }
+        return dao.selectOne("project.retrieveProjectDetail", projectId);
+    }
+
     // 프로젝트 수정 시 사용
     @Override
     public void updateProject(ProjectVo projectVo) {

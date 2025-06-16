@@ -74,36 +74,65 @@ public class ProjectCtr {
         model.addAttribute("loginUser", loginUser);
         return "project/projectRegist";
     }
+    
+// 프로젝트 등록시
+@PostMapping("/project/insertProject.do")
+public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
 
+    // 인터셉터 사용
+    HttpSession session = request.getSession();
+    UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+    String userEmail = loginUser.getUserEmail();
 
+    // 프로젝트 정보 설정
+    projectVo.setLastChngId(userEmail);
 
-    // 프로젝트 등록될 때
-    @PostMapping("/project/insertProject.do")
-    public String insertProject(ProjectVo projectVo, HttpServletRequest request, MultipartFile multipartFile, RedirectAttributes redirectAttr) {
-        //세션 체크
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loginUser") == null) {
-            return "redirect:/userinfo/loginForm.do";
-        }
+    try {
+        projectSvc.insertUserProject(projectVo);
+        return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+    } catch (Exception e) {
+        return "redirect:/project/projectList.do";
+    }
+}
 
-        // 로그인 사용자 정보 가져옴
+    // 프로젝트 상세 조회
+    @GetMapping("/project/projectDetail.do")
+    public String retrieveProjectDetail(@RequestParam("projectId") String projectId,
+                                        HttpServletRequest request, Model model) {
+
+        // 디버깅용 로그 추가
+        System.out.println("상세 조회 요청된 프로젝트 ID: " + projectId);
+
+        // 인터셉터 사용 후 세션 체크 제거, 로그인 사용자 정보 가져옴
+        HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-        String userEmail = loginUser.getUserEmail();
-
-        // 프로젝트 정보 설정
-        projectVo.setLastChngId(userEmail);
 
         try {
-            projectSvc.insertUserProject(projectVo, multipartFile);
-            redirectAttr.addFlashAttribute("message", "프로젝트가 등록되었습니다.");
-            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+            // 프로젝트 상세 정보 조회
+            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
+
+            // 디버깅용 로그 추가
+            System.out.println("조회된 프로젝트: " + (project != null ? project.getProjectName() : "null"));
+
+            if (project == null) {
+                model.addAttribute("message", "존재하지 않는 프로젝트입니다.");
+                return "redirect:/project/projectList.do";
+            }
+
+            // 모델에 데이터 추가
+            model.addAttribute("project", project);
+            model.addAttribute("loginUser", loginUser);
+
         } catch (Exception e) {
-            redirectAttr.addFlashAttribute("message", "프로젝트 등록에 실패했습니다.");
+            e.printStackTrace(); // 에러 로그 출력
+            model.addAttribute("message", "프로젝트 조회 중 오류가 발생했습니다.");
             return "redirect:/project/projectList.do";
         }
+
+        return "project/projectDetail";
     }
 
-     // 프로젝트 수정 처리
+    // 프로젝트 수정 처리
 
     @PostMapping("/project/updateProject.do")
     public String updateProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
@@ -133,7 +162,7 @@ public class ProjectCtr {
     }
 
 
-     // 프로젝트 삭제 처리
+    // 프로젝트 삭제 처리
 
     @PostMapping("/project/deleteProject.do")
     public String deleteProject(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr) {
@@ -163,5 +192,3 @@ public class ProjectCtr {
         return "redirect:/project/projectList.do";
     }
 }
-
-

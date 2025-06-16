@@ -29,8 +29,8 @@ public class ProjectVo extends PaginationInfo {
     private String lastChngDtlDttm;
 
 
-    // project_detail 테이블 필드
-//    private String attachmentID;
+    // 파일 경로를 저장하기 위한 컬럼 추가
+    private String filePath;
 
     // attachment 테이블 필드
     private String attachmentId;
@@ -67,7 +67,17 @@ public class ProjectVo extends PaginationInfo {
 
     // 등록일시 문자열 변환 메서드
     public String getFrstRgsrDtlDttmString() {
-        return frstRgsrDtlDttm != null ? frstRgsrDtlDttm.substring(0, 10) : "";
+        if (frstRgsrDtlDttm != null && frstRgsrDtlDttm.length() >= 10) {
+            return frstRgsrDtlDttm.substring(0, 10);
+        }
+        return "";
+    }
+
+    public String getLastChngDtlDttmString() {
+        if (lastChngDtlDttm != null && lastChngDtlDttm.length() >= 10) {
+            return lastChngDtlDttm.substring(0, 10);
+        }
+        return "";
     }
 
 }

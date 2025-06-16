@@ -15,15 +15,7 @@
     </div>
 
     <div class="page-inner">
-        <!-- 메시지 표시 -->
-        <c:if test="${not empty message}">
-            <div class="alert alert-success">${message}</div>
-        </c:if>
-        <c:if test="${not empty errorMessage}">
-            <div class="alert alert-error">${errorMessage}</div>
-        </c:if>
-
-        <form id="projectForm" method="post" action="/project/insertProject.do" enctype="multipart/form-data">
+        <form id="projectForm" method="post" action="/project/insertProject.do">
             <!-- 저장 or 심사요청 구분 -->
             <input type="hidden" id="actionType" name="actionType" value="save" />
 
@@ -73,8 +65,10 @@
                 <tr>
                     <th>첨부파일</th>
                     <td>
-                        <input type="file" id="attachmentFile" name="attachmentFile" />
-                        <div>※ 10MB 이하 파일만 가능</div>
+                        <input type="text" id="filePath" name="filePath"
+                               value="${projectVo.filePath}"
+                               placeholder="예 : C:\Users\Desktop\파일명.pdf 또는 http://..."
+                               maxlength="300" style="width: 80%;" />
                     </td>
                 </tr>
                 </tbody>
