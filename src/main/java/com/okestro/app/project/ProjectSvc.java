@@ -24,5 +24,10 @@ public interface ProjectSvc {
     // 프로젝트 삭제
     void deleteProject(ProjectVo projectVo);
 
+    // 파일을 서버에 저장하고 경로 반환
+    String saveFileAndGetPath(MultipartFile uploadFile);
+
+    boolean validateFile(MultipartFile uploadFile);
+
 
 }

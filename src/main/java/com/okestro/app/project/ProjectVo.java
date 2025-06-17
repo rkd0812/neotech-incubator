@@ -5,6 +5,7 @@ package com.okestro.app.project;
 import lombok.Getter;
 import lombok.Setter;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -56,6 +57,9 @@ public class ProjectVo extends PaginationInfo {
     // 폼 처리용 임시 필드
     private String actionType;
 
+    // 파일 업로드를 위한 필드
+    private MultipartFile uploadFile;
+    
 
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";

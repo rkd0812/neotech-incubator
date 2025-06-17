@@ -1,12 +1,15 @@
 package com.okestro.app.project;
 
 import com.okestro.app.userinfo.UserInfoVo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
@@ -88,9 +91,32 @@ public String insertProject(ProjectVo projectVo, HttpServletRequest request, Red
     projectVo.setLastChngId(userEmail);
 
     try {
+        // 파일 업로드 처리
+        MultipartFile uploadFile = projectVo.getUploadFile();
+
+        // 파일이 있으면 처리
+        if (uploadFile != null && !uploadFile.isEmpty()) {
+
+            // 파일 검사
+            if (!projectSvc.validateFile(uploadFile)) {
+                redirectAttr.addFlashAttribute("message", "파일이 올바르지 않습니다. (10MB 이하만 가능)");
+                return "redirect:/project/projectRegist.do";
+            }
+
+            // 파일 저장하고 경로 받기
+            String filePath = projectSvc.saveFileAndGetPath(uploadFile);
+
+            // VO에 파일 정보 설정
+            projectVo.setFilePath(filePath);
+            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
+        }
+
+        // 프로젝트 저장
         projectSvc.insertUserProject(projectVo);
         return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+
     } catch (Exception e) {
+        redirectAttr.addFlashAttribute("message", "프로젝트 등록에 실패했습니다.");
         return "redirect:/project/projectList.do";
     }
 }
@@ -99,10 +125,6 @@ public String insertProject(ProjectVo projectVo, HttpServletRequest request, Red
     @GetMapping("/project/projectDetail.do")
     public String retrieveProjectDetail(@RequestParam("projectId") String projectId,
                                         HttpServletRequest request, Model model) {
-
-        // 디버깅용 로그 추가
-        System.out.println("상세 조회 요청된 프로젝트 ID: " + projectId);
-
         // 인터셉터 사용 후 세션 체크 제거, 로그인 사용자 정보 가져옴
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
@@ -110,9 +132,6 @@ public String insertProject(ProjectVo projectVo, HttpServletRequest request, Red
         try {
             // 프로젝트 상세 정보 조회
             ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
-
-            // 디버깅용 로그 추가
-            System.out.println("조회된 프로젝트: " + (project != null ? project.getProjectName() : "null"));
 
             if (project == null) {
                 model.addAttribute("message", "존재하지 않는 프로젝트입니다.");

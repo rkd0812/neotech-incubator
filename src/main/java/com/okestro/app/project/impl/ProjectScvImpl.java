@@ -20,6 +20,9 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Resource(name="cmmnDao")
     CmmnAbstractDao dao;
 
+    // 파일 저장 경로
+    private static final String UPLOAD_PATH = "C:\\Users\\admin\\Downloads\\";
+
     // 전체 프로젝트 개수 조회 시 사용 (페이징)
     @Override
     public int countProjectList(ProjectVo projectVo) {
@@ -87,5 +90,44 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Override
     public void deleteProject(ProjectVo projectVo) {
         dao.update("project.deleteProject", projectVo);
+    }
+
+    // 첨부파일 저장
+    @Override
+    public String saveFileAndGetPath(MultipartFile uploadFile) {
+        try {
+            // 업로드 폴더가 없으면 생성
+            File uploadDir = new File(UPLOAD_PATH);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+            // 파일명 만들기
+            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
+
+            // 파일 저장
+            File saveFile = new File(UPLOAD_PATH + fileName);
+            uploadFile.transferTo(saveFile);
+
+            // 저장된 경로 반환
+            return UPLOAD_PATH + fileName;
+
+        } catch (IOException e) {
+            throw new RuntimeException("파일 저장 실패", e);
+        }
+    }
+
+    // 파일 체크
+    @Override
+    public boolean validateFile(MultipartFile uploadFile) {
+        // 파일 비어있으면 안되게 설정
+        if (uploadFile == null || uploadFile.isEmpty()) {
+            return false;
+        }
+
+        // 파일  크게 제한 (10mb)
+        if (uploadFile.getSize() > 10 * 1024 * 1024) {
+            return false;
+        }
+        return true;
     }
 }

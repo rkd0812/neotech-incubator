@@ -15,7 +15,7 @@
     </div>
 
     <div class="page-inner">
-        <form id="projectForm" method="post" action="/project/insertProject.do">
+        <form id="projectForm" method="post" action="/project/insertProject.do" enctype="multipart/form-data">
             <!-- 저장 or 심사요청 구분 -->
             <input type="hidden" id="actionType" name="actionType" value="save" />
 
@@ -64,11 +64,13 @@
                 </tr>
                 <tr>
                     <th>첨부파일</th>
-                    <td>
-                        <input type="text" id="filePath" name="filePath"
-                               value="${projectVo.filePath}"
-                               placeholder="예 : C:\Users\Desktop\파일명.pdf 또는 http://..."
-                               maxlength="300" style="width: 80%;" />
+                    <td colspan="3">
+                        <%-- 파일 선택 버튼 --%>
+                        <input type="file" id="uploadFile" name="uploadFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.zip" />
+                        <%-- 선택된 파일명 표시할 곳 --%>
+                        <div id="fileInfo" style="margin-top: 10px; color: #666;">
+                            선택된 파일이 없습니다.
+                        </div>
                     </td>
                 </tr>
                 </tbody>
