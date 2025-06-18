@@ -17,11 +17,6 @@
     </div>
 
     <div class="page-inner">
-        <!-- 메시지 표시 -->
-        <c:if test="${not empty message}">
-            <div class="alert alert-success">${message}</div>
-        </c:if>
-
         <table>
             <colgroup>
                 <col style="width: 20%;" />
@@ -156,8 +151,15 @@
         <div class="btnDiv">
             <button type="button" id="listBtn">목록</button>
             <button type="button" id="updateBtn">수정</button>
-            <button type="button" id="submitBtn">심사요청</button>
+            <button type="button" id="requestEvaBtn">심사요청</button>
             <button type="button" id="deleteBtn">삭제</button>
         </div>
+
+        <input type="hidden" id="projectEvaCd" value="${project.evaCd}" />
+        <input type="hidden" id="projectId" value="${project.projectId}" />
+
+        <form id="deleteForm" method="post" action="/project/deleteProject.do" style="display: none;">
+            <input type="hidden" name="projectId" value="${project.projectId}" />
+        </form>
     </div>
 </div>

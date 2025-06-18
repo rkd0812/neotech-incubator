@@ -152,6 +152,54 @@
         )
     </insert>
 
+    <!-- 프로젝트 심사요청    -->
+    <insert id="evaRequestProject" parameterType="com.okestro.app.project.ProjectVo">
+        <selectKey keyProperty="projectId" resultType="String" order="BEFORE">
+            SELECT
+            CASE
+            WHEN MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) IS NULL THEN 'PRJ0001'
+            ELSE 'PRJ' || LPAD((MAX(CAST(SUBSTRING(PROJECT_ID, 4) AS INTEGER)) + 1)::TEXT, 4, '0')
+            END
+            FROM SCH_INCU.PROJECT
+            WHERE PROJECT_ID LIKE 'PRJ%'
+        </selectKey>
+        INSERT INTO SCH_INCU.PROJECT (
+        PROJECT_ID,
+        PROJECT_NAME,
+        EVA_CD,
+        SCORE_FIN,
+        EVA_START_DT,
+        EVA_END_DT,
+        USER_GROUP_ID,
+        EVA_GROUP_ID,
+        PROJECT_DETAIL,
+        URL,
+        FILE_PATH,
+        DEL_YN,
+        FRST_RGSR_ID,
+        FRST_RGSR_DTL_DTTM,
+        LAST_CHNG_ID,
+        LAST_CHNG_DTL_DTTM
+        ) VALUES (
+        #{projectId},
+        #{projectName},
+        '01',
+        NULL,
+        NOW(),
+        NOW(),
+        #{userGroupId},
+        #{evaGroupId},
+        #{projectDetail},
+        #{url},
+        #{filePath},
+        'N',
+        #{lastChngId},
+        NOW(),
+        #{lastChngId},
+        NOW()
+        )
+    </insert>
+
     <insert id="insertAttachment" parameterType="com.okestro.app.project.ProjectVo">
         INSERT INTO SCH_INCU.ATTACHMENT (
             ATTACHMENT_ID,
@@ -181,15 +229,26 @@
             PROJECT_NAME = #{projectName},
             PROJECT_DETAIL = #{projectDetail},
             URL = #{url},
-        <if test="actionType != null and actionType == 'submit'">
-            EVA_CD = '01',
-        </if>
         LAST_CHNG_ID = #{lastChngId},
         LAST_CHNG_DTL_DTTM = NOW()
         WHERE
-        PROJECT_ID = #{projectId}
+            PROJECT_ID = #{projectId}
         AND LAST_CHNG_ID = #{lastChngId}
         AND DEL_YN = 'N'
+    </update>
+    
+    <!-- 프로젝트 삼사요청 상태로 변경 -->
+    <update id="requestEvaluation" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.PROJECT
+        SET
+            EVA_CD = '01',
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+        AND LAST_CHNG_ID = #{lastChngId}
+        AND DEL_YN = 'N'
+        AND EVA_CD = '00'
     </update>
 
     <!-- 프로젝트 삭제 -->

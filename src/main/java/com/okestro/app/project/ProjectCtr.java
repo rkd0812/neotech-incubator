@@ -78,48 +78,54 @@ public class ProjectCtr {
         return "project/projectRegist";
     }
     
-// 프로젝트 등록시
-@PostMapping("/project/insertProject.do")
-public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
-
-    // 인터셉터 사용
-    HttpSession session = request.getSession();
-    UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-    String userEmail = loginUser.getUserEmail();
-
-    // 프로젝트 정보 설정
-    projectVo.setLastChngId(userEmail);
-
-    try {
-        // 파일 업로드 처리
-        MultipartFile uploadFile = projectVo.getUploadFile();
-
-        // 파일이 있으면 처리
-        if (uploadFile != null && !uploadFile.isEmpty()) {
-
-            // 파일 검사
-            if (!projectSvc.validateFile(uploadFile)) {
-                redirectAttr.addFlashAttribute("message", "파일이 올바르지 않습니다. (10MB 이하만 가능)");
-                return "redirect:/project/projectRegist.do";
-            }
-
-            // 파일 저장하고 경로 받기
-            String filePath = projectSvc.saveFileAndGetPath(uploadFile);
-
-            // VO에 파일 정보 설정
-            projectVo.setFilePath(filePath);
-            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
+    // 프로젝트 등록시
+    @PostMapping("/project/saveProject.do")
+    public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+    
+        // 인터셉터 사용
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+        String userEmail = loginUser.getUserEmail();
+    
+        // 프로젝트 정보 설정
+        projectVo.setLastChngId(userEmail);
+    
+        try {
+            // 프로젝트 등록 상태로 저장
+            projectSvc.insertUserProject(projectVo);
+    
+            redirectAttr.addFlashAttribute("message", "프로젝트가 저장되었습니다.");
+            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+    
+        } catch (Exception e) {
+            redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
+            return "redirect:/project/projectRegist.do";
         }
-
-        // 프로젝트 저장
-        projectSvc.insertUserProject(projectVo);
-        return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
-
-    } catch (Exception e) {
-        redirectAttr.addFlashAttribute("message", "프로젝트 등록에 실패했습니다.");
-        return "redirect:/project/projectList.do";
     }
-}
+
+    @PostMapping("/project/submitProject.do")
+    public String submitProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+
+        // 인터셉터 사용
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+        String userEmail = loginUser.getUserEmail();
+
+        // 프로젝트 정보 설정
+        projectVo.setLastChngId(userEmail);
+
+        try {
+            // 프로젝트 심사요청 상태로 저장
+            projectSvc.evaRequestProject(projectVo);
+
+            redirectAttr.addFlashAttribute("message", "심사요청이 완료되었습니다.");
+            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+
+        } catch (Exception e) {
+            redirectAttr.addFlashAttribute("message", "심사요청에 실패했습니다: " + e.getMessage());
+            return "redirect:/project/projectRegist.do";
+        }
+    }
 
     // 프로젝트 상세 조회
     @GetMapping("/project/projectDetail.do")
@@ -178,6 +184,30 @@ public String insertProject(ProjectVo projectVo, HttpServletRequest request, Red
 
         // 프로젝트 상세 페이지로 리다이렉트
         return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+    }
+
+    // 기존 등록 프로젝트 심사요청으로 상태 변경
+    @PostMapping("/project/requestEvaluation.do")
+    public String requestEvaluation(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr) {
+        // 인터셉터 사용
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+        String userEmail = loginUser.getUserEmail();
+
+        try {
+            // 프로젝트 정보 설정
+            ProjectVo projectVo = new ProjectVo();
+            projectVo.setProjectId(projectId);
+            projectVo.setLastChngId(userEmail);
+
+            // 심사요청으로 상태 변경
+            projectSvc.requestEvaluation(projectVo);
+            redirectAttr.addFlashAttribute("message", "심사요청이 완료되었습니다.");
+        } catch (Exception e) {
+            redirectAttr.addFlashAttribute("message", "심사요청에 실패했습니다: " + e.getMessage());
+        }
+
+        return "redirect:/project/projectDetail.do?projectId=" + projectId;
     }
 
 

@@ -6,9 +6,9 @@ $(function() {
     });
 
     // 파일 선택했을 때 처리
-    $('#uploadFile').on('change', function() {
-        handleFileSelect();
-    });
+    // $('#uploadFile').on('change', function() {
+    //     handleFileSelect();
+    // });
 
     function updateCharCount() {
         var length = $('#projectDetail').val().length;
@@ -21,40 +21,39 @@ $(function() {
         }
     }
 
-    function handleFileSelect() {
-        var fileInput = $('#uploadFile')[0];
-        var file = fileInput.files[0];
-
-        if (file) {
-            // 파일 크기 체크 (10MB)
-            var maxSize = 10 * 1024 * 1024;
-            if (file.size > maxSize) {
-                alert('파일 크기는 10MB 이하만 가능합니다.');
-                $('#uploadFile').val('');
-                $('#fileInfo').text('선택된 파일이 없습니다.');
-                return;
-            }
-
-            // 파일 정보 표시
-            var fileName = file.name;
-            var fileSize = getFileSizeText(file.size);
-            $('#fileInfo').html('<strong>' + fileName + '</strong> (' + fileSize + ')');
-
-        } else {
-            $('#fileInfo').text('선택된 파일이 없습니다.');
-        }
-    }
-
-    // 🔧 수정: getFileSizeText 함수를 handleFileSelect 밖으로 이동
-    function getFileSizeText(bytes) {
-        if (bytes < 1024) {
-            return bytes + ' B';
-        } else if (bytes < 1024 * 1024) {
-            return (bytes / 1024).toFixed(1) + ' KB';
-        } else {
-            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-        }
-    }
+    // function handleFileSelect() {
+    //     var fileInput = $('#uploadFile')[0];
+    //     var file = fileInput.files[0];
+    //
+    //     if (file) {
+    //         // 파일 크기 체크 (10MB)
+    //         var maxSize = 50 * 1024 * 1024;
+    //         if (file.size > maxSize) {
+    //             alert('파일 크기는 50MB 이하만 가능합니다.');
+    //             $('#uploadFile').val('');
+    //             $('#fileInfo').text('선택된 파일이 없습니다.');
+    //             return;
+    //         }
+    //
+    //         // 파일 정보 표시
+    //         var fileName = file.name;
+    //         var fileSize = getFileSizeText(file.size);
+    //         $('#fileInfo').html('<strong>' + fileName + '</strong> (' + fileSize + ')');
+    //
+    //     } else {
+    //         $('#fileInfo').text('선택된 파일이 없습니다.');
+    //     }
+    // }
+    //
+    // function getFileSizeText(bytes) {
+    //     if (bytes < 1024) {
+    //         return bytes + ' B';
+    //     } else if (bytes < 1024 * 1024) {
+    //         return (bytes / 1024).toFixed(1) + ' KB';
+    //     } else {
+    //         return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    //     }
+    // }
 
     // 목록 버튼
     $('#listBtn').on('click', function() {
@@ -64,18 +63,15 @@ $(function() {
     });
 
     // 등록
-    $('#submitBtn').on('click', function() {
+    $('#projectForm').on('submit', function(e) {
         if (!checkForm()) {
-            return;
+            e.preventDefault(); // 폼 제출 중단
+            return false;
         }
-
-        if (confirm('프로젝트를 등록하시겠습니까?')) {
-            $('#actionType').val('submit');
-            $('#projectForm').submit();
-        }
+        // 검증 통과하면 자동으로 폼 제출됨
+        return true;
     });
 
-    // 🔧 수정: checkForm 함수를 $(function() 안으로 이동
     function checkForm() {
         var projectName = $('#projectName').val().trim();
 
@@ -99,16 +95,11 @@ $(function() {
         }
 
         // 파일 관련 체크
-        var fileInput = $('#uploadFile')[0];
-        if (fileInput.files.length > 0) {
-            var file = fileInput.files[0];
-
-            // 파일 크기 체크
-            var maxSize = 10 * 1024 * 1024; // 10MB
-            if (file.size > maxSize) {
-                alert('파일 크기는 10MB 이하만 가능합니다.');
-                return false;
-            }
+        var url = $('#url').val().trim();
+        if (url.length > 200) {
+            alert('URL은 200자 이내로 입력해주세요.');
+            $('#url').focus();
+            return false;
         }
 
         return true;

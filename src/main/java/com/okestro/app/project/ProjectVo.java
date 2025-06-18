@@ -54,12 +54,9 @@ public class ProjectVo extends PaginationInfo {
     private String teamMembers;  // 팀 구성원 이메일
     private String teamMemberNames;  // 팀 구성원 이름
 
-    // 폼 처리용 임시 필드
-    private String actionType;
-
     // 파일 업로드를 위한 필드
     private MultipartFile uploadFile;
-    
+
 
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
@@ -84,4 +81,11 @@ public class ProjectVo extends PaginationInfo {
         return "";
     }
 
+    public MultipartFile getUploadFile() {
+        return uploadFile;
+    }
+
+    public void setUploadFile(MultipartFile uploadFile) {
+        this.uploadFile = uploadFile;
+    }
 }

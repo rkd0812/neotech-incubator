@@ -15,10 +15,7 @@
     </div>
 
     <div class="page-inner">
-        <form id="projectForm" method="post" action="/project/insertProject.do" enctype="multipart/form-data">
-            <!-- 저장 or 심사요청 구분 -->
-            <input type="hidden" id="actionType" name="actionType" value="save" />
-
+        <form id="projectForm" method="post" action="/project/saveProject.do">
             <table class="form-table">
                 <colgroup>
                     <col style="width: 20%;" />
@@ -62,14 +59,22 @@
                                maxlength="200" style="width: 80%;" />
                     </td>
                 </tr>
+<%--                <tr>--%>
+<%--                    <th>첨부파일</th>--%>
+<%--                    <td colspan="3">--%>
+<%--                        &lt;%&ndash; 파일 선택 버튼 &ndash;%&gt;--%>
+<%--                        <input type="file" id="uploadFile" name="uploadFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.zip" />--%>
+<%--                        &lt;%&ndash; 선택된 파일명 표시할 곳 &ndash;%&gt;--%>
+<%--                        <div id="fileInfo" style="margin-top: 10px; color: #666;">--%>
+<%--                            선택된 파일이 없습니다.--%>
+<%--                        </div>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
-                        <%-- 파일 선택 버튼 --%>
-                        <input type="file" id="uploadFile" name="uploadFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.zip" />
-                        <%-- 선택된 파일명 표시할 곳 --%>
-                        <div id="fileInfo" style="margin-top: 10px; color: #666;">
-                            선택된 파일이 없습니다.
+                        <div style="padding: 15px; background-color: #f8f9fa; border: 1px dashed #dee2e6; border-radius: 5px; text-align: center; color: #6c757d;">
+                            <span style="font-size: 14px;">파일 업로드 기능은 추후 구현 예정입니다</span>
                         </div>
                     </td>
                 </tr>
@@ -77,8 +82,8 @@
             </table>
 
             <div class="btnDiv">
-                <button type="button" id="listBtn">목록</button>
-                <button type="button" id="submitBtn">등록</button>
+                <button type="button" id="listBtn" class="btn-secondary">목록</button>
+                <button type="submit" id="saveBtn" class="btn-primary">등록</button>
             </div>
         </form>
     </div>
