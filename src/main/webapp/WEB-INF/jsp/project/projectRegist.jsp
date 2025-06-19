@@ -15,7 +15,7 @@
     </div>
 
     <div class="page-inner">
-        <form id="projectForm" method="post" action="/project/saveProject.do">
+        <form id="projectForm" method="post" action="/project/saveProject.do" enctype="multipart/form-data">
             <table class="form-table">
                 <colgroup>
                     <col style="width: 20%;" />
@@ -59,22 +59,13 @@
                                maxlength="200" style="width: 80%;" />
                     </td>
                 </tr>
-<%--                <tr>--%>
-<%--                    <th>첨부파일</th>--%>
-<%--                    <td colspan="3">--%>
-<%--                        &lt;%&ndash; 파일 선택 버튼 &ndash;%&gt;--%>
-<%--                        <input type="file" id="uploadFile" name="uploadFile" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.zip" />--%>
-<%--                        &lt;%&ndash; 선택된 파일명 표시할 곳 &ndash;%&gt;--%>
-<%--                        <div id="fileInfo" style="margin-top: 10px; color: #666;">--%>
-<%--                            선택된 파일이 없습니다.--%>
-<%--                        </div>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
-                        <div style="padding: 15px; background-color: #f8f9fa; border: 1px dashed #dee2e6; border-radius: 5px; text-align: center; color: #6c757d;">
-                            <span style="font-size: 14px;">파일 업로드 기능은 추후 구현 예정입니다</span>
+                        <input type="file" id="uploadFile" name="uploadFile"
+                               accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.zip,.txt" />
+                        <div id="fileInfo">
+                            파일을 선택해주세요. (최대 50MB, pdf/jpg/jpeg/png/doc/docx/zip/txt 가능)
                         </div>
                     </td>
                 </tr>

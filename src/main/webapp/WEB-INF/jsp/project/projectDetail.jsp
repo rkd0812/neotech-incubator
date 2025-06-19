@@ -115,7 +115,7 @@
                 </td>
                 <td>
                     <c:if test="${not empty project.attachmentName}">
-                        <button type="button" id="downloadBtn">다운로드</button>
+                        <button type="button" id="downloadBtn" onclick="downloadFile('${project.projectId}')">다운로드</button>
                     </c:if>
                 </td>
             </tr>

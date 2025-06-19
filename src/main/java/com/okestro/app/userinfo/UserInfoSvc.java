@@ -23,8 +23,6 @@ public interface UserInfoSvc {
     // 사용자 정보 삭제(DEL_YN 을 'N'에서 'Y'로 변경
     void deleteUserInfo(String userEmail);
 
-    // 파일 서버에 저장하고 경로 반환
-    String saveFileAndGetPath(MultipartFile uploadFile);
 
     // 로그인 검증 (이메일 , 비밀번호, 로그인 성공 시)
     UserInfoVo retrieveUserInfoForLogin(UserInfoVo userInfoVo);

@@ -42,15 +42,15 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         validateAndSetData(projectVo);
 
         // 파일이 있으면 파일 저장 처리
-//        handleFileUpload(projectVo);
+        handleFileUpload(projectVo);
 
         // 데이터베이스에 프로젝트 정보 저장
         dao.insert("project.insertUserProject", projectVo);
 
-//        // 첨부파일 정보가 있으면 첨부파일 테이블에도 저장
-//        if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
-//            insertAttachmentInfo(projectVo);
-//        }
+        // 첨부파일 정보가 있으면 첨부파일 테이블에도 저장
+        if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
+            insertAttachmentInfo(projectVo);
+        }
     }
 
     // 프로젝트 심사요청 상태로 등록
@@ -60,15 +60,15 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         validateAndSetData(projectVo);
 
         // 파일이 있으면 파일 저장 처리
-//        handleFileUpload(projectVo);
+        handleFileUpload(projectVo);
 
         // 데이터베이스에 프로젝트 정보 저장 (심사요청 상태로)
         dao.insert("project.evaRequestProject", projectVo);
 
-//        // 첨부파일 정보가 있으면 첨부파일 테이블에도 저장
-//        if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
-//            insertAttachmentInfo(projectVo);
-//        }
+        // 첨부파일 정보가 있으면 첨부파일 테이블에도 저장
+        if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
+            insertAttachmentInfo(projectVo);
+        }
     }
 
     // 프로젝트 상세 조회
@@ -83,6 +83,20 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     // 프로젝트 수정 시 사용
     @Override
     public void updateProject(ProjectVo projectVo) {
+        // 기본 데이터 검증
+        validateAndSetData(projectVo);
+
+        // 새로운 파일 업로되 되었는지 확인
+        if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
+            // 기존 첨부파일 있다면 삭제
+            deleteExistingFile(projectVo.getProjectId());
+
+            // 새 파일 저장
+            handleFileUpload(projectVo);
+
+            // 첨부파일 정보 업데이트
+            updateAttachmentInfo(projectVo);
+        }
         dao.update("project.updateProject", projectVo);
     }
 
@@ -101,29 +115,29 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.update("project.deleteProject", projectVo);
     }
 
-//    // 첨부파일 저장
-//    @Override
-//    public String saveFileAndGetPath(MultipartFile uploadFile) {
-//        try {
-//            // 업로드 폴더가 없으면 생성
-//            File uploadDir = new File(UPLOAD_PATH);
-//            if (!uploadDir.exists()) {
-//                uploadDir.mkdirs();
-//            }
-//            // 파일명 만들기
-//            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
-//
-//            // 파일 저장
-//            File saveFile = new File(UPLOAD_PATH + fileName);
-//            uploadFile.transferTo(saveFile);
-//
-//            // 저장된 경로 반환
-//            return UPLOAD_PATH + fileName;
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException("파일 저장 실패", e);
-//        }
-//    }
+    // 첨부파일 저장
+    @Override
+    public String saveFileAndGetPath(MultipartFile uploadFile) {
+        try {
+            // 업로드 폴더가 없으면 생성
+            File uploadDir = new File(UPLOAD_PATH);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+            // 파일명 만들기
+            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
+
+            // 파일 저장
+            File saveFile = new File(UPLOAD_PATH + fileName);
+            uploadFile.transferTo(saveFile);
+
+            // 저장된 경로 반환
+            return UPLOAD_PATH + fileName;
+
+        } catch (IOException e) {
+            throw new RuntimeException("파일 저장 실패", e);
+        }
+    }
 
     // 프로젝트 데이터 유효성 검증
     private void validateAndSetData(ProjectVo projectVo) {
@@ -151,29 +165,95 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         if (projectVo.getUrl() == null) {
             projectVo.setUrl("");  // null이면 빈 문자열로 설정
         }
+
+        // 파일 크기 검증 (50MB 제한)
+        MultipartFile uploadFile = projectVo.getUploadFile();
+        if (uploadFile != null && !uploadFile.isEmpty()) {
+            long maxSize = 50 * 1024 * 1024; // 50MB
+            if (uploadFile.getSize() > maxSize) {
+                throw new IllegalArgumentException("파일 크기는 50MB 이하만 업로드 가능합니다.");
+            }
+
+            // 파일 확장자 검증
+            String fileName = uploadFile.getOriginalFilename();
+            if (fileName != null) {
+                String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+                String[] allowedExtensions = {"pdf", "jpg", "jpeg", "png", "doc", "docx", "zip", "txt"};
+                boolean isAllowed = false;
+                for (String ext : allowedExtensions) {
+                    if (ext.equals(extension)) {
+                        isAllowed = true;
+                        break;
+                    }
+                }
+                if (!isAllowed) {
+                    throw new IllegalArgumentException("허용되지 않는 파일 형식입니다. (pdf, jpg, jpeg, png, doc, docx, zip, txt만 가능)");
+                }
+            }
+        }
     }
 
-//    // 파일 업로드 부분 검증
-//    private void handleFileUpload(ProjectVo projectVo) {
-//        MultipartFile uploadFile = projectVo.getUploadFile();
-//
-//        // 파일이 있으면 저장 처리
-//        if (uploadFile != null && !uploadFile.isEmpty()) {
-//            // 파일 저장하고 경로 받기
-//            String filePath = saveFileAndGetPath(uploadFile);
-//
-//            // VO에 파일 정보 설정
-//            projectVo.setFilePath(filePath);
-//            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
-//        }
-//    }
+    // 파일 업로드 부분 검증
+    private void handleFileUpload(ProjectVo projectVo) {
+        MultipartFile uploadFile = projectVo.getUploadFile();
 
-//    private void insertAttachmentInfo(ProjectVo projectVo) {
-//        // 첨부파일 ID 생성 (간단하게 현재시간 사용)
-//        String attachmentId = "ATT" + System.currentTimeMillis();
-//        projectVo.setAttachmentId(attachmentId);
-//
-//        // attachment 테이블에 파일 정보 저장
-//        dao.insert("project.insertAttachment", projectVo);
-//    }
+        // 파일이 있으면 저장 처리
+        if (uploadFile != null && !uploadFile.isEmpty()) {
+            // 파일 저장하고 경로 받기
+            String filePath = saveFileAndGetPath(uploadFile);
+
+            // VO에 파일 정보 설정
+            projectVo.setFilePath(filePath);
+            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
+        }
+    }
+
+    // 첨부파일 정보 저장
+    private void insertAttachmentInfo(ProjectVo projectVo) {
+        // 첨부파일 ID 생성
+        String attachmentId = "ATT" + System.currentTimeMillis();
+        projectVo.setAttachmentId(attachmentId);
+
+        // attachment 테이블에 파일 정보 저장
+        dao.insert("project.insertAttachment", projectVo);
+    }
+
+    // 첨부파일 정보 업데이트
+    private void updateAttachmentInfo(ProjectVo projectVo) {
+        // 기존 첨부파일 정보가 있는지 확인
+        ProjectVo existingProject = dao.selectOne("project.retrieveProjectDetail", projectVo.getProjectId());
+
+        if (existingProject != null && existingProject.getAttachmentId() != null) {
+            // 기존 첨부파일 정보 업데이트
+            dao.update("project.updateAttachment", projectVo);
+        } else {
+            // 첨부파일이 처음 추가되는 경우
+            insertAttachmentInfo(projectVo);
+        }
+    }
+
+    // 첨부파일 정보 삭제
+    private void deleteAttachmentInfo(ProjectVo projectVo) {
+        dao.update("project.deleteAttachment", projectVo);
+    }
+
+    // 기존 파일 삭제 (물리적 삭제)
+    private void deleteExistingFile(String projectId) {
+        try {
+            // 기존 프로젝트 정보 조회
+            ProjectVo existingProject = dao.selectOne("project.retrieveProjectDetail", projectId);
+
+            if (existingProject != null && existingProject.getFilePath() != null && !existingProject.getFilePath().isEmpty()) {
+                File existingFile = new File(existingProject.getFilePath());
+                if (existingFile.exists()) {
+                    existingFile.delete();
+                }
+            }
+        } catch (Exception e) {
+            // 파일 삭제 실패 시 로그만 남기고 계속 진행
+            System.err.println("기존 파일 삭제 실패: " + e.getMessage());
+        }
+    }
+
+
 }

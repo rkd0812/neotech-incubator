@@ -6,7 +6,7 @@
     <!--  전체 데이터 개수 조회 (페이징)  -->
     <select id="countProjectList" parameterType="com.okestro.app.project.ProjectVo" resultType="int">
         SELECT
-        COUNT(*)
+            COUNT(*)
         FROM SCH_INCU.PROJECT
         WHERE
         LAST_CHNG_ID = #{userEmail}
@@ -32,22 +32,22 @@
     <!--  검색 조건이 포함된 쿼리 + 페이징  -->
     <select id="retrieveProjectList" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
         SELECT
-        A.PROJECT_ID    AS projectId,
-        A.PROJECT_NAME  AS projectName,
-        B.USER_NAME     AS userName,
-        A.EVA_START_DT  AS evaStartDt,
-        A.EVA_END_DT    AS evaEndDt,
-        A.EVA_CD        AS evaCd,
-        A.SCORE_FIN     AS scoreFin,
-        A.DEL_YN        AS delYn,
-        A.FRST_RGSR_ID  AS frstRgsrId,
-        A.FRST_RGSR_DTL_DTTM    AS frstRgsrDtlDttm,
-        A.LAST_CHNG_ID  AS lastChngId,
-        A.LAST_CHNG_DTL_DTTM    AS lastChngDtlDttm,
-        A.USER_GROUP_ID AS userGroupId,
-        A.EVA_GROUP_ID  AS evaGroupId,
-        A.PROJECT_DETAIL    AS projectDetail,
-        A.URL           AS url
+            A.PROJECT_ID    AS projectId,
+            A.PROJECT_NAME  AS projectName,
+            B.USER_NAME     AS userName,
+            A.EVA_START_DT  AS evaStartDt,
+            A.EVA_END_DT    AS evaEndDt,
+            A.EVA_CD        AS evaCd,
+            A.SCORE_FIN     AS scoreFin,
+            A.DEL_YN        AS delYn,
+            A.FRST_RGSR_ID  AS frstRgsrId,
+            A.FRST_RGSR_DTL_DTTM    AS frstRgsrDtlDttm,
+            A.LAST_CHNG_ID  AS lastChngId,
+            A.LAST_CHNG_DTL_DTTM    AS lastChngDtlDttm,
+            A.USER_GROUP_ID AS userGroupId,
+            A.EVA_GROUP_ID  AS evaGroupId,
+            A.PROJECT_DETAIL    AS projectDetail,
+            A.URL           AS url
         FROM SCH_INCU.PROJECT A
         LEFT JOIN SCH_INCU.USER B
         ON A.LAST_CHNG_ID = B.USER_EMAIL
@@ -229,6 +229,9 @@
             PROJECT_NAME = #{projectName},
             PROJECT_DETAIL = #{projectDetail},
             URL = #{url},
+            <if test="filePath != null and filePath != ''">
+                FILE_PATH = #{filePath},
+            </if>
         LAST_CHNG_ID = #{lastChngId},
         LAST_CHNG_DTL_DTTM = NOW()
         WHERE
@@ -261,6 +264,30 @@
         WHERE
             PROJECT_ID = #{projectId}
           AND LAST_CHNG_ID = #{lastChngId}
+          AND DEL_YN = 'N'
+    </update>
+
+    <!-- 첨부파일 정보 업데이트 -->
+    <update id="updateAttachment" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.ATTACHMENT
+        SET
+            ATTACHMENT_NAME = #{attachmentName},
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+        AND DEL_YN = 'N'
+    </update>
+
+    <!-- 첨부파일 삭제 -->
+    <update id="deleteAttachment" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.ATTACHMENT
+        SET
+            DEL_YN = 'Y',
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
           AND DEL_YN = 'N'
     </update>
 

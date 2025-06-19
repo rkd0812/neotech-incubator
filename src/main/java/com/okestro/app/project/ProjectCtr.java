@@ -1,8 +1,6 @@
 package com.okestro.app.project;
 
 import com.okestro.app.userinfo.UserInfoVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +14,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -239,5 +242,32 @@ public class ProjectCtr {
         }
 
         return "redirect:/project/projectList.do";
+    }
+
+    // 파일 다운로드
+    @GetMapping("/project/downloadFile.do")
+    public void downloadFile(@RequestParam("projectId") String projectId, HttpServletResponse response) {
+        try {
+            // 프로젝트 정보 조회
+            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
+            File file = new File(project.getFilePath());
+
+            // 다운로드 헤더 설정
+            String encodedFileName = URLEncoder.encode(project.getAttachmentName(), "UTF-8").replaceAll("\\+", "%20");
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+            // 파일 전송
+            try (FileInputStream fis = new FileInputStream(file);
+                 OutputStream os = response.getOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
