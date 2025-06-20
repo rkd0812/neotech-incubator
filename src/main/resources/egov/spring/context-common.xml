@@ -14,12 +14,12 @@
     <context:annotation-config/>
 
     <!-- regular spring resolver -->
-<!--    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
-<!--        <property name="maxUploadSize" value="50000000" />-->
-<!--        <property name="maxInMemorySize" value="100000000" />-->
-<!--    </bean>-->
-    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
-        <!-- StandardServletMultipartResolver는 property 설정 불필요 -->
+    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="50000000" />
+        <property name="maxInMemorySize" value="100000000" />
     </bean>
+<!--    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver">-->
+<!--        &lt;!&ndash; StandardServletMultipartResolver는 property 설정 불필요 &ndash;&gt;-->
+<!--    </bean>-->
 
 </beans>

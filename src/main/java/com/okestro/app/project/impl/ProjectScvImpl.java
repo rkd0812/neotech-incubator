@@ -21,7 +21,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     CmmnAbstractDao dao;
 
     // 파일 저장 경로
-    private static final String UPLOAD_PATH = "C:\\\\Users\\\\admin\\\\Desktop\\\\test_attachment\\\\";
+//    private static final String UPLOAD_PATH = "C:\\\\Users\\\\admin\\\\Desktop\\\\test_attachment\\\\";
 
     // 전체 프로젝트 개수 조회 시 사용 (페이징)
     @Override
@@ -41,8 +41,8 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         // 기본 데이터 검증
         validateAndSetData(projectVo);
 
-        // 파일이 있으면 파일 저장 처리
-        handleFileUpload(projectVo);
+//        // 파일이 있으면 파일 저장 처리
+//        handleFileUpload(projectVo);
 
         // 데이터베이스에 프로젝트 정보 저장
         dao.insert("project.insertUserProject", projectVo);
@@ -59,8 +59,8 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         // 기본 데이터 검증
         validateAndSetData(projectVo);
 
-        // 파일이 있으면 파일 저장 처리
-        handleFileUpload(projectVo);
+//        // 파일이 있으면 파일 저장 처리
+//        handleFileUpload(projectVo);
 
         // 데이터베이스에 프로젝트 정보 저장 (심사요청 상태로)
         dao.insert("project.evaRequestProject", projectVo);
@@ -86,16 +86,39 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         // 기본 데이터 검증
         validateAndSetData(projectVo);
 
+        // 프로젝트명 검증
+        if (projectVo.getProjectName() == null || projectVo.getProjectName().trim().isEmpty()) {
+            throw new IllegalArgumentException("프로젝트명은 필수입니다.");
+        } else if (projectVo.getProjectName().trim().length() > 100) {
+            throw new IllegalArgumentException("프로젝트명 100자 이내 입니다.");
+        }
+
+        // 프로젝트 설명 검증
+        if (projectVo.getProjectDetail() == null || projectVo.getProjectDetail().trim().isEmpty()) {
+            throw new IllegalArgumentException("프로젝트 설명은 필수입니다.");
+        } else if (projectVo.getProjectDetail().trim().length() > 1001) {
+            throw new IllegalArgumentException("프로젝트 설명은 1000자 까지 입니다.");
+        }
+
+
+        // URL 검증
+        if (projectVo.getUrl() != null && !projectVo.getUrl().trim().isEmpty()) {
+            if (projectVo.getUrl().startsWith("http://") || projectVo.getUrl().startsWith("https://")) {
+            } else {
+                throw new IllegalArgumentException("URL은 http:// 또는 https//로 시작해야 합니다.");
+            }
+        }
+
         // 새로운 파일 업로되 되었는지 확인
         if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
-            // 기존 첨부파일 있다면 삭제
-            deleteExistingFile(projectVo.getProjectId());
+//            // 기존 첨부파일 있다면 삭제
+//            deleteExistingFile(projectVo.getProjectId());
 
-            // 새 파일 저장
-            handleFileUpload(projectVo);
+//            // 새 파일 저장
+//            handleFileUpload(projectVo);
 
-            // 첨부파일 정보 업데이트
-            updateAttachmentInfo(projectVo);
+//            // 첨부파일 정보 업데이트
+//            updateAttachmentInfo(projectVo);
         }
         dao.update("project.updateProject", projectVo);
     }
@@ -115,29 +138,29 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.update("project.deleteProject", projectVo);
     }
 
-    // 첨부파일 저장
-    @Override
-    public String saveFileAndGetPath(MultipartFile uploadFile) {
-        try {
-            // 업로드 폴더가 없으면 생성
-            File uploadDir = new File(UPLOAD_PATH);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-            // 파일명 만들기
-            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
-
-            // 파일 저장
-            File saveFile = new File(UPLOAD_PATH + fileName);
-            uploadFile.transferTo(saveFile);
-
-            // 저장된 경로 반환
-            return UPLOAD_PATH + fileName;
-
-        } catch (IOException e) {
-            throw new RuntimeException("파일 저장 실패", e);
-        }
-    }
+//    // 첨부파일 저장
+//    @Override
+//    public String saveFileAndGetPath(MultipartFile uploadFile) {
+//        try {
+//            // 업로드 폴더가 없으면 생성
+//            File uploadDir = new File(UPLOAD_PATH);
+//            if (!uploadDir.exists()) {
+//                uploadDir.mkdirs();
+//            }
+//            // 파일명 만들기
+//            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
+//
+//            // 파일 저장
+//            File saveFile = new File(UPLOAD_PATH + fileName);
+//            uploadFile.transferTo(saveFile);
+//
+//            // 저장된 경로 반환
+//            return UPLOAD_PATH + fileName;
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException("파일 저장 실패", e);
+//        }
+//    }
 
     // 프로젝트 데이터 유효성 검증
     private void validateAndSetData(ProjectVo projectVo) {
@@ -193,20 +216,20 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         }
     }
 
-    // 파일 업로드 부분 검증
-    private void handleFileUpload(ProjectVo projectVo) {
-        MultipartFile uploadFile = projectVo.getUploadFile();
-
-        // 파일이 있으면 저장 처리
-        if (uploadFile != null && !uploadFile.isEmpty()) {
-            // 파일 저장하고 경로 받기
-            String filePath = saveFileAndGetPath(uploadFile);
-
-            // VO에 파일 정보 설정
-            projectVo.setFilePath(filePath);
-            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
-        }
-    }
+//    // 파일 업로드 부분 검증
+//    private void handleFileUpload(ProjectVo projectVo) {
+//        MultipartFile uploadFile = projectVo.getUploadFile();
+//
+//        // 파일이 있으면 저장 처리
+//        if (uploadFile != null && !uploadFile.isEmpty()) {
+//            // 파일 저장하고 경로 받기
+//            String filePath = saveFileAndGetPath(uploadFile);
+//
+//            // VO에 파일 정보 설정
+//            projectVo.setFilePath(filePath);
+//            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
+//        }
+//    }
 
     // 첨부파일 정보 저장
     private void insertAttachmentInfo(ProjectVo projectVo) {
@@ -218,42 +241,42 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.insert("project.insertAttachment", projectVo);
     }
 
-    // 첨부파일 정보 업데이트
-    private void updateAttachmentInfo(ProjectVo projectVo) {
-        // 기존 첨부파일 정보가 있는지 확인
-        ProjectVo existingProject = dao.selectOne("project.retrieveProjectDetail", projectVo.getProjectId());
+//    // 첨부파일 정보 업데이트
+//    private void updateAttachmentInfo(ProjectVo projectVo) {
+//        // 기존 첨부파일 정보가 있는지 확인
+//        ProjectVo existingProject = dao.selectOne("project.retrieveProjectDetail", projectVo.getProjectId());
+//
+//        if (existingProject != null && existingProject.getAttachmentId() != null) {
+//            // 기존 첨부파일 정보 업데이트
+//            dao.update("project.updateAttachment", projectVo);
+//        } else {
+//            // 첨부파일이 처음 추가되는 경우
+//            insertAttachmentInfo(projectVo);
+//        }
+//    }
 
-        if (existingProject != null && existingProject.getAttachmentId() != null) {
-            // 기존 첨부파일 정보 업데이트
-            dao.update("project.updateAttachment", projectVo);
-        } else {
-            // 첨부파일이 처음 추가되는 경우
-            insertAttachmentInfo(projectVo);
-        }
-    }
+//    // 첨부파일 정보 삭제
+//    private void deleteAttachmentInfo(ProjectVo projectVo) {
+//        dao.update("project.deleteAttachment", projectVo);
+//    }
 
-    // 첨부파일 정보 삭제
-    private void deleteAttachmentInfo(ProjectVo projectVo) {
-        dao.update("project.deleteAttachment", projectVo);
-    }
-
-    // 기존 파일 삭제 (물리적 삭제)
-    private void deleteExistingFile(String projectId) {
-        try {
-            // 기존 프로젝트 정보 조회
-            ProjectVo existingProject = dao.selectOne("project.retrieveProjectDetail", projectId);
-
-            if (existingProject != null && existingProject.getFilePath() != null && !existingProject.getFilePath().isEmpty()) {
-                File existingFile = new File(existingProject.getFilePath());
-                if (existingFile.exists()) {
-                    existingFile.delete();
-                }
-            }
-        } catch (Exception e) {
-            // 파일 삭제 실패 시 로그만 남기고 계속 진행
-            System.err.println("기존 파일 삭제 실패: " + e.getMessage());
-        }
-    }
+//    // 기존 파일 삭제 (물리적 삭제)
+//    private void deleteExistingFile(String projectId) {
+//        try {
+//            // 기존 프로젝트 정보 조회
+//            ProjectVo existingProject = dao.selectOne("project.retrieveProjectDetail", projectId);
+//
+//            if (existingProject != null && existingProject.getFilePath() != null && !existingProject.getFilePath().isEmpty()) {
+//                File existingFile = new File(existingProject.getFilePath());
+//                if (existingFile.exists()) {
+//                    existingFile.delete();
+//                }
+//            }
+//        } catch (Exception e) {
+//            // 파일 삭제 실패 시 로그만 남기고 계속 진행
+//            System.err.println("기존 파일 삭제 실패: " + e.getMessage());
+//        }
+//    }
 
 
 }

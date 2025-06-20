@@ -81,11 +81,11 @@ public class ProjectVo extends PaginationInfo {
         return "";
     }
 
-    public MultipartFile getUploadFile() {
-        return uploadFile;
-    }
-
-    public void setUploadFile(MultipartFile uploadFile) {
-        this.uploadFile = uploadFile;
-    }
+//    public MultipartFile getUploadFile() {
+//        return uploadFile;
+//    }
+//
+//    public void setUploadFile(MultipartFile uploadFile) {
+//        this.uploadFile = uploadFile;
+//    }
 }

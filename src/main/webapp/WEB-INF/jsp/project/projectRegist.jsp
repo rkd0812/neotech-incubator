@@ -15,7 +15,7 @@
     </div>
 
     <div class="page-inner">
-        <form id="projectForm" method="post" action="/project/saveProject.do" enctype="multipart/form-data">
+        <form id="projectForm" method="post" action="/project/saveProject.do">
             <table class="form-table">
                 <colgroup>
                     <col style="width: 20%;" />

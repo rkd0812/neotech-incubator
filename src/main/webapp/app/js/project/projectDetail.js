@@ -24,7 +24,6 @@ $(function () {
     });
 
     $('#deleteBtn').on('click', function () {
-        console.log('삭제 버튼 클릭됨');
         if (confirm('정말로 이 프로젝트를 삭제하시겠습니까?')) {
             $('#deleteForm').submit();
         }

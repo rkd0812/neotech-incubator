@@ -229,9 +229,9 @@
             PROJECT_NAME = #{projectName},
             PROJECT_DETAIL = #{projectDetail},
             URL = #{url},
-            <if test="filePath != null and filePath != ''">
-                FILE_PATH = #{filePath},
-            </if>
+<!--            <if test="filePath != null and filePath != ''">-->
+<!--                FILE_PATH = #{filePath},-->
+<!--            </if>-->
         LAST_CHNG_ID = #{lastChngId},
         LAST_CHNG_DTL_DTTM = NOW()
         WHERE

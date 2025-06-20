@@ -80,26 +80,26 @@ public class ProjectCtr {
         model.addAttribute("loginUser", loginUser);
         return "project/projectRegist";
     }
-    
+
     // 프로젝트 등록시
     @PostMapping("/project/saveProject.do")
     public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
-    
+
         // 인터셉터 사용
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
         String userEmail = loginUser.getUserEmail();
-    
+
         // 프로젝트 정보 설정
         projectVo.setLastChngId(userEmail);
-    
+
         try {
             // 프로젝트 등록 상태로 저장
             projectSvc.insertUserProject(projectVo);
-    
+
             redirectAttr.addFlashAttribute("message", "프로젝트가 저장되었습니다.");
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
-    
+
         } catch (Exception e) {
             redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
             return "redirect:/project/projectRegist.do";
@@ -160,32 +160,72 @@ public class ProjectCtr {
         return "project/projectDetail";
     }
 
-    // 프로젝트 수정 처리
-
-    @PostMapping("/project/updateProject.do")
-    public String updateProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
-        // 세션 확인
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("loginUser") == null) {
-            return "redirect:/userinfo/loginForm.do";
-        }
-
-        // 로그인 사용자 정보 가져옴
+    // 프로젝트 수정 페이지
+    @GetMapping("/project/projectUpdate.do")
+    public String projectUpdateForm(@RequestParam("projectId") String projectId, HttpServletRequest request, Model model) {
+        // 세션에서 로그인 사용자 정보
+        HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-        String userEmail = loginUser.getUserEmail();
-
-        // 프로젝트 정보 설정
-        projectVo.setLastChngId(userEmail);
 
         try {
+            // 기존 프로젝트 정보 조회
+            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
+
+            if (project == null) {
+                model.addAttribute("message", "존재하지 않는 프로젝트입니다.");
+                return "redirect:/project/projectList.do";
+            }
+
+            // 모델에 데이터 추가
+            model.addAttribute("project", project);
+            model.addAttribute("loginUser", loginUser);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("message", "프로젝트 조회 중 오류가 발생했습니다.");
+            return "redirect:/project/projectList.do";
+        }
+
+        return "project/projectUpdateForm";  // JSP 파일명
+    }
+
+
+    // 프로젝트 수정 처리
+    @PostMapping("/project/insertProjectUpdate.do")
+    public String updateProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+        // 세션 확인
+        // 인터셉터 사용 후 세션 체크 제거, 로그인 사용자 정보 가져옴
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
+        try {
+            ProjectVo existingProject = projectSvc.retrieveProjectDetail(projectVo.getProjectId());
+
+            if (existingProject == null) {
+                redirectAttr.addFlashAttribute("message", "존재하지 않는 프로젝트입니다.");
+                return "redirect:/project/projectList.do";
+            }
+
+            if (!existingProject.getFrstRgsrId().equals(loginUser.getUserEmail())) {
+                redirectAttr.addFlashAttribute("message", "수정 권한이 없습니다.");
+                return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+            }
+
+            //수정자 정보 설정
+            projectVo.setLastChngId(loginUser.getUserEmail());
+
             // 프로젝트 수정
             projectSvc.updateProject(projectVo);
             redirectAttr.addFlashAttribute("message", "프로젝트가 수정되었습니다.");
+        } catch (IllegalArgumentException  e) {
+            redirectAttr.addFlashAttribute("message", e.getMessage());
+            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
         } catch (Exception e) {
-            redirectAttr.addFlashAttribute("message", "프로젝트 수정에 실패했습니다.");
+            redirectAttr.addFlashAttribute("message", "프로젝트 수정 중 오류가 발생했습니다.");
+            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
         }
 
-        // 프로젝트 상세 페이지로 리다이렉트
+        // 성공 시 상세 페이지로 리다이렉트
         return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
     }
 
