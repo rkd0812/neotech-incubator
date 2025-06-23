@@ -109,17 +109,17 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
             }
         }
 
-        // 새로운 파일 업로되 되었는지 확인
-        if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
+//        // 새로운 파일 업로되 되었는지 확인
+//        if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
 //            // 기존 첨부파일 있다면 삭제
 //            deleteExistingFile(projectVo.getProjectId());
-
+//
 //            // 새 파일 저장
 //            handleFileUpload(projectVo);
-
+//
 //            // 첨부파일 정보 업데이트
 //            updateAttachmentInfo(projectVo);
-        }
+//        }
         dao.update("project.updateProject", projectVo);
     }
 
@@ -189,31 +189,31 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
             projectVo.setUrl("");  // null이면 빈 문자열로 설정
         }
 
-        // 파일 크기 검증 (50MB 제한)
-        MultipartFile uploadFile = projectVo.getUploadFile();
-        if (uploadFile != null && !uploadFile.isEmpty()) {
-            long maxSize = 50 * 1024 * 1024; // 50MB
-            if (uploadFile.getSize() > maxSize) {
-                throw new IllegalArgumentException("파일 크기는 50MB 이하만 업로드 가능합니다.");
-            }
-
-            // 파일 확장자 검증
-            String fileName = uploadFile.getOriginalFilename();
-            if (fileName != null) {
-                String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-                String[] allowedExtensions = {"pdf", "jpg", "jpeg", "png", "doc", "docx", "zip", "txt"};
-                boolean isAllowed = false;
-                for (String ext : allowedExtensions) {
-                    if (ext.equals(extension)) {
-                        isAllowed = true;
-                        break;
-                    }
-                }
-                if (!isAllowed) {
-                    throw new IllegalArgumentException("허용되지 않는 파일 형식입니다. (pdf, jpg, jpeg, png, doc, docx, zip, txt만 가능)");
-                }
-            }
-        }
+//        // 파일 크기 검증 (50MB 제한)
+//        MultipartFile uploadFile = projectVo.getUploadFile();
+//        if (uploadFile != null && !uploadFile.isEmpty()) {
+//            long maxSize = 50 * 1024 * 1024; // 50MB
+//            if (uploadFile.getSize() > maxSize) {
+//                throw new IllegalArgumentException("파일 크기는 50MB 이하만 업로드 가능합니다.");
+//            }
+//
+//            // 파일 확장자 검증
+//            String fileName = uploadFile.getOriginalFilename();
+//            if (fileName != null) {
+//                String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+//                String[] allowedExtensions = {"pdf", "jpg", "jpeg", "png", "doc", "docx", "zip", "txt"};
+//                boolean isAllowed = false;
+//                for (String ext : allowedExtensions) {
+//                    if (ext.equals(extension)) {
+//                        isAllowed = true;
+//                        break;
+//                    }
+//                }
+//                if (!isAllowed) {
+//                    throw new IllegalArgumentException("허용되지 않는 파일 형식입니다. (pdf, jpg, jpeg, png, doc, docx, zip, txt만 가능)");
+//                }
+//            }
+//        }
     }
 
 //    // 파일 업로드 부분 검증
@@ -277,6 +277,11 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 //            System.err.println("기존 파일 삭제 실패: " + e.getMessage());
 //        }
 //    }
+
+    @Override
+    public List<ProjectVo> retrieveUserList() {
+        return dao.selectList("project.retrieveUserList");
+    }
 
 
 }

@@ -54,8 +54,9 @@ public class ProjectVo extends PaginationInfo {
     private String teamMembers;  // 팀 구성원 이메일
     private String teamMemberNames;  // 팀 구성원 이름
 
+
     // 파일 업로드를 위한 필드
-    private MultipartFile uploadFile;
+//    private MultipartFile uploadFile;
 
 
     public String getEvaStartDtString() {

@@ -217,9 +217,6 @@ public class ProjectCtr {
             // 프로젝트 수정
             projectSvc.updateProject(projectVo);
             redirectAttr.addFlashAttribute("message", "프로젝트가 수정되었습니다.");
-        } catch (IllegalArgumentException  e) {
-            redirectAttr.addFlashAttribute("message", e.getMessage());
-            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
         } catch (Exception e) {
             redirectAttr.addFlashAttribute("message", "프로젝트 수정 중 오류가 발생했습니다.");
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
@@ -309,5 +306,16 @@ public class ProjectCtr {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @GetMapping("/project/popup/teamMemberSelect.do")
+    public String teamMemberSelectPopup(HttpServletRequest request, Model model) {
+        // 세션에서 로그인 사용자 정보 가져오기
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
+        model.addAttribute("loginUser", loginUser);
+
+        return "project/selectProjectTeam";
     }
 }

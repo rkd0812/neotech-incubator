@@ -86,6 +86,8 @@ $(function() {
         return true;
     });
 
+
+
     function checkForm() {
         var projectName = $('#projectName').val().trim();
 
@@ -130,4 +132,33 @@ $(function() {
 
         return true;
     }
+
 });
+
+// 팝업창 열기 함수
+function openPopup() {
+    window.open('/project/popup/teamMemberSelect.do', 'teamPopup', 'width=600,height=500');
+}
+
+// 팝업에서 선택된 멤버를 받는 함수
+function receiveSelectedMembers(members) {
+    if (members.length > 0) {
+        // 선택된 팀원 이름들만 추출
+        var memberNames = [];
+        for (var i = 0; i < members.length; i++) {
+            memberNames.push(members[i].name);
+        }
+
+        // 팀 구성원 영역 찾기
+        var teamMemberArea = $('.form-table tr').eq(1).find('td');
+
+        // 기존 내용에 선택된 팀원 이름 추가
+        var currentContent = teamMemberArea.html();
+        var newContent = currentContent + '<br><span style="color: blue;">+ ' + memberNames.join(', ') + '</span>';
+
+        teamMemberArea.html(newContent);
+
+        // 사용자에게 알림
+        alert(memberNames.join(', ') + ' 팀원이 추가되었습니다.');
+    }
+}

@@ -37,7 +37,7 @@
                     <th>팀 구성원</th>
                     <td colspan="3">
                         <span>${loginUser.userName}</span>
-                        <button type="button">팀원 추가</button>
+                        <button type="button" onclick="openPopup()">팀원 추가</button>
                     </td>
                 </tr>
                 <tr>
@@ -62,11 +62,10 @@
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
-                        <input type="file" id="uploadFile" name="uploadFile"
-                               accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.zip,.txt" />
-                        <div id="fileInfo">
-                            파일을 선택해주세요. (최대 50MB, pdf/jpg/jpeg/png/doc/docx/zip/txt 가능)
-                        </div>
+                        <input type="text" id="filePath" name="filePath"
+                               value="${projectVo.filePath}"
+                               placeholder="C:\Users\admin\Desktop\..."
+                               maxlength="100" required />
                     </td>
                 </tr>
                 </tbody>
