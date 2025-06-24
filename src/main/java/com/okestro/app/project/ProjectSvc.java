@@ -32,4 +32,7 @@ public interface ProjectSvc {
 
     // 파일을 서버에 저장하고 경로 반환
 //    String saveFileAndGetPath(MultipartFile uploadFile);
+
+    // 팀원 선택을 위한 사용자 목록 조회
+    List<ProjectVo> retrieveUserList();
 }

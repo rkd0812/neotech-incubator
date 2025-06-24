@@ -314,7 +314,14 @@ public class ProjectCtr {
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
 
-        model.addAttribute("loginUser", loginUser);
+        try {
+            List<ProjectVo> userList = projectSvc.retrieveUserList();
+
+            model.addAttribute("loginUser", loginUser);
+            model.addAttribute("userList", userList);
+        } catch (Exception e) {
+            model.addAttribute("message", "사용자 목록을 불러올 수 없습니다.");
+        }
 
         return "project/selectProjectTeam";
     }
