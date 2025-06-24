@@ -17,7 +17,7 @@ import java.util.UUID;
 @Service("projectSvc")
 public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc {
 
-    @Resource(name="cmmnDao")
+    @Resource(name = "cmmnDao")
     CmmnAbstractDao dao;
 
     // 파일 저장 경로
@@ -26,12 +26,13 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     // 전체 프로젝트 개수 조회 시 사용 (페이징)
     @Override
     public int countProjectList(ProjectVo projectVo) {
-        return  dao.selectOne("project.countProjectList", projectVo);
+        return dao.selectOne("project.countProjectList", projectVo);
     }
+
     // 로그인한 사용자의 프로젝트 조회 시 사용
     @Override
     public List<ProjectVo> retrieveProjectList(ProjectVo projectVo) {
-        return  dao.selectList("project.retrieveProjectList", projectVo);
+        return dao.selectList("project.retrieveProjectList", projectVo);
     }
 
 
@@ -51,6 +52,9 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
             insertAttachmentInfo(projectVo);
         }
+
+        // 팀원 정보 저장 (새로 추가)
+        insertProjectTeamMembers(projectVo);
     }
 
     // 프로젝트 심사요청 상태로 등록
@@ -283,5 +287,11 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return dao.selectList("project.retrieveUserList");
     }
 
-
+    @Override
+    public void insertProjectTeamMembers(ProjectVo projectVo) {
+        if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().isEmpty()
+                && projectVo.getTeamMemberNames() != null && !projectVo.getTeamMemberNames().isEmpty()) {
+            dao.insert("project.insertProjectTeamMembers", projectVo);
+        }
+    }
 }

@@ -291,4 +291,43 @@
           AND DEL_YN = 'N'
     </update>
 
+
+    <!-- 팀원 선택을 위한 사용자 목록 조회 -->
+    <select id="retrieveUserList" resultType="com.okestro.app.project.ProjectVo">
+        SELECT
+            A.USER_EMAIL AS userEmail,
+            A.USER_NAME AS userName,
+            A.ROLE_CD AS roleCd
+        FROM SCH_INCU.USER A
+        WHERE
+            A.DEL_YN = 'N'
+        AND A.ROLE_CD IN ('A', 'B', 'C')
+    </select>
+
+
+    <!-- 팀 구성원 정보 저장 -->
+    <insert id="insertProjectTeamMembers" parameterType="com.okestro.app.project.ProjectVo">
+        INSERT INTO SCH_INCU.GROUP (
+        GROUP_ID,
+        GROUP_CD,
+        PROJECT_ID,
+        DEL_YN,
+        FRST_RGSR_ID,
+        FRST_RGSR_DTL_DTTM,
+        LAST_CHNG_ID,
+        LAST_CHNG_DTL_DTTM
+        ) VALUES
+        <foreach collection="teamMemberEmails" item="email" separator=",">
+            (
+            NEXTVAL('group_seq'),
+            'U',
+            #{projectId},
+            'N',
+            #{email},
+            NOW(),
+            #{lastChngId},
+            NOW()
+            )
+        </foreach>
+    </insert>
 </mapper>

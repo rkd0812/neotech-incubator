@@ -61,7 +61,7 @@
             <tr>
                 <th>팀 구성원</th>
                 <td colspan="2">
-                    <span>${loginUser.userName} (${loginUser.userEmail})</span>
+                    <span>${loginUser.userName}</span>
                 </td>
                 <td>
                     <button type="button" id="viewMemberBtn">구성원 보기</button>

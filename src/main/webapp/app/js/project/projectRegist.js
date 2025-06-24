@@ -87,6 +87,28 @@ $(function() {
     });
 
 
+    // function receiveSelectedMembers(members) {
+    //     if (members.length > 0) {
+    //         console.log('받은 members 데이터:', members);
+    //         //이메일, 이름 배열로 받기
+    //         var emails = [];
+    //         var names= [];
+    //
+    //         for (var i = 0; i <members.length; i++) {
+    //             emails.push(members[i].email);
+    //             names.push(members[i].name);
+    //         }
+    //
+    //         $('#teamMemberEmails').val(emails.join(','));
+    //         $('#teamMemberNames').val(names.join(','));
+    //
+    //         var displayText = '+ ' + names.join(', ');
+    //         $('#selectedMembers').text(displayText);
+    //
+    //         alert(names.join(', ') + ' 팀원이 추가되었습니다.');
+    //     }
+    // }
+
 
     function checkForm() {
         var projectName = $('#projectName').val().trim();
@@ -129,7 +151,6 @@ $(function() {
         //         return false;
         //     }
         // }
-
         return true;
     }
 
@@ -143,22 +164,25 @@ function openPopup() {
 // 팝업에서 선택된 멤버를 받는 함수
 function receiveSelectedMembers(members) {
     if (members.length > 0) {
+
         // 선택된 팀원 이름들만 추출
-        var memberNames = [];
+        var emails = [];
+        var names = [];
+
         for (var i = 0; i < members.length; i++) {
-            memberNames.push(members[i].name);
+            emails.push(members[i].email);
+            names.push(members[i].name);
         }
 
-        // 팀 구성원 영역 찾기
-        var teamMemberArea = $('.form-table tr').eq(1).find('td');
+        // hidden input에 데이터 저장
+        $('#teamMemberEmails').val(emails.join(','));
+        $('#teamMemberNames').val(names.join(','));
 
-        // 기존 내용에 선택된 팀원 이름 추가
-        var currentContent = teamMemberArea.html();
-        var newContent = currentContent + '<br><span style="color: blue;">+ ' + memberNames.join(', ') + '</span>';
-
-        teamMemberArea.html(newContent);
+        // 화면에 선택된 팀원 표시
+        var displayText = '+ ' + names.join(', ');
+        $('#selectedMembers').text(displayText);
 
         // 사용자에게 알림
-        alert(memberNames.join(', ') + ' 팀원이 추가되었습니다.');
+        alert(names.join(', ') + ' 팀원이 추가되었습니다.');
     }
 }

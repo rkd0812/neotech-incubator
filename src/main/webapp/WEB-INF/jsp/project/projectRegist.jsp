@@ -16,6 +16,9 @@
 
     <div class="page-inner">
         <form id="projectForm" method="post" action="/project/saveProject.do">
+            <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" />
+            <input type="hidden" id="teamMemberNames" name="teamMemberNames" />
+
             <table class="form-table">
                 <colgroup>
                     <col style="width: 20%;" />
@@ -38,6 +41,7 @@
                     <td colspan="3">
                         <span>${loginUser.userName}</span>
                         <button type="button" onclick="openPopup()">팀원 추가</button>
+                        <div id="selectedMembers" style="margin-top: 10px; color: blue;"></div>
                     </td>
                 </tr>
                 <tr>

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -51,8 +52,8 @@ public class ProjectVo extends PaginationInfo {
 
 
     // 팀 구성원 필드
-    private String teamMembers;  // 팀 구성원 이메일
-    private String teamMemberNames;  // 팀 구성원 이름
+    private List<String> teamMemberEmails;  // 팀 구성원 이메일
+    private List<String> teamMemberNames;  // 팀 구성원 이름
 
 
     // 파일 업로드를 위한 필드
