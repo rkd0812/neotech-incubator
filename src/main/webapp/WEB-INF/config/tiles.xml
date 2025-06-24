@@ -10,10 +10,6 @@
         <put-attribute name="body" value="" />
     </definition>
 
-    <!-- 팝업용 - tiles 적용 안 함 -->
-    <definition name="project/selectProjectTeam" template="/WEB-INF/jsp/project/selectProjectTeam.jsp">
-    </definition>
-
     <definition name="*/*" extends="default-layout">
         <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}.jsp" />
     </definition>
