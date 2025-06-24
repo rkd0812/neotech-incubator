@@ -291,16 +291,4 @@
           AND DEL_YN = 'N'
     </update>
 
-
-    <!-- 팀원 선택을 위한 사용자 목록 조회 -->
-    <select id="retrieveUserList" resultType="com.okestro.app.project.ProjectVo">
-        SELECT
-            A.USER_EMAIL AS userEmail,
-            A.USER_NAME AS userName,
-            A.ROLE_CD AS roleCd
-        FROM SCH_INCU.USER A
-        WHERE
-            A.DEL_YN = 'N'
-        AND A.ROLE_CD IN ('A', 'B', 'C')
-    </select>
 </mapper>
