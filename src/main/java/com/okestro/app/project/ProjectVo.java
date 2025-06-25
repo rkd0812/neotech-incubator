@@ -52,8 +52,12 @@ public class ProjectVo extends PaginationInfo {
 
 
     // 팀 구성원 필드
-    private List<String> teamMemberEmails;  // 팀 구성원 이메일
-    private List<String> teamMemberNames;  // 팀 구성원 이름
+    private List<String> teamMemberEmails;  // 전체 팀원 이메일
+    private List<String> teamMemberNames;  // 전체 팀원 이름
+
+    // DB에 저장하기 위해 만든 필드
+    private String teamMembersString;   // ex : 홍길동, 차범근
+    private String teamMembersEmailString;  // ex : hong@example.com, cha@example.com
 
 
     // 파일 업로드를 위한 필드

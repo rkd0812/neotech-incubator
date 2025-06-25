@@ -81,29 +81,79 @@ public class ProjectCtr {
         return "project/projectRegist";
     }
 
-    // 프로젝트 등록시
+//    // 프로젝트 등록시
+//    @PostMapping("/project/saveProject.do")
+//    public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+//
+//        // 인터셉터 사용
+//        HttpSession session = request.getSession();
+//        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+//        String userEmail = loginUser.getUserEmail();
+//        String userName = loginUser.getUserName();
+//
+//        // 로그인한 사용자 정보를 Vo에 설정
+//        projectVo.setUserEmail(userEmail);
+//        projectVo.setUserName(userName);
+//
+//        // 프로젝트 정보 설정
+//        projectVo.setLastChngId(userEmail);
+//
+//
+//        try {
+//            // 프로젝트 등록 상태로 저장
+//            projectSvc.insertUserProject(projectVo);
+//
+//            // 팀원 저장 추가
+//            projectSvc.insertProjectTeamMembers(projectVo);
+//
+//            redirectAttr.addFlashAttribute("message", "프로젝트가 저장되었습니다.");
+//            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
+//
+//        } catch (Exception e) {
+//            redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
+//            return "redirect:/project/projectRegist.do";
+//        }
+//    }
+
     @PostMapping("/project/saveProject.do")
     public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
 
-        // 인터셉터 사용
-        HttpSession session = request.getSession();
-        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-        String userEmail = loginUser.getUserEmail();
-
-        // 프로젝트 정보 설정
-        projectVo.setLastChngId(userEmail);
+        System.out.println("🔍 saveProject 시작!");
 
         try {
+            // 인터셉터 사용
+            HttpSession session = request.getSession();
+            UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
+            System.out.println("🔍 로그인 사용자: " + loginUser);
+
+            String userEmail = loginUser.getUserEmail();
+            String userName = loginUser.getUserName();
+
+            // 로그인한 사용자 정보를 Vo에 설정
+            projectVo.setUserEmail(userEmail);
+            projectVo.setUserName(userName);
+            projectVo.setLastChngId(userEmail);
+
+            System.out.println("🔍 프로젝트명: " + projectVo.getProjectName());
+            System.out.println("🔍 Service 호출 전");
+
             // 프로젝트 등록 상태로 저장
             projectSvc.insertUserProject(projectVo);
 
+            System.out.println("🔍 insertUserProject 완료, 팀원 저장 시작");
+
             // 팀원 저장 추가
             projectSvc.insertProjectTeamMembers(projectVo);
+
+            System.out.println("🔍 모든 저장 완료!");
 
             redirectAttr.addFlashAttribute("message", "프로젝트가 저장되었습니다.");
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
 
         } catch (Exception e) {
+            System.out.println("❌ 오류 발생: " + e.getMessage());
+            e.printStackTrace();
             redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
             return "redirect:/project/projectRegist.do";
         }
@@ -116,6 +166,11 @@ public class ProjectCtr {
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
         String userEmail = loginUser.getUserEmail();
+        String userName = loginUser.getUserName();
+
+        // 로그인한 사용자 정보를 Vo에 설정
+        projectVo.setUserEmail(userEmail);
+        projectVo.setUserName(userName);
 
         // 프로젝트 정보 설정
         projectVo.setLastChngId(userEmail);

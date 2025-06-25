@@ -91,6 +91,8 @@
             A.FILE_PATH AS filePath,
             B.ATTACHMENT_ID AS attachmentId,
             B.ATTACHMENT_NAME AS attachmentName,
+            C.TEAM_MEMBERS AS teamMembersString,
+            C.TEAM_MEMBERS_EMAIL AS teamMembersEmailString,
             A.DEL_YN AS delYn,
             A.FRST_RGSR_ID AS frstRgsrId,
             A.FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
@@ -100,12 +102,17 @@
         LEFT JOIN SCH_INCU.ATTACHMENT B
          ON A.PROJECT_ID = B.PROJECT_ID
         AND B.DEL_YN = 'N'
+        LEFT JOIN SCH_INCU.GROUP C
+         ON REPLACE(A.PROJECT_ID, 'PRJ', 'GRP') = C.GROUP_ID
+        AND C.DEL_YN = 'N'
+        AND C.GROUP_CD = 'U'
         WHERE A.PROJECT_ID = #{projectId}
-          AND A.DEL_YN = 'N'
+        AND A.DEL_YN = 'N'
     </select>
 
     <!-- 로그인한 사용자가 프로젝트 등록   -->
     <insert id="insertUserProject" parameterType="com.okestro.app.project.ProjectVo">
+        -- project_id 자동 생성
         <selectKey keyProperty="projectId" resultType="String" order="BEFORE">
             SELECT
             CASE
@@ -139,7 +146,13 @@
         NULL,
         NOW(),
         NOW(),
-        #{userGroupId},
+        (SELECT
+            CASE
+                WHEN MAX(CAST(SUBSTRING(USER_GROUP_ID, 5) AS INTEGER)) IS NULL THEN 'UGRP0001'
+                ELSE 'UGRP' || LPAD((MAX(CAST(SUBSTRING(USER_GROUP_ID, 5) AS INTEGER)) + 1)::TEXT, 4, '0')
+                END
+        FROM SCH_INCU.PROJECT
+        WHERE USER_GROUP_ID LIKE 'UGRP%'), -- USER_GROUP_ID 자동 생성
         #{evaGroupId},
         #{projectDetail},
         #{url},
@@ -187,7 +200,7 @@
         NULL,
         NOW(),
         NOW(),
-        #{userGroupId},
+        REPLACE(#{projectId}, 'PRJ', 'UGRP'),
         #{evaGroupId},
         #{projectDetail},
         #{url},
@@ -311,23 +324,24 @@
         GROUP_ID,
         GROUP_CD,
         PROJECT_ID,
+        TEAM_MEMBERS,
+        TEAM_MEMBERS_EMAIL,
         DEL_YN,
         FRST_RGSR_ID,
         FRST_RGSR_DTL_DTTM,
         LAST_CHNG_ID,
         LAST_CHNG_DTL_DTTM
-        ) VALUES
-        <foreach collection="teamMemberEmails" item="email" separator=",">
-            (
-            NEXTVAL('group_seq'),
-            'U',
-            #{projectId},
-            'N',
-            #{email},
-            NOW(),
-            #{lastChngId},
-            NOW()
-            )
-        </foreach>
+        ) VALUES (
+        REPLACE(#{projectId}, 'PRJ', 'GRP'),
+        'U',
+        #{projectId},
+        #{teamMembersString},
+        #{teamMembersEmailString},
+        'N',
+        #{lastChngId},
+        NOW(),
+        #{lastChngId},
+        NOW()
+        )
     </insert>
 </mapper>

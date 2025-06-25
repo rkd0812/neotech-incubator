@@ -13,6 +13,7 @@ public class UserInfoVo extends BaseVo {
     private String userPassword;
     private String userName;
     private String roleCd;
+    private String quitDtlDttm;
 
     // code 테이블 컬럼 목록
     private String upperCodeName;

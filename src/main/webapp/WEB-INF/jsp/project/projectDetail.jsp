@@ -60,11 +60,16 @@
             <%-- 팀 구성원 --%>
             <tr>
                 <th>팀 구성원</th>
-                <td colspan="2">
-                    <span>${loginUser.userName}</span>
-                </td>
-                <td>
-                    <button type="button" id="viewMemberBtn">구성원 보기</button>
+                <td colspan="3">
+                    <div id="teamMemberDisplay">
+                        <c:choose>
+                        <c:when test="${not empty project.teamMembersString}">
+                            ${project.teamMembersString}
+                        </c:when>
+                        <c:otherwise>
+                            ${loginUser.userName}
+                        </c:otherwise>
+                        </c:choose>
                 </td>
             </tr>
 
