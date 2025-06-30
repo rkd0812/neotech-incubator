@@ -158,7 +158,16 @@ $(function() {
 
 // 팝업창 열기 함수
 function openPopup() {
-    window.open('/project/popup/teamMemberSelect.do', 'teamPopup', 'width=600,height=500');
+    var popupWidth = 1000;
+    var popupHeight = 600;
+
+    // 현재 브라우저 창의 위치와 크기를 기준으로 계산
+    var left = window.screenX + (window.outerWidth / 2) - (popupWidth / 2);
+    var top = window.screenY + (window.outerHeight / 2) - (popupHeight / 2);
+
+    var option = 'width=' + popupWidth + ',height=' + popupHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes';
+
+    window.open('/project/popup/teamMemberSelect.do', 'teamPopup', option);
 }
 
 // 팝업에서 선택된 멤버를 받는 함수
@@ -181,8 +190,5 @@ function receiveSelectedMembers(members) {
         // 화면에 선택된 팀원 표시
         var displayText = '+ ' + names.join(', ');
         $('#selectedMembers').text(displayText);
-
-        // 사용자에게 알림
-        alert(names.join(', ') + ' 팀원이 추가되었습니다.');
     }
 }

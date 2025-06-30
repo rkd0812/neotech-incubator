@@ -20,6 +20,9 @@
         <form id="projectForm" method="post" action="/project/insertProjectUpdate.do">
             <input type="hidden" name="projectId" value="${project.projectId}" />
 
+            <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" value="${project.teamMembersEmailString}" />
+            <input type="hidden" id="teamMemberNames" name="teamMemberNames" value="${project.teamMembersString}" />
+
             <table>
                 <colgroup>
                     <col style="width: 20%;" />
@@ -66,10 +69,12 @@
                 <tr>
                     <th>팀 구성원</th>
                     <td colspan="2">
-                        <span>${loginUser.userName} (${loginUser.userEmail})</span>
+                        <div id="selectedMembers">
+                            ${project.teamMembersString}
+                        </div>
                     </td>
                     <td>
-                        <button type="button" id="viewMemberBtn">구성원 보기</button>
+                        <button type="button" onclick="openPopup()">팀원 수정</button>
                     </td>
                 </tr>
 
@@ -80,6 +85,7 @@
                         <textarea name="projectDetail"
                                   class="form-control"
                                   rows="5" maxlength="1000"
+                                  style="width: 100%; height: 250px; resize: none; overflow: auto;"
                                   placeholder="프로젝트 설명을 입력하세요">${project.projectDetail}</textarea>
                     </td>
                 </tr>

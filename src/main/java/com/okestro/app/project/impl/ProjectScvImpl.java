@@ -130,6 +130,21 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.update("project.updateProject", projectVo);
     }
 
+
+    @Override
+    public void updateProjectTeamMembers(ProjectVo projectVo) {
+
+        // 로그인한 사용자를 팀원 리스트에 자동 추가
+        addLoginUserTeam(projectVo);
+
+        // List를 String으로 변환
+        convertListString(projectVo);
+
+        if (projectVo.getTeamMembersString() != null && !projectVo.getTeamMembersString().isEmpty()) {
+            dao.update("project.updateProjectTeamMembers", projectVo);
+        }
+    }
+
     @Override
     public void requestEvaluation(ProjectVo projectVo) {
         // 프로젝트 ID 체크
@@ -286,8 +301,8 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 //    }
 
     @Override
-    public List<ProjectVo> retrieveUserList() {
-        return dao.selectList("project.retrieveUserList");
+    public List<ProjectVo> retrieveUserList(String userEmail) {
+        return dao.selectList("project.retrieveUserList", userEmail);
     }
 
     @Override
@@ -307,7 +322,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     // 로그인한 사용자를 팀원 리스트에 자동으로 추가하는 메세드
     private void addLoginUserTeam(ProjectVo projectVo) {
         String loginUserEmail = projectVo.getUserEmail(); // 로그인한 사용자 이메일
-        String lgoinUserName = projectVo.getUserName();  // 로그인한 사용자 이름
+        String loginUserName = projectVo.getUserName();  // 로그인한 사용자 이름
 
         // 팀원 리스트가 없으면 새로 생성
         if (projectVo.getTeamMemberEmails() == null) {
@@ -323,7 +338,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 
         if (!emails.contains(loginUserEmail)) {
             emails.add(0, loginUserEmail);
-            names.add(0, lgoinUserName);
+            names.add(0, loginUserName);
         }
     }
 

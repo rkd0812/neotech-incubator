@@ -47,29 +47,8 @@
 
 <br>
 <div style="text-align: center;">
-    <button type="button" onclick="selectMembers()" style="padding: 8px 20px; margin-right: 10px;">선택 완료</button>
-    <button type="button" onclick="window.close()" style="padding: 8px 20px;">취소</button>
+    <button type="button" id="selectBtn" style="padding: 8px 20px; margin-right: 10px;">선택 완료</button>
+    <button type="button" id="cancelBtn" style="padding: 8px 20px;">취소</button>
 </div>
-
-<script>
-    function selectMembers() {
-        var checkboxes = document.querySelectorAll('input[name="member"]:checked');
-        var members = [];
-
-        for (var i = 0; i < checkboxes.length; i++) {
-            members.push({
-                name: checkboxes[i].getAttribute('data-name'),
-                email: checkboxes[i].value
-            });
-        }
-
-        if (members.length > 0) {
-            window.opener.receiveSelectedMembers(members);
-            window.close();
-        } else {
-            alert('팀원을 선택해주세요.');
-        }
-    }
-</script>
 </body>
 </html>

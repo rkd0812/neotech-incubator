@@ -146,13 +146,7 @@
         NULL,
         NOW(),
         NOW(),
-        (SELECT
-            CASE
-                WHEN MAX(CAST(SUBSTRING(USER_GROUP_ID, 5) AS INTEGER)) IS NULL THEN 'UGRP0001'
-                ELSE 'UGRP' || LPAD((MAX(CAST(SUBSTRING(USER_GROUP_ID, 5) AS INTEGER)) + 1)::TEXT, 4, '0')
-                END
-        FROM SCH_INCU.PROJECT
-        WHERE USER_GROUP_ID LIKE 'UGRP%'), -- USER_GROUP_ID 자동 생성
+        REPLACE(#{projectId}, 'PRJ', 'UGRP'),
         #{evaGroupId},
         #{projectDetail},
         #{url},
@@ -252,6 +246,21 @@
         AND LAST_CHNG_ID = #{lastChngId}
         AND DEL_YN = 'N'
     </update>
+
+    <!-- 팀 구성원 정보 수정 -->
+    <update id="updateProjectTeamMembers" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.GROUP
+        SET
+            TEAM_MEMBERS = #{teamMembersString},
+            TEAM_MEMBERS_EMAIL = #{teamMembersEmailString},
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+        AND GROUP_CD = 'U'
+        AND DEL_YN = 'N'
+    </update>
+
     
     <!-- 프로젝트 삼사요청 상태로 변경 -->
     <update id="requestEvaluation" parameterType="com.okestro.app.project.ProjectVo">
@@ -306,7 +315,7 @@
 
 
     <!-- 팀원 선택을 위한 사용자 목록 조회 -->
-    <select id="retrieveUserList" resultType="com.okestro.app.project.ProjectVo">
+    <select id="retrieveUserList" parameterType="String" resultType="com.okestro.app.project.ProjectVo">
         SELECT
             A.USER_EMAIL AS userEmail,
             A.USER_NAME AS userName,
@@ -315,6 +324,7 @@
         WHERE
             A.DEL_YN = 'N'
         AND A.ROLE_CD IN ('A', 'B', 'C')
+        AND A.USER_EMAIL != #{userEmail}
     </select>
 
 

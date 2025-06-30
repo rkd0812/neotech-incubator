@@ -26,3 +26,38 @@ $(function () {
         form.submit();
     }
 });
+
+
+// 팝업창 열기 함수
+function openPopup() {
+    var popupWidth = 1000;
+    var popupHeight = 600;
+
+    // 현재 브라우저 창의 위치와 크기를 기준으로 계산
+    var left = window.screenX + (window.outerWidth / 2) - (popupWidth / 2);
+    var top = window.screenY + (window.outerHeight / 2) - (popupHeight / 2);
+
+    var option = 'width=' + popupWidth + ',height=' + popupHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes';
+
+    window.open('/project/popup/teamMemberSelect.do', 'teamPopup', option);
+}
+
+
+function receiveSelectedMembers(members) {
+    if (members.length > 0) {
+        var emails = [];
+        var names = [];
+
+        for (var i = 0; i < members.length; i++) {
+            emails.push(members[i].email);
+            names.push(members[i].name);
+        }
+
+        // hidden input에 데이터 저장
+        $('#teamMemberEmails').val(emails.join(','));
+        $('#teamMemberNames').val(names.join(','));
+
+        // 화면에 표시 업데이트
+        $('#selectedMembers').text(names.join(', '));
+    }
+}

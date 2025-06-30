@@ -24,6 +24,9 @@ public interface ProjectSvc {
     // 프로젝트 수정
     void updateProject(ProjectVo projectVo);
 
+    // 프로젝트 수정 시 팀원 정보 수정
+    void updateProjectTeamMembers(ProjectVo projectVo);
+
     // 프로젝트 심사요청 상태로 변경
     void requestEvaluation(ProjectVo projectVo);
 
@@ -34,7 +37,7 @@ public interface ProjectSvc {
 //    String saveFileAndGetPath(MultipartFile uploadFile);
 
     // 팀원 선택을 위한 사용자 목록 조회
-    List<ProjectVo> retrieveUserList();
+    List<ProjectVo> retrieveUserList(String userEmail);
 
     // 팀 구성원 저장
     void insertProjectTeamMembers(ProjectVo projectVo);
