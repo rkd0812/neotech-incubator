@@ -18,4 +18,7 @@
         <put-attribute name="body" value="/WEB-INF/jsp/{1}/{2}/{3}.jsp" />
     </definition>
 
+    <definition name="project/selectProjectTeam" template="/WEB-INF/jsp/project/selectProjectTeam.jsp">
+    </definition>
+
 </tiles-definitions>
