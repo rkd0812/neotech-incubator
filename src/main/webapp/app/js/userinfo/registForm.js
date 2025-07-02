@@ -41,7 +41,6 @@ $(function () {
                 return true; // 삭제는 허용
             }
 
-            console.log('11번째 글자 차단:', inputType);
             event.preventDefault();
             return false;
         }

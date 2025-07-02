@@ -140,7 +140,6 @@ public class ProjectCtr {
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
 
         } catch (Exception e) {
-            System.out.println("오류 발생: " + e.getMessage());
             e.printStackTrace();
             redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
             return "redirect:/project/projectRegist.do";

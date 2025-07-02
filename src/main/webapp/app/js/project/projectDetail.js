@@ -60,6 +60,5 @@ function downloadFile(projectId) {
 
     } catch (error) {
         alert('파일 다운로드 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-        console.error('다운로드 오류:', error);
     }
 }
