@@ -1,5 +1,5 @@
 $(function () {
-    $('selectBtn').on('click', function () {
+    $('s#electBtn').on('click', function () {
         selectMembers();
     });
 

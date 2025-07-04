@@ -1,5 +1,7 @@
 $(function () {
 
+    displayExistingTeamMembers();
+
     $('#updateBtn').on('click', function () {
         if (confirm('프로젝트를 수정하시겠습니까?')) {
             submitForm();
@@ -24,6 +26,14 @@ $(function () {
         var form = $('#projectForm');
 
         form.submit();
+    }
+
+    function displayExistingTeamMembers() {
+        // 서버에서 전달된 기존 팀원 정보가 있다면 표시
+        var existingMembers = $('#selectedMembers').text().trim();
+        if (existingMembers && existingMembers !== '등록된 팀원이 없습니다.') {
+            // 기존 팀원 정보가 있으면 그대로 표시
+        }
     }
 });
 

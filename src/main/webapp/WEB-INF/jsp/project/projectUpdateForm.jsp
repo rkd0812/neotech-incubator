@@ -64,20 +64,27 @@
                         <input type="text" name="projectName" value="${project.projectName}" class="form-control" />
                     </td>
                 </tr>
-
-                <%-- 팀 구성원 --%>
                 <tr>
                     <th>팀 구성원</th>
-                    <td colspan="2">
-                        <div id="selectedMembers">
-                            ${project.teamMembersString}
-                        </div>
+                    <td>
+                        <span>팀장 : ${loginUser.userName} </span><br>
                     </td>
                     <td>
-                        <button type="button" onclick="openPopup()">팀원 수정</button>
+                        <button type="button" onclick="openPopup()"
+                                style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer;">
+                            팀원 수정
+                        </button><br>
+                        <div id="selectedMembers" style="margin-top: 10px; color: #666;">
+                            <!-- 기존 팀원 정보 표시 -->
+                            <c:if test="${not empty project.teamMembersString}">
+                                ${project.teamMembersString}
+                            </c:if>
+                            <c:if test="${empty project.teamMembersString}">
+                                등록된 팀원이 없습니다.
+                            </c:if>
+                        </div>
                     </td>
                 </tr>
-
                 <%-- 설명 --%>
                 <tr>
                     <th>설명</th>

@@ -55,8 +55,73 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         }
 
         // 팀원 정보 저장
-        insertProjectTeamMembers(projectVo);
+        saveTeamMembers(projectVo);
     }
+
+    // 팀원 정보 저장
+    @Override
+    public void insertTeamMember(ProjectVo projectVo) {
+        dao.insert("project.insertTeamMember", projectVo);
+    }
+
+    // 프로젝트 모든 팀원 삭제
+    @Override
+    public void deleteAllTeamMembers(String projectId) {
+        dao.update("project.deleteAllTeamMembers", projectId);
+    }
+
+    // 프로젝트 팀원 목록 조회
+    @Override
+    public List<ProjectVo> selectProjectTeamMembers(String projectId) {
+        return dao.selectList("project.selectProjectTeamMembers", projectId);
+    }
+
+    @Override
+    public void saveTeamMembers(ProjectVo projectVo) {
+        String groupId = projectVo.getProjectId().replace("PRJ", "UGRP");
+
+        // 로그인한 사용자 저장
+        saveOneTeamMember(projectVo.getProjectId(), groupId,
+                projectVo.getUserEmail(), projectVo.getUserName(),
+                projectVo.getLastChngId());
+
+        // 선택된 팀원들 저장
+        if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().trim().isEmpty()) {
+            String[] emails = projectVo.getTeamMemberEmails().split(",");
+            String[] names = projectVo.getTeamMemberNames().split(",");
+
+            for (int i = 0; i < emails.length; i++) {
+                String email = emails[i].trim();
+                String name = names[i].trim();
+
+                // 로그인 사용자와 중복 아니면 저장
+                if (!email.equals(projectVo.getUserEmail())) {
+                    saveOneTeamMember(projectVo.getProjectId(), groupId,
+                            email, name, projectVo.getLastChngId());
+                }
+            }
+        }
+    }
+
+    // 팀원 한 명 저장
+    private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
+        ProjectVo teamMember = new ProjectVo();
+        teamMember.setProjectId(projectId);
+        teamMember.setGroupId(groupId);
+        teamMember.setTeamMemberEmail(email);
+        teamMember.setTeamMemberName(name);
+        teamMember.setLastChngId(lastChngId);
+
+        insertTeamMember(teamMember);
+    }
+
+    // 팀원 정보 업데이트 (그대로 유지)
+    @Override
+    public void updateTeamMembers(ProjectVo projectVo) {
+        deleteAllTeamMembers(projectVo.getProjectId());
+        saveTeamMembers(projectVo);
+    }
+
 
     // 프로젝트 심사요청 상태로 등록
     @Override
@@ -75,7 +140,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
             insertAttachmentInfo(projectVo);
         }
 
-        insertProjectTeamMembers(projectVo);
+        saveTeamMembers(projectVo);
     }
 
     // 프로젝트 상세 조회
@@ -130,20 +195,6 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.update("project.updateProject", projectVo);
     }
 
-
-    @Override
-    public void updateProjectTeamMembers(ProjectVo projectVo) {
-
-        // 로그인한 사용자를 팀원 리스트에 자동 추가
-        addLoginUserTeam(projectVo);
-
-        // List를 String으로 변환
-        convertListString(projectVo);
-
-        if (projectVo.getTeamMembersString() != null && !projectVo.getTeamMembersString().isEmpty()) {
-            dao.update("project.updateProjectTeamMembers", projectVo);
-        }
-    }
 
     @Override
     public void requestEvaluation(ProjectVo projectVo) {
@@ -305,54 +356,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return dao.selectList("project.retrieveUserList", userEmail);
     }
 
-    @Override
-    public void insertProjectTeamMembers(ProjectVo projectVo) {
 
-        // 로그인한 사용자를 팀원 리스트에 자동 추가 하도록
-        addLoginUserTeam(projectVo);
 
-        // List를 String으로 변환
-        convertListString(projectVo);
 
-        if (projectVo.getTeamMembersString() != null && !projectVo.getTeamMembersString().isEmpty()) {
-            dao.insert("project.insertProjectTeamMembers", projectVo);
-        }
-    }
-
-    // 로그인한 사용자를 팀원 리스트에 자동으로 추가하는 메세드
-    private void addLoginUserTeam(ProjectVo projectVo) {
-        String loginUserEmail = projectVo.getUserEmail(); // 로그인한 사용자 이메일
-        String loginUserName = projectVo.getUserName();  // 로그인한 사용자 이름
-
-        // 팀원 리스트가 없으면 새로 생성
-        if (projectVo.getTeamMemberEmails() == null) {
-            projectVo.setTeamMemberEmails(new ArrayList<>());
-        }
-        if (projectVo.getTeamMemberNames() == null) {
-            projectVo.setTeamMemberNames(new ArrayList<>());
-        }
-
-        // 로그인한 사용자를 팀원으로 구성시 맨 앞에 추가 (중복 체크)
-        List<String> emails = projectVo.getTeamMemberEmails();
-        List<String> names = projectVo.getTeamMemberNames();
-
-        if (!emails.contains(loginUserEmail)) {
-            emails.add(0, loginUserEmail);
-            names.add(0, loginUserName);
-        }
-    }
-
-    private void convertListString(ProjectVo projectVo) {
-        // 팀원 이름들을 쉼표로 연결
-        if (projectVo.getTeamMemberNames() != null && !projectVo.getTeamMemberNames().isEmpty()) {
-            String namesString = String.join(",", projectVo.getTeamMemberNames());
-            projectVo.setTeamMembersString(namesString);
-        }
-
-        // 팀원 이메일들을 쉼표로 연결
-        if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().isEmpty()) {
-            String emailsString = String.join(",", projectVo.getTeamMemberEmails());
-            projectVo.setTeamMembersEmailString(emailsString);
-        }
-    }
 }

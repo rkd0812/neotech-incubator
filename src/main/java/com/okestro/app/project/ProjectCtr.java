@@ -117,9 +117,6 @@ public class ProjectCtr {
 
     @PostMapping("/project/saveProject.do")
     public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
-
-        System.out.println("🔍 saveProject 시작!");
-
         try {
             // 인터셉터 사용
             HttpSession session = request.getSession();
@@ -140,7 +137,6 @@ public class ProjectCtr {
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
 
         } catch (Exception e) {
-            e.printStackTrace();
             redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
             return "redirect:/project/projectRegist.do";
         }
@@ -152,6 +148,7 @@ public class ProjectCtr {
         // 인터셉터 사용
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
         String userEmail = loginUser.getUserEmail();
         String userName = loginUser.getUserName();
 
@@ -265,20 +262,17 @@ public class ProjectCtr {
             projectSvc.updateProject(projectVo);
 
             // 팀원 정보 업데이트
-            projectSvc.updateProjectTeamMembers(projectVo);
-
-
-            if (projectVo.getTeamMemberNames() != null && !projectVo.getTeamMemberNames().isEmpty()) {
-                projectSvc.updateProjectTeamMembers(projectVo);
+            if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().isEmpty()) {
+                projectSvc.updateTeamMembers(projectVo);
             }
 
             redirectAttr.addFlashAttribute("message", "프로젝트가 수정되었습니다.");
+
         } catch (Exception e) {
             redirectAttr.addFlashAttribute("message", "프로젝트 수정 중 오류가 발생했습니다.");
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
         }
 
-        // 성공 시 상세 페이지로 리다이렉트
         return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
     }
 

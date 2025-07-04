@@ -24,22 +24,29 @@ public interface ProjectSvc {
     // 프로젝트 수정
     void updateProject(ProjectVo projectVo);
 
-    // 프로젝트 수정 시 팀원 정보 수정
-    void updateProjectTeamMembers(ProjectVo projectVo);
-
     // 프로젝트 심사요청 상태로 변경
     void requestEvaluation(ProjectVo projectVo);
 
     // 프로젝트 삭제
     void deleteProject(ProjectVo projectVo);
 
-    // 파일을 서버에 저장하고 경로 반환
-//    String saveFileAndGetPath(MultipartFile uploadFile);
 
     // 팀원 선택을 위한 사용자 목록 조회
     List<ProjectVo> retrieveUserList(String userEmail);
 
-    // 팀 구성원 저장
-    void insertProjectTeamMembers(ProjectVo projectVo);
+    // 팀원 한 명 저장
+    void insertTeamMember(ProjectVo projectVo);
+
+    // 프로젝트의 모든 팀원 삭제 (논리삭제)
+    void deleteAllTeamMembers(String projectId);
+
+    // 프로젝트 팀원 목록 조회
+    List<ProjectVo> selectProjectTeamMembers(String projectId);
+
+    // 팀원 정보 일괄 저장 (여러 명을 한번에 처리)
+    void saveTeamMembers(ProjectVo projectVo);
+
+    // 팀원 정보 일괄 업데이트 (수정시 사용)
+    void updateTeamMembers(ProjectVo projectVo);
 
 }
