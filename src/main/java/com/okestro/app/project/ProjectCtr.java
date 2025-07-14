@@ -189,12 +189,24 @@ public class ProjectCtr {
                 return "redirect:/project/projectList.do";
             }
 
-            // 모델에 데이터 추가
+            // 팀원 목록 조회
+            List<ProjectVo> teamMembers = projectSvc.selectProjectTeamMembers(projectId);
+
+            // 팀원 이름들을 콤마로 연결
+            if (teamMembers != null && !teamMembers.isEmpty()) {
+                StringBuilder names = new StringBuilder();
+                for (int i = 0; i < teamMembers.size(); i++) {
+                    if (i > 0) names.append(", ");
+                    names.append(teamMembers.get(i).getTeamMemberName());
+                }
+                project.setTeamMemberNames(names.toString()); // 기존 필드 사용
+            }
+
             model.addAttribute("project", project);
             model.addAttribute("loginUser", loginUser);
 
         } catch (Exception e) {
-            e.printStackTrace(); // 에러 로그 출력
+            e.printStackTrace();
             model.addAttribute("message", "프로젝트 조회 중 오류가 발생했습니다.");
             return "redirect:/project/projectList.do";
         }

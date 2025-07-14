@@ -91,8 +91,6 @@
             A.FILE_PATH AS filePath,
             B.ATTACHMENT_ID AS attachmentId,
             B.ATTACHMENT_NAME AS attachmentName,
-            C.TEAM_MEMBERS AS teamMembersString,
-            C.TEAM_MEMBERS_EMAIL AS teamMembersEmailString,
             A.DEL_YN AS delYn,
             A.FRST_RGSR_ID AS frstRgsrId,
             A.FRST_RGSR_DTL_DTTM AS frstRgsrDtlDttm,
@@ -102,10 +100,6 @@
         LEFT JOIN SCH_INCU.ATTACHMENT B
          ON A.PROJECT_ID = B.PROJECT_ID
         AND B.DEL_YN = 'N'
-        LEFT JOIN SCH_INCU.GROUP_TEST C
-         ON REPLACE(A.PROJECT_ID, 'PRJ', 'GRP') = C.GROUP_ID
-        AND C.DEL_YN = 'N'
-        AND C.GROUP_CD = 'U'
         WHERE A.PROJECT_ID = #{projectId}
         AND A.DEL_YN = 'N'
     </select>
@@ -351,7 +345,7 @@
         FROM SCH_INCU.GROUP_TEST
         WHERE PROJECT_ID = #{projectId}
           AND DEL_YN = 'N'
-        ORDER BY TEAM_MEMBER_ID
+        ORDER BY TEAM_MEMBER_NAME
     </select>
 
     <!-- 팀원 삭제 -->

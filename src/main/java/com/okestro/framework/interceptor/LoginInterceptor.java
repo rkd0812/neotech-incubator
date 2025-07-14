@@ -23,7 +23,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         if (session == null || session.getAttribute("loginUser") == null) {
             response.sendRedirect("/userinfo/loginForm.do");
-            return false; // false → 요청 처리 중단
+            return false;
         }
 
         return true;

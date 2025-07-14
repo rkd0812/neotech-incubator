@@ -1,5 +1,5 @@
 $(function () {
-    $('s#electBtn').on('click', function () {
+    $('#selectBtn').on('click', function () {
         selectMembers();
     });
 
@@ -18,8 +18,9 @@ $(function () {
             });
         });
 
+        console.log('선택된 멤버들:', members);
+
         if (members.length > 0) {
-            // 부모 창의 함수 호출하고 팝업 닫기
             window.opener.receiveSelectedMembers(members);
             window.close();
         } else {

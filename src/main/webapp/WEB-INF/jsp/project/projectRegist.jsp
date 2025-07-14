@@ -16,8 +16,8 @@
 
     <div class="page-inner">
         <form id="projectForm" method="post" action="/project/saveProject.do">
-            <input type="hidden" id="teamMemberEmails" name="teamMemberEmail" />
-            <input type="hidden" id="teamMemberNames" name="teamMemberName" />
+            <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" />
+            <input type="hidden" id="teamMemberNames" name="teamMemberNames" />
 
             <table class="form-table">
                 <colgroup>
@@ -35,20 +35,22 @@
                                placeholder="프로젝트명을 입력하세요"
                                maxlength="100" required />
                     </td>
-                </tr>
                 <tr>
                     <th>팀 구성원</th>
                     <td>
                         <span>팀장 : ${loginUser.userName}</span><br>
+                        <div id="selectedMembers" style="margin-top: 10px; color: #666;">
+                            선택된 팀원이 없습니다.
+                        </div>
                     </td>
                     <td>
                         <button type="button" onclick="openPopup()" style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer;">
                             팀원 추가
                         </button>
-                        <br>
-                        <div id="selectedMembers" style="margin-top: 10px; color: #666;">
-                            선택된 팀원이 없습니다.
-                        </div>
+                        <br><br>
+                        <button type="button" onclick="clearAllTeamMembers()" style="padding: 5px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer;">
+                            전체 삭제
+                        </button>
                     </td>
                 </tr>
                 <tr>

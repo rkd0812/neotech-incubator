@@ -63,8 +63,8 @@
                 <td colspan="3">
                     <div id="teamMemberDisplay">
                         <c:choose>
-                        <c:when test="${not empty project.teamMembersString}">
-                            ${project.teamMembersString}
+                        <c:when test="${not empty project.teamMemberNames}">
+                            ${project.teamMemberNames}
                         </c:when>
                         <c:otherwise>
                             ${loginUser.userName}

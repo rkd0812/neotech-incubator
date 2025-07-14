@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <%-- 뭐가 문제인지 파악 --%>
 <script src="<c:url value="/app/js/project/selectProjectTeam.js"/>"></script> <%--필수 --%>
 <!DOCTYPE html>
 <html>

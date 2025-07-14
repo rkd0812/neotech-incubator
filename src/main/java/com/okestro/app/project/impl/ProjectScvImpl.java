@@ -76,6 +76,34 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return dao.selectList("project.selectProjectTeamMembers", projectId);
     }
 
+//    @Override
+//    public void saveTeamMembers(ProjectVo projectVo) {
+//        String groupId = projectVo.getProjectId().replace("PRJ", "UGRP");
+//
+//        // 로그인한 사용자 저장
+//        saveOneTeamMember(projectVo.getProjectId(), groupId,
+//                projectVo.getUserEmail(), projectVo.getUserName(),
+//                projectVo.getLastChngId());
+//
+//        // 선택된 팀원들 저장
+//        if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().trim().isEmpty()) {
+//            String[] emails = projectVo.getTeamMemberEmails().split(",");
+//            String[] names = projectVo.getTeamMemberNames().split(",");
+//
+//            for (int i = 0; i < emails.length; i++) {
+//                String email = emails[i].trim();
+//                String name = names[i].trim();
+//
+//                // 로그인 사용자와 중복 아니면 저장
+//                if (!email.equals(projectVo.getUserEmail())) {
+//                    saveOneTeamMember(projectVo.getProjectId(), groupId,
+//                            email, name, projectVo.getLastChngId());
+//                }
+//            }
+//        }
+//    }
+
+
     @Override
     public void saveTeamMembers(ProjectVo projectVo) {
         String groupId = projectVo.getProjectId().replace("PRJ", "UGRP");
@@ -87,20 +115,30 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 
         // 선택된 팀원들 저장
         if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().trim().isEmpty()) {
+            System.out.println("팀원 데이터 처리 시작");
             String[] emails = projectVo.getTeamMemberEmails().split(",");
             String[] names = projectVo.getTeamMemberNames().split(",");
+
 
             for (int i = 0; i < emails.length; i++) {
                 String email = emails[i].trim();
                 String name = names[i].trim();
 
+                System.out.println("처리 중인 팀원: " + name + " (" + email + ")");
+
                 // 로그인 사용자와 중복 아니면 저장
                 if (!email.equals(projectVo.getUserEmail())) {
                     saveOneTeamMember(projectVo.getProjectId(), groupId,
                             email, name, projectVo.getLastChngId());
+                    System.out.println("팀원 저장 완료: " + name);
+                } else {
+                    System.out.println("중복 제외: " + name);
                 }
             }
+        } else {
+            System.out.println("선택된 팀원이 없음");
         }
+        System.out.println("=== saveTeamMembers 완료 ===");
     }
 
     // 팀원 한 명 저장

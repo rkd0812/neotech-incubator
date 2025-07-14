@@ -156,12 +156,12 @@ $(function() {
 
 });
 
-// 팝업창 열기 함수
+var selectedTeamMembers = [];
+
 function openPopup() {
     var popupWidth = 1000;
     var popupHeight = 600;
 
-    // 현재 브라우저 창의 위치와 크기를 기준으로 계산
     var left = window.screenX + (window.outerWidth / 2) - (popupWidth / 2);
     var top = window.screenY + (window.outerHeight / 2) - (popupHeight / 2);
 
@@ -170,25 +170,66 @@ function openPopup() {
     window.open('/project/popup/teamMemberSelect.do', 'teamPopup', option);
 }
 
-// 팝업에서 선택된 멤버를 받는 함수
+// 팝업에서 선택된 멤버
 function receiveSelectedMembers(members) {
     if (members.length > 0) {
+        members.forEach(function(member) {
+            var isDuplicate = selectedTeamMembers.some(function(existing) {
+                return existing.email === member.email;
+            });
 
-        // 선택된 팀원 이름들만 추출
-        var emails = [];
-        var names = [];
+            if (!isDuplicate) {
+                selectedTeamMembers.push(member);
+            }
+        });
 
-        for (var i = 0; i < members.length; i++) {
-            emails.push(members[i].email);
-            names.push(members[i].name);
-        }
+        updateTeamMemberDisplay();
+    }
+}
 
-        // hidden input에 데이터 저장
-        $('#teamMemberEmails').val(emails.join(','));
-        $('#teamMemberNames').val(names.join(','));
+// 팀원 목록 화면 업데이트 함수
+function updateTeamMemberDisplay() {
+    var html = '';
 
-        // 화면에 선택된 팀원 표시
-        var displayText = '+ ' + names.join(', ');
-        $('#selectedMembers').text(displayText);
+    if (selectedTeamMembers.length === 0) {
+        html = '<div style="color: #666; margin-top: 10px;">선택된 팀원이 없습니다.</div>';
+    } else {
+        selectedTeamMembers.forEach(function(member, index) {
+            html += '<div class="team-member-item" style="margin-top: 8px; padding: 5px; background-color: #f5f5f5; border-radius: 3px;">';
+            html += '<span>팀원: ' + member.name + ' </span> ';
+            html += '<button type="button" onclick="removeTeamMember(' + index + ')" style="margin-left: 10px; padding: 2px 8px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">삭제</button>';
+            html += '</div>';
+        });
+    }
+
+    $('#selectedMembers').html(html);
+
+    // hidden input 업데이트
+    var emails = selectedTeamMembers.map(function(member) {
+        return member.email;
+    }).join(',');
+
+    var names = selectedTeamMembers.map(function(member) {
+        return member.name;
+    }).join(',');
+
+    $('#teamMemberEmails').val(emails);
+    $('#teamMemberNames').val(names);
+}
+
+// 팀원 삭제 함수
+function removeTeamMember(index) {
+    var removedMember = selectedTeamMembers[index];
+    selectedTeamMembers.splice(index, 1);
+    updateTeamMemberDisplay();
+    alert(removedMember.name + ' 팀원이 삭제되었습니다.');
+}
+
+// 모든 팀원 삭제 함수 (필요시 사용)
+function clearAllTeamMembers() {
+    if (selectedTeamMembers.length > 0 && confirm('모든 팀원을 삭제하시겠습니까?')) {
+        selectedTeamMembers = [];
+        updateTeamMemberDisplay();
+        alert('모든 팀원이 삭제되었습니다.');
     }
 }
