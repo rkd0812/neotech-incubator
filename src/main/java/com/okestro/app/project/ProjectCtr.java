@@ -230,6 +230,30 @@ public class ProjectCtr {
                 return "redirect:/project/projectList.do";
             }
 
+            // 팀원 목록 조회
+            List<ProjectVo> teamMembers = projectSvc.selectProjectTeamMembers(projectId);
+
+            // 팀원 이름들과 이메일들을 콤마로 연결
+            if (teamMembers != null && !teamMembers.isEmpty()) {
+                StringBuilder names = new StringBuilder();
+                StringBuilder emails = new StringBuilder();
+
+                for (int i = 0; i < teamMembers.size(); i++) {
+                    // 로그인한 사용자는 제외
+                    if (!teamMembers.get(i).getTeamMemberEmail().equals(loginUser.getUserEmail())) {
+                        if (names.length() > 0) {
+                            names.append(", ");
+                            emails.append(",");
+                        }
+                        names.append(teamMembers.get(i).getTeamMemberName());
+                        emails.append(teamMembers.get(i).getTeamMemberEmail());
+                    }
+                }
+
+                project.setTeamMemberNames(names.toString());
+                project.setTeamMemberEmails(emails.toString());
+            }
+
             // 모델에 데이터 추가
             model.addAttribute("project", project);
             model.addAttribute("loginUser", loginUser);
@@ -248,9 +272,9 @@ public class ProjectCtr {
     @PostMapping("/project/insertProjectUpdate.do")
     public String updateProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
         // 세션 확인
-        // 인터셉터 사용 후 세션 체크 제거, 로그인 사용자 정보 가져옴
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
 
         try {
             ProjectVo existingProject = projectSvc.retrieveProjectDetail(projectVo.getProjectId());
@@ -265,22 +289,17 @@ public class ProjectCtr {
                 return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
             }
 
-            //수정자 정보 설정
+            // 수정자 정보 설정
+            projectVo.setLastChngId(loginUser.getUserEmail());
             projectVo.setUserEmail(loginUser.getUserEmail());
             projectVo.setUserName(loginUser.getUserName());
-            projectVo.setLastChngId(loginUser.getUserEmail());
-
-            // 프로젝트 수정
-            projectSvc.updateProject(projectVo);
-
-            // 팀원 정보 업데이트
-            if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().isEmpty()) {
-                projectSvc.updateTeamMembers(projectVo);
-            }
+            // 프로젝트와 팀원 수정
+            projectSvc.updateProjectAndTeamMember(projectVo);
 
             redirectAttr.addFlashAttribute("message", "프로젝트가 수정되었습니다.");
 
         } catch (Exception e) {
+            e.printStackTrace();
             redirectAttr.addFlashAttribute("message", "프로젝트 수정 중 오류가 발생했습니다.");
             return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
         }
@@ -386,5 +405,32 @@ public class ProjectCtr {
         }
 
         return "project/selectProjectTeam";
+    }
+
+    // 팀원 개별 삭제
+    @PostMapping("/project/deleteTeamMember.do")
+    public String deleteTeamMember(@RequestParam("projectId") String projectId,
+                                   @RequestParam("teamMemberEmail") String teamMemberEmail,
+                                   HttpServletRequest request,
+                                   RedirectAttributes redirectAttr) {
+        HttpSession session = request.getSession();
+        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
+
+        try {
+            // 팀원 삭제를 위한 ProjectVo 설정
+            ProjectVo deleteParam = new ProjectVo();
+            deleteParam.setProjectId(projectId);
+            deleteParam.setTeamMemberEmail(teamMemberEmail);
+            deleteParam.setLastChngId(loginUser.getUserEmail());
+
+            // 개별 팀원 삭제
+            projectSvc.deleteTeamMember(deleteParam);
+
+            redirectAttr.addFlashAttribute("message", "팀원이 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttr.addFlashAttribute("message", "팀원 삭제에 실패했습니다: " + e.getMessage());
+        }
+
+        return "redirect:/project/projectDetail.do?projectId=" + projectId;
     }
 }

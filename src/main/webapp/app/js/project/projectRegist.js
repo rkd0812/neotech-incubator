@@ -167,24 +167,31 @@ function openPopup() {
 
     var option = 'width=' + popupWidth + ',height=' + popupHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes';
 
-    window.open('/project/popup/teamMemberSelect.do', 'teamPopup', option);
+    var selectedEmails = selectedTeamMembers.map(function(member) {
+        return member.email;
+    }).join(',');
+
+    var url = '/project/popup/teamMemberSelect.do';
+    if (selectedEmails) {
+        url += '?selectedEmails=' + encodeURIComponent(selectedEmails);
+    }
+
+    window.open(url, 'teamPopup', option);
 }
 
 // 팝업에서 선택된 멤버
 function receiveSelectedMembers(members) {
+    selectedTeamMembers = [];
+
     if (members.length > 0) {
         members.forEach(function(member) {
-            var isDuplicate = selectedTeamMembers.some(function(existing) {
-                return existing.email === member.email;
+            selectedTeamMembers.push({
+                name: member.name,
+                email: member.email
             });
-
-            if (!isDuplicate) {
-                selectedTeamMembers.push(member);
-            }
         });
-
-        updateTeamMemberDisplay();
     }
+    updateTeamMemberDisplay();
 }
 
 // 팀원 목록 화면 업데이트 함수

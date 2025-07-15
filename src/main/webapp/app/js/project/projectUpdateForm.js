@@ -1,6 +1,6 @@
 $(function () {
 
-    displayExistingTeamMembers();
+    loadExistingTeamMembers();
 
     $('#updateBtn').on('click', function () {
         if (confirm('프로젝트를 수정하시겠습니까?')) {
@@ -27,16 +27,63 @@ $(function () {
 
         form.submit();
     }
-
-    function displayExistingTeamMembers() {
-        // 서버에서 전달된 기존 팀원 정보가 있다면 표시
-        var existingMembers = $('#selectedMembers').text().trim();
-        if (existingMembers && existingMembers !== '등록된 팀원이 없습니다.') {
-            // 기존 팀원 정보가 있으면 그대로 표시
-        }
-    }
 });
 
+var selectedTeamMembers = [];
+
+function loadExistingTeamMembers() {
+    // JSP에서 전달받은 데이터 확인
+    if (typeof existingTeamMemberNames !== 'undefined' && existingTeamMemberNames.trim() !== '') {
+        var names = existingTeamMemberNames.split(',');
+        var emails = existingTeamMemberEmails.split(',');
+
+        // 팀원 정보를 배열에 저장
+        selectedTeamMembers = [];
+        for (var i = 0; i < names.length; i++) {
+            if (names[i].trim() !== '' && emails[i].trim() !== '') {
+                selectedTeamMembers.push({
+                    name: names[i].trim(),
+                    email: emails[i].trim()
+                });
+            }
+        }
+    }
+
+    // 화면 업데이트
+    updateTeamMemberDisplay();
+}
+
+
+
+// 팀원 목록 화면 업데이트 함수
+function updateTeamMemberDisplay() {
+    var html = '';
+
+    if (selectedTeamMembers.length === 0) {
+        html = '<div style="color: #666; margin-top: 10px;">선택된 팀원이 없습니다.</div>';
+    } else {
+        selectedTeamMembers.forEach(function(member, index) {
+            html += '<div class="team-member-item" style="margin-top: 8px; padding: 5px; background-color: #f5f5f5; border-radius: 3px;">';
+            html += '<span>팀원: ' + member.name + ' </span> ';
+            html += '<button type="button" onclick="removeTeamMember(' + index + ')" style="margin-left: 10px; padding: 2px 8px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">삭제</button>';
+            html += '</div>';
+        });
+    }
+
+    $('#selectedMembers').html(html);
+
+    // hidden input 업데이트
+    var emails = selectedTeamMembers.map(function(member) {
+        return member.email;
+    }).join(',');
+
+    var names = selectedTeamMembers.map(function(member) {
+        return member.name;
+    }).join(',');
+
+    $('#teamMemberEmails').val(emails);
+    $('#teamMemberNames').val(names);
+}
 
 // 팝업창 열기 함수
 function openPopup() {
@@ -49,25 +96,46 @@ function openPopup() {
 
     var option = 'width=' + popupWidth + ',height=' + popupHeight + ',left=' + left + ',top=' + top + ',scrollbars=yes,resizable=yes';
 
-    window.open('/project/popup/teamMemberSelect.do', 'teamPopup', option);
+    var selectedEmails = selectedTeamMembers.map(function(member) {
+        return member.email;
+    }).join(',');
+
+    var url = '/project/popup/teamMemberSelect.do';
+    if (selectedEmails) {
+        url += '?selectedEmails=' + encodeURIComponent(selectedEmails);
+    }
+
+    window.open(url, 'teamPopup', option);
 }
 
-
+// 팝업에서 선택된 멤버
 function receiveSelectedMembers(members) {
+    selectedTeamMembers = [];
+
     if (members.length > 0) {
-        var emails = [];
-        var names = [];
+        members.forEach(function(member) {
+            selectedTeamMembers.push({
+                name: member.name,
+                email: member.email
+            });
+        });
+    }
+    updateTeamMemberDisplay();
+}
 
-        for (var i = 0; i < members.length; i++) {
-            emails.push(members[i].email);
-            names.push(members[i].name);
-        }
+// 팀원 삭제 함수
+function removeTeamMember(index) {
+    var removedMember = selectedTeamMembers[index];
+    selectedTeamMembers.splice(index, 1);
+    updateTeamMemberDisplay();
+    alert(removedMember.name + ' 팀원이 삭제되었습니다.');
+}
 
-        // hidden input에 데이터 저장
-        $('#teamMemberEmails').val(emails.join(','));
-        $('#teamMemberNames').val(names.join(','));
-
-        // 화면에 표시 업데이트
-        $('#selectedMembers').text(names.join(', '));
+// 모든 팀원 삭제 함수
+function clearAllTeamMembers() {
+    if (selectedTeamMembers.length > 0 && confirm('모든 팀원을 삭제하시겠습니까?')) {
+        selectedTeamMembers = [];
+        updateTeamMemberDisplay();
+        alert('모든 팀원이 삭제되었습니다.');
     }
 }

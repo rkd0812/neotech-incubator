@@ -20,8 +20,8 @@
         <form id="projectForm" method="post" action="/project/insertProjectUpdate.do">
             <input type="hidden" name="projectId" value="${project.projectId}" />
 
-            <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" value="${project.teamMembersEmailString}" />
-            <input type="hidden" id="teamMemberNames" name="teamMemberNames" value="${project.teamMembersString}" />
+            <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" value="${project.teamMemberEmails}" />
+            <input type="hidden" id="teamMemberNames" name="teamMemberNames" value="${project.teamMemberNames}" />
 
             <table>
                 <colgroup>
@@ -67,22 +67,12 @@
                 <tr>
                     <th>팀 구성원</th>
                     <td>
-                        <span>팀장 : ${loginUser.userName} </span><br>
+                        <span>팀장 : ${loginUser.userName}</span><br>
+                        <div id="selectedMembers" style="margin-top: 10px;"></div>
                     </td>
                     <td>
-                        <button type="button" onclick="openPopup()"
-                                style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer;">
-                            팀원 수정
-                        </button><br>
-                        <div id="selectedMembers" style="margin-top: 10px; color: #666;">
-                            <!-- 기존 팀원 정보 표시 -->
-                            <c:if test="${not empty project.teamMembersString}">
-                                ${project.teamMembersString}
-                            </c:if>
-                            <c:if test="${empty project.teamMembersString}">
-                                등록된 팀원이 없습니다.
-                            </c:if>
-                        </div>
+                        <button type="button" onclick="openPopup()">팀원 추가</button><br><br>
+                        <button type="button" onclick="clearAllTeamMembers()">전체 삭제</button>
                     </td>
                 </tr>
                 <%-- 설명 --%>
@@ -180,3 +170,9 @@
         </form>
     </div>
 </div>
+
+
+<script type="text/javascript">
+    var existingTeamMemberNames = "${project.teamMemberNames}";
+    var existingTeamMemberEmails = "${project.teamMemberEmails}";
+</script>

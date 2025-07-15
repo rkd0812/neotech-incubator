@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,8 +67,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 
     // 프로젝트 모든 팀원 삭제
     @Override
-    public void deleteAllTeamMembers(String projectId) {
-        dao.update("project.deleteAllTeamMembers", projectId);
+    public void deleteTeamMember(ProjectVo projectVo) {dao.update("project.deleteTeamMember", projectVo);
     }
 
     // 프로젝트 팀원 목록 조회
@@ -115,31 +115,21 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 
         // 선택된 팀원들 저장
         if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().trim().isEmpty()) {
-            System.out.println("팀원 데이터 처리 시작");
             String[] emails = projectVo.getTeamMemberEmails().split(",");
             String[] names = projectVo.getTeamMemberNames().split(",");
-
 
             for (int i = 0; i < emails.length; i++) {
                 String email = emails[i].trim();
                 String name = names[i].trim();
 
-                System.out.println("처리 중인 팀원: " + name + " (" + email + ")");
-
-                // 로그인 사용자와 중복 아니면 저장
                 if (!email.equals(projectVo.getUserEmail())) {
                     saveOneTeamMember(projectVo.getProjectId(), groupId,
                             email, name, projectVo.getLastChngId());
-                    System.out.println("팀원 저장 완료: " + name);
-                } else {
-                    System.out.println("중복 제외: " + name);
                 }
             }
-        } else {
-            System.out.println("선택된 팀원이 없음");
         }
-        System.out.println("=== saveTeamMembers 완료 ===");
     }
+
 
     // 팀원 한 명 저장
     private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
@@ -156,7 +146,12 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     // 팀원 정보 업데이트 (그대로 유지)
     @Override
     public void updateTeamMembers(ProjectVo projectVo) {
-        deleteAllTeamMembers(projectVo.getProjectId());
+        // 전체 삭제
+        ProjectVo deleteParam = new ProjectVo();
+        deleteParam.setProjectId(projectVo.getProjectId());
+        deleteParam.setLastChngId(projectVo.getLastChngId());
+        deleteTeamMember(deleteParam);
+
         saveTeamMembers(projectVo);
     }
 
@@ -231,6 +226,16 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 //            updateAttachmentInfo(projectVo);
 //        }
         dao.update("project.updateProject", projectVo);
+    }
+
+    @Transactional
+    @Override
+    public void updateProjectAndTeamMember(ProjectVo projectVo) {
+        // 프로젝트 기본 정보 수정
+        updateProject(projectVo);
+
+        // 팀원 정보 수정
+        updateTeamMembers(projectVo);
     }
 
 

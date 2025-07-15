@@ -348,15 +348,26 @@
         ORDER BY TEAM_MEMBER_NAME
     </select>
 
-    <!-- 팀원 삭제 -->
-    <update id="deleteProjectTeamMember" parameterType="com.okestro.app.project.ProjectVo">
-        UPDATE SCH_INCU.GROUP_TEST
-        SET
-            DEL_YN = 'Y',
-            LAST_CHNG_ID = #{lastChngId},
-            LAST_CHNG_DTL_DTTM = NOW()
-        WHERE TEAM_MEMBER_ID = #{teamMemberId}
-          AND PROJECT_ID = #{projectId}
-          AND DEL_YN = 'N'
-    </update>
+    <!-- 팀원 삭제-->
+<!--    <update id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">-->
+<!--        UPDATE SCH_INCU.GROUP_TEST-->
+<!--        SET-->
+<!--        DEL_YN = 'Y',-->
+<!--        LAST_CHNG_ID = #{lastChngId},-->
+<!--        LAST_CHNG_DTL_DTTM = NOW()-->
+<!--        WHERE PROJECT_ID = #{projectId}-->
+<!--        <if test="teamMemberEmail != null and teamMemberEmail != ''">-->
+<!--            AND TEAM_MEMBER_EMAIL = #{teamMemberEmail}-->
+<!--        </if>-->
+<!--        AND DEL_YN = 'N'-->
+<!--    </update>-->
+
+    <delete id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">
+        DELETE FROM SCH_INCU.GROUP_TEST
+        WHERE PROJECT_ID = #{projectId}
+        <if test="teamMemberEmail != null and teamMemberEmail != ''">
+            AND TEAM_MEMBER_EMAIL = #{teamMemberEmail}
+        </if>
+        AND DEL_YN = 'N'
+    </delete>
 </mapper>

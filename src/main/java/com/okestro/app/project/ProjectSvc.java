@@ -29,16 +29,12 @@ public interface ProjectSvc {
 
     // 프로젝트 삭제
     void deleteProject(ProjectVo projectVo);
-
-
+    
     // 팀원 선택을 위한 사용자 목록 조회
     List<ProjectVo> retrieveUserList(String userEmail);
 
     // 팀원 한 명 저장
     void insertTeamMember(ProjectVo projectVo);
-
-    // 프로젝트의 모든 팀원 삭제 (논리삭제)
-    void deleteAllTeamMembers(String projectId);
 
     // 프로젝트 팀원 목록 조회
     List<ProjectVo> selectProjectTeamMembers(String projectId);
@@ -48,5 +44,11 @@ public interface ProjectSvc {
 
     // 팀원 정보 일괄 업데이트 (수정시 사용)
     void updateTeamMembers(ProjectVo projectVo);
+
+    // 팀원 삭제
+    void deleteTeamMember(ProjectVo projectVo);
+
+    // 프로젝트와 팀원 삭제 동시 작업
+    void updateProjectAndTeamMember(ProjectVo projectVo);
 
 }
