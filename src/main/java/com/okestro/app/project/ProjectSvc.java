@@ -18,7 +18,7 @@ public interface ProjectSvc {
     // 프로젝트 심사요청으로 등록
     void evaRequestProject(ProjectVo projectVo);
 
-    //    // 프로젝트 상세 조회
+    // 프로젝트 상세 조회
     ProjectVo retrieveProjectDetail(String projectId);
 
     // 프로젝트 수정
@@ -33,7 +33,7 @@ public interface ProjectSvc {
     // 팀원 선택을 위한 사용자 목록 조회
     List<ProjectVo> retrieveUserList(String userEmail);
 
-    // 팀원 한 명 저장
+    // 팀원 저장
     void insertTeamMember(ProjectVo projectVo);
 
     // 프로젝트 팀원 목록 조회

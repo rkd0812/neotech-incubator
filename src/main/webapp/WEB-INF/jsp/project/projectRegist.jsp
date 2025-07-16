@@ -77,7 +77,7 @@
                     <td colspan="3">
                         <input type="text" id="filePath" name="filePath"
                                value="${projectVo.filePath}"
-                               placeholder="C:\Users\admin\Desktop\..."
+                               placeholder="pdf/hwp/ppt/jpg/png 등"
                                maxlength="100" required />
                     </td>
                 </tr>

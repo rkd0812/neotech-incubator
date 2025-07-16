@@ -81,40 +81,7 @@ public class ProjectCtr {
         return "project/projectRegist";
     }
 
-//    // 프로젝트 등록시
-//    @PostMapping("/project/saveProject.do")
-//    public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
-//
-//        // 인터셉터 사용
-//        HttpSession session = request.getSession();
-//        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-//        String userEmail = loginUser.getUserEmail();
-//        String userName = loginUser.getUserName();
-//
-//        // 로그인한 사용자 정보를 Vo에 설정
-//        projectVo.setUserEmail(userEmail);
-//        projectVo.setUserName(userName);
-//
-//        // 프로젝트 정보 설정
-//        projectVo.setLastChngId(userEmail);
-//
-//
-//        try {
-//            // 프로젝트 등록 상태로 저장
-//            projectSvc.insertUserProject(projectVo);
-//
-//            // 팀원 저장 추가
-//            projectSvc.insertProjectTeamMembers(projectVo);
-//
-//            redirectAttr.addFlashAttribute("message", "프로젝트가 저장되었습니다.");
-//            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
-//
-//        } catch (Exception e) {
-//            redirectAttr.addFlashAttribute("message", "프로젝트 저장에 실패했습니다: " + e.getMessage());
-//            return "redirect:/project/projectRegist.do";
-//        }
-//    }
-
+    // 프로젝트 저장
     @PostMapping("/project/saveProject.do")
     public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
         try {
@@ -142,35 +109,6 @@ public class ProjectCtr {
         }
     }
 
-    @PostMapping("/project/submitProject.do")
-    public String submitProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
-
-        // 인터셉터 사용
-        HttpSession session = request.getSession();
-        UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
-
-        String userEmail = loginUser.getUserEmail();
-        String userName = loginUser.getUserName();
-
-        // 로그인한 사용자 정보를 Vo에 설정
-        projectVo.setUserEmail(userEmail);
-        projectVo.setUserName(userName);
-
-        // 프로젝트 정보 설정
-        projectVo.setLastChngId(userEmail);
-
-        try {
-            // 프로젝트 심사요청 상태로 저장
-            projectSvc.evaRequestProject(projectVo);
-
-            redirectAttr.addFlashAttribute("message", "심사요청이 완료되었습니다.");
-            return "redirect:/project/projectDetail.do?projectId=" + projectVo.getProjectId();
-
-        } catch (Exception e) {
-            redirectAttr.addFlashAttribute("message", "심사요청에 실패했습니다: " + e.getMessage());
-            return "redirect:/project/projectRegist.do";
-        }
-    }
 
     // 프로젝트 상세 조회
     @GetMapping("/project/projectDetail.do")
@@ -333,7 +271,6 @@ public class ProjectCtr {
 
 
     // 프로젝트 삭제 처리
-
     @PostMapping("/project/deleteProject.do")
     public String deleteProject(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr) {
         // 세션 확인
@@ -362,33 +299,34 @@ public class ProjectCtr {
         return "redirect:/project/projectList.do";
     }
 
-    // 파일 다운로드
-    @GetMapping("/project/downloadFile.do")
-    public void downloadFile(@RequestParam("projectId") String projectId, HttpServletResponse response) {
-        try {
-            // 프로젝트 정보 조회
-            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
-            File file = new File(project.getFilePath());
+    // 파일 다운로드 25.07.16 현재는 사용 안하므로 주석
+//    @GetMapping("/project/downloadFile.do")
+//    public void downloadFile(@RequestParam("projectId") String projectId, HttpServletResponse response) {
+//        try {
+//            // 프로젝트 정보 조회
+//            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
+//            File file = new File(project.getFilePath());
+//
+//            // 다운로드 헤더 설정
+//            String encodedFileName = URLEncoder.encode(project.getAttachmentName(), "UTF-8").replaceAll("\\+", "%20");
+//            response.setContentType("application/octet-stream");
+//            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+//
+//            // 파일 전송
+//            try (FileInputStream fis = new FileInputStream(file);
+//                 OutputStream os = response.getOutputStream()) {
+//                byte[] buffer = new byte[1024];
+//                int bytesRead;
+//                while ((bytesRead = fis.read(buffer)) != -1) {
+//                    os.write(buffer, 0, bytesRead);
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
-            // 다운로드 헤더 설정
-            String encodedFileName = URLEncoder.encode(project.getAttachmentName(), "UTF-8").replaceAll("\\+", "%20");
-            response.setContentType("application/octet-stream");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
-
-            // 파일 전송
-            try (FileInputStream fis = new FileInputStream(file);
-                 OutputStream os = response.getOutputStream()) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = fis.read(buffer)) != -1) {
-                    os.write(buffer, 0, bytesRead);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    // 팀원 추가에서 사용자 목록 창 가져옴
     @GetMapping("/project/popup/teamMemberSelect.do")
     public String teamMemberSelectPopup(HttpServletRequest request, Model model) {
         // 세션에서 로그인 사용자 정보 가져오기

@@ -171,7 +171,7 @@
     </div>
 </div>
 
-
+<!-- projectUpdateForm.js 와 연결 역할 하기 위해 사용 -->
 <script type="text/javascript">
     var existingTeamMemberNames = "${project.teamMemberNames}";
     var existingTeamMemberEmails = "${project.teamMemberEmails}";
