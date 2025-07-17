@@ -35,22 +35,16 @@
                                placeholder="프로젝트명을 입력하세요"
                                maxlength="100" required />
                     </td>
+                </tr>
                 <tr>
                     <th>팀 구성원</th>
                     <td>
                         <span>팀장 : ${loginUser.userName}</span><br>
-                        <div id="selectedMembers" style="margin-top: 10px; color: #666;">
-                            선택된 팀원이 없습니다.
-                        </div>
+                        <div id="selectedMembers" style="margin-top: 10px;"></div>
                     </td>
                     <td>
-                        <button type="button" onclick="openPopup()" style="padding: 5px 15px; background-color: #007bff; color: white; border: none; cursor: pointer;">
-                            팀원 추가
-                        </button>
-                        <br><br>
-                        <button type="button" onclick="clearAllTeamMembers()" style="padding: 5px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer;">
-                            전체 삭제
-                        </button>
+                        <button type="button" onclick="openPopup()">팀원 추가</button><br><br>
+                        <button type="button" onclick="clearAllTeamMembers()">전체 삭제</button>
                     </td>
                 </tr>
                 <tr>
@@ -77,7 +71,7 @@
                     <td colspan="3">
                         <input type="text" id="filePath" name="filePath"
                                value="${projectVo.filePath}"
-                               placeholder="pdf/hwp/ppt/jpg/png 등"
+                               placeholder="C:\Users\admin\Desktop\..."
                                maxlength="100" required />
                     </td>
                 </tr>

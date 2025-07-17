@@ -63,10 +63,9 @@ function updateTeamMemberDisplay() {
         html = '<div style="color: #666; margin-top: 10px;">선택된 팀원이 없습니다.</div>';
     } else {
         selectedTeamMembers.forEach(function(member, index) {
-            html += '<div class="team-member-item" style="margin-top: 8px; padding: 5px; background-color: #f5f5f5; border-radius: 3px;">';
-            // html += '<span>팀원: ' + member.name + ' </span> ';
-            html += '<span>팀원: ' + member.name + '(' + member.email + ') </span> ';
-            html += '<button type="button" onclick="removeTeamMember(' + index + ')" style="margin-left: 10px; padding: 2px 8px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">삭제</button>';
+            html += '<div style="margin-top: 8px; padding: 8px; background-color: #f5f5f5; border-radius: 3px; width: 650px; display: flex; justify-content: space-between; align-items: center;">';
+            html += '<span>팀원: ' + member.name + '</span>';
+            html += '<button type="button" onclick="removeTeamMember(' + index + ')" style="padding: 2px 8px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">삭제</button>';
             html += '</div>';
         });
     }

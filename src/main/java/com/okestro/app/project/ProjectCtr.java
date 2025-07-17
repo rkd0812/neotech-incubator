@@ -271,6 +271,7 @@ public class ProjectCtr {
 
 
     // 프로젝트 삭제 처리
+
     @PostMapping("/project/deleteProject.do")
     public String deleteProject(@RequestParam("projectId") String projectId, HttpServletRequest request, RedirectAttributes redirectAttr) {
         // 세션 확인
@@ -326,7 +327,7 @@ public class ProjectCtr {
 //        }
 //    }
 
-    // 팀원 추가에서 사용자 목록 창 가져옴
+
     @GetMapping("/project/popup/teamMemberSelect.do")
     public String teamMemberSelectPopup(HttpServletRequest request, Model model) {
         // 세션에서 로그인 사용자 정보 가져오기

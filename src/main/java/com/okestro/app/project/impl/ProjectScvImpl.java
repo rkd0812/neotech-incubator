@@ -23,7 +23,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     CmmnAbstractDao dao;
 
     // 파일 저장 경로
-    // private static final String UPLOAD_PATH = "C:\\\\Users\\\\admin\\\\Desktop\\\\test_attachment\\\\";
+//    private static final String UPLOAD_PATH = "C:\\\\Users\\\\admin\\\\Desktop\\\\test_attachment\\\\";
 
     // 전체 프로젝트 개수 조회 시 사용 (페이징)
     @Override
@@ -129,6 +129,13 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         return dao.selectList("project.selectProjectTeamMembers", projectId);
     }
 
+    // 삭제된 팀원 조회
+    @Override
+    public ProjectVo selectDeletedTeamMember(ProjectVo projectVo) {return dao.selectOne("project.selectDeletedTeamMember", projectVo);}
+
+    // 삭제 되었던 팀원 복구
+    @Override
+    public void restoreTeamMember(ProjectVo projectVo) {dao.update("project.restoreTeamMember", projectVo);}
 
     @Override
     public void saveTeamMembers(ProjectVo projectVo) {
@@ -158,27 +165,135 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 
 
     // 팀원 한 명 저장
-    private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
-        ProjectVo teamMember = new ProjectVo();
-        teamMember.setProjectId(projectId);
-        teamMember.setGroupId(groupId);
-        teamMember.setTeamMemberEmail(email);
-        teamMember.setTeamMemberName(name);
-        teamMember.setLastChngId(lastChngId);
+//    private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
+//        // 기존 팀원 확인
+//        List<ProjectVo> currentMembers = selectProjectTeamMembers(projectId);
+//        boolean existsActive = currentMembers.stream()
+//                .anyMatch(member -> member.getTeamMemberEmail().equals(email));
+//
+//        if (existsActive) {
+//            return;
+//        }
+//
+//        // 원래 팀원이었다가 삭제된 팀원인지 확인
+//        ProjectVo checkParam = new ProjectVo();
+//        checkParam.setProjectId(projectId);
+//        checkParam.setTeamMemberEmail(email);
+//
+//        ProjectVo deletedMember = selectDeletedTeamMember(checkParam);
+//
+//        if (deletedMember != null) {
+//            ProjectVo restoreParam = new ProjectVo();
+//            restoreParam.setProjectId(projectId);
+//            restoreParam.setTeamMemberEmail(email);
+//            restoreParam.setTeamMemberName(name);
+//            restoreParam.setLastChngId(lastChngId);
+//
+//            restoreTeamMember(restoreParam);
+//        } else {
+//            // 새로운 팀원 추가 생성
+//            ProjectVo teamMember = new ProjectVo();
+//            teamMember.setProjectId(projectId);
+//            teamMember.setGroupId(groupId);
+//            teamMember.setTeamMemberEmail(email);
+//            teamMember.setTeamMemberName(name);
+//            teamMember.setLastChngId(lastChngId);
+//
+//            insertTeamMember(teamMember);
+//        }
+//    }
 
-        insertTeamMember(teamMember);
+    private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
+        // 기존 팀원 선택
+        List<ProjectVo> currentMembers = selectProjectTeamMembers(projectId);
+        boolean existsActive = currentMembers.stream()
+                .anyMatch(member -> member.getTeamMemberEmail().equals(email));
+
+        // 팀원이였다가 삭제된 팀원 확인
+        ProjectVo checkParam = new ProjectVo();
+        checkParam.setProjectId(projectId);
+        checkParam.setTeamMemberEmail(email);
+
+        ProjectVo deletedMember = selectDeletedTeamMember(checkParam);
+
+        if (deletedMember != null) {
+            // 기본 팀원이였던 사람 복구
+            ProjectVo restoreParam = new ProjectVo();
+            restoreParam.setProjectId(projectId);
+            restoreParam.setTeamMemberEmail(email);
+            restoreParam.setTeamMemberName(name);
+            restoreParam.setLastChngId(lastChngId);
+
+            restoreTeamMember(restoreParam);
+        } else {
+            // 새로운 팀원 추가
+            ProjectVo teamMember = new ProjectVo();
+            teamMember.setProjectId(projectId);
+            teamMember.setGroupId(groupId);
+            teamMember.setTeamMemberEmail(email);
+            teamMember.setTeamMemberName(name);
+            teamMember.setLastChngId(lastChngId);
+
+            insertTeamMember(teamMember);
+        }
     }
 
-    // 팀원 정보 업데이트 (그대로 유지)
+    // 팀원 정보 업데이트
     @Override
     public void updateTeamMembers(ProjectVo projectVo) {
-        // 전체 삭제
-        ProjectVo deleteParam = new ProjectVo();
-        deleteParam.setProjectId(projectVo.getProjectId());
-        deleteParam.setLastChngId(projectVo.getLastChngId());
-        deleteTeamMember(deleteParam);
+        String groupId = projectVo.getProjectId().replace("PRJ", "UGRP");
 
-        saveTeamMembers(projectVo);
+        // 현재 활성 팀원 목록 조회
+        List<ProjectVo> currentMembers = selectProjectTeamMembers(projectVo.getProjectId());
+
+        // 새로운 팀원 목록 (로그인 사용자 + 선택된 팀원들)
+        List<String> newEmails = new ArrayList<>();
+        newEmails.add(projectVo.getUserEmail()); // 로그인 사용자
+
+        if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().trim().isEmpty()) {
+            String[] emails = projectVo.getTeamMemberEmails().split(",");
+            for (String email : emails) {
+                String trimmedEmail = email.trim();
+                if (!trimmedEmail.equals(projectVo.getUserEmail())) {
+                    newEmails.add(trimmedEmail);
+                }
+            }
+        }
+
+        // 기존 팀원 중 새 목록에 없는 사람들 삭제
+        for (ProjectVo currentMember : currentMembers) {
+            if (!newEmails.contains(currentMember.getTeamMemberEmail())) {
+                ProjectVo deleteParam = new ProjectVo();
+                deleteParam.setProjectId(projectVo.getProjectId());
+                deleteParam.setTeamMemberEmail(currentMember.getTeamMemberEmail());
+                deleteParam.setLastChngId(projectVo.getLastChngId());
+                deleteTeamMember(deleteParam);
+            }
+        }
+
+        // 새로운 팀원들 추가/복구
+        String[] names = projectVo.getTeamMemberNames() != null ?
+                projectVo.getTeamMemberNames().split(",") : new String[0];
+
+        // 로그인 사용자 추가/복구
+        saveOneTeamMember(projectVo.getProjectId(), groupId,
+                projectVo.getUserEmail(), projectVo.getUserName(),
+                projectVo.getLastChngId());
+
+        // 선택된 팀원들 추가/복구
+        if (projectVo.getTeamMemberEmails() != null && !projectVo.getTeamMemberEmails().trim().isEmpty()) {
+            String[] emails = projectVo.getTeamMemberEmails().split(",");
+
+            for (int i = 0; i < emails.length; i++) {
+                String email = emails[i].trim();
+                String name = i < names.length ? names[i].trim() : "";
+
+                if (!email.equals(projectVo.getUserEmail())) {
+                    saveOneTeamMember(projectVo.getProjectId(), groupId,
+                            email, name, projectVo.getLastChngId());
+                }
+            }
+        }
     }
 
 
@@ -188,8 +303,8 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         // 기본 데이터 검증
         validateAndSetData(projectVo);
 
-        // 파일이 있으면 파일 저장 처리
-        // handleFileUpload(projectVo);
+//        // 파일이 있으면 파일 저장 처리
+//        handleFileUpload(projectVo);
 
         // 데이터베이스에 프로젝트 정보 저장 (심사요청 상태로)
         dao.insert("project.evaRequestProject", projectVo);
@@ -240,17 +355,17 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
             }
         }
 
-        // 새로운 파일 업로되 되었는지 확인
-        // if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
-            // 기존 첨부파일 있다면 삭제
-            // deleteExistingFile(projectVo.getProjectId());
-
-            // 새 파일 저장
-            // handleFileUpload(projectVo);
-
-            // 첨부파일 정보 업데이트
-            // updateAttachmentInfo(projectVo);
-        // }
+//        // 새로운 파일 업로되 되었는지 확인
+//        if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
+//            // 기존 첨부파일 있다면 삭제
+//            deleteExistingFile(projectVo.getProjectId());
+//
+//            // 새 파일 저장
+//            handleFileUpload(projectVo);
+//
+//            // 첨부파일 정보 업데이트
+//            updateAttachmentInfo(projectVo);
+//        }
         dao.update("project.updateProject", projectVo);
     }
 
@@ -304,7 +419,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
 //        }
 //    }
 
-    
+
 
 //    // 파일 업로드 부분 검증
 //    private void handleFileUpload(ProjectVo projectVo) {
@@ -355,4 +470,8 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     public List<ProjectVo> retrieveUserList(String userEmail) {
         return dao.selectList("project.retrieveUserList", userEmail);
     }
+
+
+
+
 }

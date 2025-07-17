@@ -44,21 +44,21 @@ $(function () {
     }
 });
 
-// 파일 다운로드 함수
-// function downloadFile(projectId) {
-//     try {
-//         // 다운로드 URL 생성
-//         var downloadUrl = '/project/downloadFile.do?projectId=' + projectId;
-//
-//         // 임시 링크 생성해서 클릭
-//         var link = document.createElement('a');
-//         link.href = downloadUrl;
-//         link.download = ''; // 서버에서 파일명 결정
-//         document.body.appendChild(link);
-//         link.click();
-//         document.body.removeChild(link);
-//
-//     } catch (error) {
-//         alert('파일 다운로드 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
-//     }
-// }
+// 파일 다운로드 함수 (전역 함수로 선언)
+function downloadFile(projectId) {
+    try {
+        // 다운로드 URL 생성
+        var downloadUrl = '/project/downloadFile.do?projectId=' + projectId;
+
+        // 임시 링크 생성해서 클릭
+        var link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = ''; // 서버에서 파일명 결정
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (error) {
+        alert('파일 다운로드 중 오류가 발생했습니다.\n잠시 후 다시 시도해주세요.');
+    }
+}

@@ -10,7 +10,6 @@ $(function() {
     //     handleFileSelect();
     // });
 
-    // 프로젝트 설명란 글자수 넘어가면 빨간색으로 강조
     function updateCharCount() {
         var length = $('#projectDetail').val().length;
         $('#charCount').text(length);
@@ -86,6 +85,29 @@ $(function() {
         // 검증 통과하면 자동으로 폼 제출됨
         return true;
     });
+
+
+    // function receiveSelectedMembers(members) {
+    //     if (members.length > 0) {
+
+    //         //이메일, 이름 배열로 받기
+    //         var emails = [];
+    //         var names= [];
+    //
+    //         for (var i = 0; i <members.length; i++) {
+    //             emails.push(members[i].email);
+    //             names.push(members[i].name);
+    //         }
+    //
+    //         $('#teamMemberEmails').val(emails.join(','));
+    //         $('#teamMemberNames').val(names.join(','));
+    //
+    //         var displayText = '+ ' + names.join(', ');
+    //         $('#selectedMembers').text(displayText);
+    //
+    //         alert(names.join(', ') + ' 팀원이 추가되었습니다.');
+    //     }
+    // }
 
 
     function checkForm() {
@@ -180,10 +202,9 @@ function updateTeamMemberDisplay() {
         html = '<div style="color: #666; margin-top: 10px;">선택된 팀원이 없습니다.</div>';
     } else {
         selectedTeamMembers.forEach(function(member, index) {
-            html += '<div class="team-member-item" style="margin-top: 8px; padding: 5px; background-color: #f5f5f5; border-radius: 3px;">';
-            // html += '<span>팀원: ' + member.name + ' </span> ';
-            html += '<span>팀원: ' + member.name + '(' + member.email + ') </span> ';
-            html += '<button type="button" onclick="removeTeamMember(' + index + ')" style="margin-left: 10px; padding: 2px 8px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">삭제</button>';
+            html += '<div style="margin-top: 8px; padding: 8px; background-color: #f5f5f5; border-radius: 3px; width: 650px; display: flex; justify-content: space-between; align-items: center;">';
+            html += '<span>팀원: ' + member.name + '</span>';
+            html += '<button type="button" onclick="removeTeamMember(' + index + ')" style="padding: 2px 8px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 12px;">삭제</button>';
             html += '</div>';
         });
     }
@@ -203,15 +224,7 @@ function updateTeamMemberDisplay() {
     $('#teamMemberNames').val(names);
 }
 
-// 팀원 삭제
-function removeTeamMember(index) {
-    var removedMember = selectedTeamMembers[index];
-    selectedTeamMembers.splice(index, 1);
-    updateTeamMemberDisplay();
-    alert(removedMember.name + ' 팀원이 삭제되었습니다.');
-}
-
-// 모든 팀원 삭제
+// 모든 팀원 삭제 함수 (필요시 사용)
 function clearAllTeamMembers() {
     if (selectedTeamMembers.length > 0 && confirm('모든 팀원을 삭제하시겠습니까?')) {
         selectedTeamMembers = [];

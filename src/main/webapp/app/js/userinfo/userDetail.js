@@ -3,8 +3,6 @@ $(function() {
     $("#updateBtn").click(function() {
 
         var userEmail = $(this).attr("data-email");
-        console.log("데이터 속성에서 가져온 이메일: [" + userEmail + "]");
-
         if(!userEmail || userEmail === "") {
             alert("이메일을 가져올 수 없습니다.");
             return;

@@ -268,29 +268,29 @@
           AND DEL_YN = 'N'
     </update>
 
-    <!-- 첨부파일 정보 업데이트 25.07.16 현재는 사용 안하므로 주석-->
-<!--    <update id="updateAttachment" parameterType="com.okestro.app.project.ProjectVo">-->
-<!--        UPDATE SCH_INCU.ATTACHMENT-->
-<!--        SET-->
-<!--            ATTACHMENT_NAME = #{attachmentName},-->
-<!--            LAST_CHNG_ID = #{lastChngId},-->
-<!--            LAST_CHNG_DTL_DTTM = NOW()-->
-<!--        WHERE-->
-<!--            PROJECT_ID = #{projectId}-->
-<!--        AND DEL_YN = 'N'-->
-<!--    </update>-->
+    <!-- 첨부파일 정보 업데이트 -->
+    <update id="updateAttachment" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.ATTACHMENT
+        SET
+            ATTACHMENT_NAME = #{attachmentName},
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+        AND DEL_YN = 'N'
+    </update>
 
-    <!-- 첨부파일 삭제  25.07.16 현재는 사용 안하므로 주석- -->
-<!--    <update id="deleteAttachment" parameterType="com.okestro.app.project.ProjectVo">-->
-<!--        UPDATE SCH_INCU.ATTACHMENT-->
-<!--        SET-->
-<!--            DEL_YN = 'Y',-->
-<!--            LAST_CHNG_ID = #{lastChngId},-->
-<!--            LAST_CHNG_DTL_DTTM = NOW()-->
-<!--        WHERE-->
-<!--            PROJECT_ID = #{projectId}-->
-<!--          AND DEL_YN = 'N'-->
-<!--    </update>-->
+    <!-- 첨부파일 삭제 -->
+    <update id="deleteAttachment" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.ATTACHMENT
+        SET
+            DEL_YN = 'Y',
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE
+            PROJECT_ID = #{projectId}
+          AND DEL_YN = 'N'
+    </update>
 
 
     <!-- 팀원 선택을 위한 사용자 목록 조회 -->
@@ -348,7 +348,7 @@
         ORDER BY TEAM_MEMBER_NAME
     </select>
 
-    <!-- 팀원 삭제 (논리적 삭제)-->
+    <!-- 팀원 삭제-->
 <!--    <update id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">-->
 <!--        UPDATE SCH_INCU.GROUP-->
 <!--        SET-->
@@ -361,14 +361,45 @@
 <!--        </if>-->
 <!--        AND DEL_YN = 'N'-->
 <!--    </update>-->
-
-    <!-- 팀원 삭제 (물리적 삭제)-->
-    <delete id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">
-        DELETE FROM SCH_INCU.GROUP
+    <!-- 팀원 삭제 -->
+    <update id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.GROUP
+        SET
+            DEL_YN = 'Y',
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
         WHERE PROJECT_ID = #{projectId}
         <if test="teamMemberEmail != null and teamMemberEmail != ''">
             AND TEAM_MEMBER_EMAIL = #{teamMemberEmail}
         </if>
         AND DEL_YN = 'N'
-    </delete>
+    </update>
+
+    <!-- 삭제된 팀원 조회 -->
+    <select id="selectDeletedTeamMember" parameterType="com.okestro.app.project.ProjectVo" resultType="com.okestro.app.project.ProjectVo">
+        SELECT
+            PROJECT_ID  AS  projectId,
+            GROUP_ID    AS  groupId,
+            GROUP_CD    AS  groupCd,
+            TEAM_MEMBER_NAME    AS  teamMemberName,
+            TEAM_MEMBER_EMAIL   AS  teamMemberEmail
+        FROM SCH_INCU.GROUP
+        WHERE 
+            PROJECT_ID = #{projectId}
+        AND TEAM_MEMBER_EMAIL = #{teamMemberEmail}
+        AND DEL_YN = 'Y'
+    </select>
+
+    <!-- 삭제 되었던 팀원 복구 -->
+    <update id="restoreTeamMember" parameterType="com.okestro.app.project.ProjectVo">
+        UPDATE SCH_INCU.GROUP
+        SET
+            DEL_YN = 'N',
+            TEAM_MEMBER_NAME = #{teamMemberName},
+            LAST_CHNG_ID = #{lastChngId},
+            LAST_CHNG_DTL_DTTM = NOW()
+        WHERE PROJECT_ID = #{projectId}
+          AND TEAM_MEMBER_EMAIL = #{teamMemberEmail}
+          AND DEL_YN = 'Y'
+    </update>
 </mapper>

@@ -39,8 +39,6 @@ $(function () {
             });
         });
 
-        console.log('선택된 멤버들:', members);
-
         if (members.length > 0) {
             window.opener.receiveSelectedMembers(members);
             window.close();
