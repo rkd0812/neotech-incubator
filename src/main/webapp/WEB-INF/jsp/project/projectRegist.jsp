@@ -69,10 +69,12 @@
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
-                        <input type="text" id="filePath" name="filePath"
-                               value="${projectVo.filePath}"
-                               placeholder="C:\Users\admin\Desktop\..."
-                               maxlength="100" required />
+                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip" />
+                        <input type="hidden" id="fileData" name="fileData" />
+                        <input type="hidden" id="fileName" name="fileName" />
+                        <div id="fileInfo" style="margin-top: 5px; color: #666; font-size: 12px;">
+                            파일을 선택해주세요. (최대 50MB)
+                        </div>
                     </td>
                 </tr>
                 </tbody>

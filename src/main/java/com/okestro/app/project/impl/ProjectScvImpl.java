@@ -11,8 +11,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,7 +25,7 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     CmmnAbstractDao dao;
 
     // 파일 저장 경로
-//    private static final String UPLOAD_PATH = "C:\\\\Users\\\\admin\\\\Desktop\\\\test_attachment\\\\";
+    private static final String UPLOAD_PATH = "C:\\Users\\admin\\Desktop\\test_attachment\\";
 
     // 전체 프로젝트 개수 조회 시 사용 (페이징)
     @Override
@@ -63,32 +65,6 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         if (projectVo.getUrl() == null) {
             projectVo.setUrl("");  // null이면 빈 문자열로 설정
         }
-
-//        // 파일 크기 검증 (50MB 제한)
-//        MultipartFile uploadFile = projectVo.getUploadFile();
-//        if (uploadFile != null && !uploadFile.isEmpty()) {
-//            long maxSize = 50 * 1024 * 1024; // 50MB
-//            if (uploadFile.getSize() > maxSize) {
-//                throw new IllegalArgumentException("파일 크기는 50MB 이하만 업로드 가능합니다.");
-//            }
-//
-//            // 파일 확장자 검증
-//            String fileName = uploadFile.getOriginalFilename();
-//            if (fileName != null) {
-//                String extension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-//                String[] allowedExtensions = {"pdf", "jpg", "jpeg", "png", "doc", "docx", "zip", "txt"};
-//                boolean isAllowed = false;
-//                for (String ext : allowedExtensions) {
-//                    if (ext.equals(extension)) {
-//                        isAllowed = true;
-//                        break;
-//                    }
-//                }
-//                if (!isAllowed) {
-//                    throw new IllegalArgumentException("허용되지 않는 파일 형식입니다. (pdf, jpg, jpeg, png, doc, docx, zip, txt만 가능)");
-//                }
-//            }
-//        }
     }
 
     // 프로젝트 등록 시 사용
@@ -96,17 +72,14 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     public void insertUserProject(ProjectVo projectVo) {
         // 기본 데이터 검증
         validateAndSetData(projectVo);
+
+        handleFileUpload(projectVo);
         dao.insert("project.insertUserProject", projectVo);
-//        // 파일이 있으면 파일 저장 처리
-//        handleFileUpload(projectVo);
+
+
         String projectId = projectVo.getProjectId();
         String userGroupId = projectId.replace("PRJ", "UGRP");
         projectVo.setUserGroupId(userGroupId);
-
-        // 첨부파일 정보가 있으면 첨부파일 테이블에도 저장
-        if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
-            insertAttachmentInfo(projectVo);
-        }
 
         // 팀원 정보 저장
         saveTeamMembers(projectVo);
@@ -162,46 +135,6 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
             }
         }
     }
-
-
-    // 팀원 한 명 저장
-//    private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
-//        // 기존 팀원 확인
-//        List<ProjectVo> currentMembers = selectProjectTeamMembers(projectId);
-//        boolean existsActive = currentMembers.stream()
-//                .anyMatch(member -> member.getTeamMemberEmail().equals(email));
-//
-//        if (existsActive) {
-//            return;
-//        }
-//
-//        // 원래 팀원이었다가 삭제된 팀원인지 확인
-//        ProjectVo checkParam = new ProjectVo();
-//        checkParam.setProjectId(projectId);
-//        checkParam.setTeamMemberEmail(email);
-//
-//        ProjectVo deletedMember = selectDeletedTeamMember(checkParam);
-//
-//        if (deletedMember != null) {
-//            ProjectVo restoreParam = new ProjectVo();
-//            restoreParam.setProjectId(projectId);
-//            restoreParam.setTeamMemberEmail(email);
-//            restoreParam.setTeamMemberName(name);
-//            restoreParam.setLastChngId(lastChngId);
-//
-//            restoreTeamMember(restoreParam);
-//        } else {
-//            // 새로운 팀원 추가 생성
-//            ProjectVo teamMember = new ProjectVo();
-//            teamMember.setProjectId(projectId);
-//            teamMember.setGroupId(groupId);
-//            teamMember.setTeamMemberEmail(email);
-//            teamMember.setTeamMemberName(name);
-//            teamMember.setLastChngId(lastChngId);
-//
-//            insertTeamMember(teamMember);
-//        }
-//    }
 
     private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
         // 기존 팀원 선택
@@ -302,17 +235,9 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     public void evaRequestProject(ProjectVo projectVo) {
         // 기본 데이터 검증
         validateAndSetData(projectVo);
-
-//        // 파일이 있으면 파일 저장 처리
-//        handleFileUpload(projectVo);
-
+        handleFileUpload(projectVo);
         // 데이터베이스에 프로젝트 정보 저장 (심사요청 상태로)
         dao.insert("project.evaRequestProject", projectVo);
-
-        // 첨부파일 정보가 있으면 첨부파일 테이블에도 저장
-        if (projectVo.getAttachmentName() != null && !projectVo.getAttachmentName().isEmpty()) {
-            insertAttachmentInfo(projectVo);
-        }
 
         saveTeamMembers(projectVo);
     }
@@ -355,17 +280,6 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
             }
         }
 
-//        // 새로운 파일 업로되 되었는지 확인
-//        if (projectVo.getUploadFile() != null && !projectVo.getUploadFile().isEmpty()) {
-//            // 기존 첨부파일 있다면 삭제
-//            deleteExistingFile(projectVo.getProjectId());
-//
-//            // 새 파일 저장
-//            handleFileUpload(projectVo);
-//
-//            // 첨부파일 정보 업데이트
-//            updateAttachmentInfo(projectVo);
-//        }
         dao.update("project.updateProject", projectVo);
     }
 
@@ -395,56 +309,56 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.update("project.deleteProject", projectVo);
     }
 
-//    // 첨부파일 저장
-//    @Override
-//    public String saveFileAndGetPath(MultipartFile uploadFile) {
-//        try {
-//            // 업로드 폴더가 없으면 생성
-//            File uploadDir = new File(UPLOAD_PATH);
-//            if (!uploadDir.exists()) {
-//                uploadDir.mkdirs();
-//            }
-//            // 파일명 만들기
-//            String fileName = System.currentTimeMillis() + "_" + uploadFile.getOriginalFilename();
-//
-//            // 파일 저장
-//            File saveFile = new File(UPLOAD_PATH + fileName);
-//            uploadFile.transferTo(saveFile);
-//
-//            // 저장된 경로 반환
-//            return UPLOAD_PATH + fileName;
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException("파일 저장 실패", e);
-//        }
-//    }
+    // 첨부파일 저장
+    @Override
+    public String saveFileAndGetPath(String fileData, String fileName) {
+        try {
+            // Base64 디코딩
+            byte[] decodedBytes = Base64.getDecoder().decode(fileData);
 
+            // 업로드 폴더가 없으면 생성
+            File uploadDir = new File(UPLOAD_PATH);
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
 
+            // 파일명 중복 방지를 위해 시간스탬프 추가
+            String newFileName = System.currentTimeMillis() + "_" + fileName;
+            File targetFile = new File(UPLOAD_PATH + newFileName);
 
-//    // 파일 업로드 부분 검증
-//    private void handleFileUpload(ProjectVo projectVo) {
-//        MultipartFile uploadFile = projectVo.getUploadFile();
-//
-//        // 파일이 있으면 저장 처리
-//        if (uploadFile != null && !uploadFile.isEmpty()) {
-//            // 파일 저장하고 경로 받기
-//            String filePath = saveFileAndGetPath(uploadFile);
-//
-//            // VO에 파일 정보 설정
-//            projectVo.setFilePath(filePath);
-//            projectVo.setAttachmentName(uploadFile.getOriginalFilename());
-//        }
-//    }
+            // 파일 저장
+            try (FileOutputStream fos = new FileOutputStream(targetFile)) {
+                fos.write(decodedBytes);
+            }
 
-    // 첨부파일 정보 저장
-    private void insertAttachmentInfo(ProjectVo projectVo) {
-        // 첨부파일 ID 생성
-        String attachmentId = "ATT" + System.currentTimeMillis();
-        projectVo.setAttachmentId(attachmentId);
+            return UPLOAD_PATH + newFileName;
 
-        // attachment 테이블에 파일 정보 저장
-        dao.insert("project.insertAttachment", projectVo);
+        } catch (Exception e) {
+            throw new RuntimeException("파일 저장 실패: " + e.getMessage());
+        }
     }
+
+
+
+    // 파일 업로드 부분 검증
+    private void handleFileUpload(ProjectVo projectVo) {
+        String fileData = projectVo.getFileData();
+        String fileName = projectVo.getFileName();
+
+        // 파일 데이터가 있으면 저장 처리
+        if (fileData != null && !fileData.trim().isEmpty() && fileName != null && !fileName.trim().isEmpty()) {
+            try {
+                // 파일 저장하고 경로 받기
+                String filePath = saveFileAndGetPath(fileData, fileName);
+
+                // VO에 파일 정보 설정
+                projectVo.setFilePath(filePath);
+            } catch (Exception e) {
+                throw e;
+            }
+        }
+    }
+
 
 //    // 첨부파일 정보 업데이트
 //    private void updateAttachmentInfo(ProjectVo projectVo) {
@@ -470,8 +384,4 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     public List<ProjectVo> retrieveUserList(String userEmail) {
         return dao.selectList("project.retrieveUserList", userEmail);
     }
-
-
-
-
 }

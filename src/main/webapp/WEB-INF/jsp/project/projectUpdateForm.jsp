@@ -95,28 +95,12 @@
                     </td>
                 </tr>
 
-<%--                &lt;%&ndash; 첨부파일 &ndash;%&gt;--%>
-<%--                <tr>--%>
-<%--                    <th>첨부파일</th>--%>
-<%--                    <td colspan="2">--%>
-<%--                        <c:if test="${not empty project.attachmentName}">--%>
-<%--                            <div class="current-file">--%>
-<%--                                <span>현재 파일: ${project.attachmentName}</span>--%>
-<%--                                <button type="button" onclick="removeCurrentFile()">삭제</button>--%>
-<%--                            </div>--%>
-<%--                        </c:if>--%>
-
-<%--                        &lt;%&ndash; 새 파일 선택 &ndash;%&gt;--%>
-<%--                        <input type="file" name="attachmentFile" class="form-control" accept=".pdf,.doc,.docx,.hwp" />--%>
-<%--                        <small>* 새 파일을 선택하면 기존 파일이 교체됩니다</small>--%>
-<%--                    </td>--%>
-<%--                </tr>--%>
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
                         <c:choose>
-                            <c:when test="${not empty project.attachmentName}">
-                                <span class="attachment-name">${project.attachmentName}</span>
+                            <c:when test="${project.hasFile()}">
+                                <span class="attachment-name">${project.fileName}</span>
                                 <button type="button" onclick="downloadFile('${project.projectId}')">다운로드</button>
                                 <small style="display: block; margin-top: 5px;">* 첨부파일 수정은 별도 문의 바랍니다.</small>
                             </c:when>

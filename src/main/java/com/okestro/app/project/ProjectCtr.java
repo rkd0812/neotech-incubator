@@ -6,11 +6,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -81,7 +86,7 @@ public class ProjectCtr {
         return "project/projectRegist";
     }
 
-    // 프로젝트 저장
+
     @PostMapping("/project/saveProject.do")
     public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
         try {
@@ -108,7 +113,6 @@ public class ProjectCtr {
             return "redirect:/project/projectRegist.do";
         }
     }
-
 
     // 프로젝트 상세 조회
     @GetMapping("/project/projectDetail.do")
@@ -301,31 +305,36 @@ public class ProjectCtr {
     }
 
     // 파일 다운로드 25.07.16 현재는 사용 안하므로 주석
-//    @GetMapping("/project/downloadFile.do")
-//    public void downloadFile(@RequestParam("projectId") String projectId, HttpServletResponse response) {
-//        try {
-//            // 프로젝트 정보 조회
-//            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
-//            File file = new File(project.getFilePath());
-//
-//            // 다운로드 헤더 설정
-//            String encodedFileName = URLEncoder.encode(project.getAttachmentName(), "UTF-8").replaceAll("\\+", "%20");
-//            response.setContentType("application/octet-stream");
-//            response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
-//
-//            // 파일 전송
-//            try (FileInputStream fis = new FileInputStream(file);
-//                 OutputStream os = response.getOutputStream()) {
-//                byte[] buffer = new byte[1024];
-//                int bytesRead;
-//                while ((bytesRead = fis.read(buffer)) != -1) {
-//                    os.write(buffer, 0, bytesRead);
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @GetMapping("/project/downloadFile.do")
+    public void downloadFile(@RequestParam("projectId") String projectId, HttpServletResponse response) {
+        try {
+            // 프로젝트 정보 조회
+            ProjectVo project = projectSvc.retrieveProjectDetail(projectId);
+
+            if (project.getFilePath() != null && !project.getFilePath().isEmpty()) {
+                File file = new File(project.getFilePath());
+
+                if (file.exists()) {
+                    // 다운로드 헤더 설정
+                    String encodedFileName = URLEncoder.encode(project.getFileName(), "UTF-8").replaceAll("\\+", "%20");
+                    response.setContentType("application/octet-stream");
+                    response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
+
+                    // 파일 전송
+                    try (FileInputStream fis = new FileInputStream(file);
+                         OutputStream os = response.getOutputStream()) {
+                        byte[] buffer = new byte[1024];
+                        int bytesRead;
+                        while ((bytesRead = fis.read(buffer)) != -1) {
+                            os.write(buffer, 0, bytesRead);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @GetMapping("/project/popup/teamMemberSelect.do")

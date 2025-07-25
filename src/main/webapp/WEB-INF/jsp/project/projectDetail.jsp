@@ -110,8 +110,8 @@
                 <th>첨부파일</th>
                 <td colspan="2">
                     <c:choose>
-                        <c:when test="${not empty project.attachmentName}">
-                            <span class="attachment-name">${project.attachmentName}</span>
+                        <c:when test="${project.hasFile()}">
+                            <span class="attachment-name">${project.fileName}</span>
                         </c:when>
                         <c:otherwise>
                             <span class="no-content">첨부파일이 없습니다.</span>
@@ -119,7 +119,7 @@
                     </c:choose>
                 </td>
                 <td>
-                    <c:if test="${not empty project.attachmentName}">
+                    <c:if test="${project.hasFile()}">
                         <button type="button" id="downloadBtn" onclick="downloadFile('${project.projectId}')">다운로드</button>
                     </c:if>
                 </td>

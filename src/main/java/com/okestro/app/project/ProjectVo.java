@@ -34,10 +34,6 @@ public class ProjectVo extends PaginationInfo {
     // 파일 경로를 저장하기 위한 컬럼 추가
     private String filePath;
 
-    // attachment 테이블 필드
-    private String attachmentId;
-    private String attachmentName;
-
     // Join 하기 위해 사용할 다른 테이블 필드
     private String userName;         // user 테이블의 사용자 이름
     private String codeName;         // code 테이블의 코드명
@@ -63,9 +59,12 @@ public class ProjectVo extends PaginationInfo {
     private String groupCd;                 // 그룹 코드
 
 
+
     // 파일 업로드를 위한 필드
 //    private MultipartFile uploadFile;
 
+    private String fileData;
+    private String fileName;
 
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
@@ -90,11 +89,14 @@ public class ProjectVo extends PaginationInfo {
         return "";
     }
 
-//    public MultipartFile getUploadFile() {
-//        return uploadFile;
-//    }
-//
-//    public void setUploadFile(MultipartFile uploadFile) {
-//        this.uploadFile = uploadFile;
-//    }
+    public String getFileName() {
+        if (filePath == null || filePath.trim().isEmpty())
+            return "";
+
+        String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
+        return fileName.contains("_") ? fileName.substring(fileName.indexOf("_") + 1) : fileName;
+    }
+    public boolean hasFile() {
+        return filePath != null && !filePath.trim().isEmpty();
+    }
 }

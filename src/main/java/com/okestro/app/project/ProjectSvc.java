@@ -18,7 +18,7 @@ public interface ProjectSvc {
     // 프로젝트 심사요청으로 등록
     void evaRequestProject(ProjectVo projectVo);
 
-    //    // 프로젝트 상세 조회
+    // 프로젝트 상세 조회
     ProjectVo retrieveProjectDetail(String projectId);
 
     // 프로젝트 수정
@@ -26,6 +26,9 @@ public interface ProjectSvc {
 
     // 프로젝트 심사요청 상태로 변경
     void requestEvaluation(ProjectVo projectVo);
+
+    // 파일 저장 및 경로 반환
+    String saveFileAndGetPath(String fileData, String fileName);
 
     // 프로젝트 삭제
     void deleteProject(ProjectVo projectVo);

@@ -201,27 +201,28 @@
         )
     </insert>
 
-    <insert id="insertAttachment" parameterType="com.okestro.app.project.ProjectVo">
-        INSERT INTO SCH_INCU.ATTACHMENT (
-            ATTACHMENT_ID,
-            ATTACHMENT_NAME,
-            PROJECT_ID,
-            DEL_YN,
-            FRST_RGSR_ID,
-            FRST_RGSR_DTL_DTTM,
-            LAST_CHNG_ID,
-            LAST_CHNG_DTL_DTTM
-        ) VALUES (
-        #{attachmentId},
-        #{attachmentName},
-        #{projectId},
-        'N',
-        #{lastChngId},
-        NOW(),
-        #{lastChngId},
-        NOW()
-        )
-    </insert>
+    <!-- 2025.07.18 기준 사용하지 않아 주석-->
+<!--    <insert id="insertAttachment" parameterType="com.okestro.app.project.ProjectVo">-->
+<!--        INSERT INTO SCH_INCU.ATTACHMENT (-->
+<!--            ATTACHMENT_ID,-->
+<!--            ATTACHMENT_NAME,-->
+<!--            PROJECT_ID,-->
+<!--            DEL_YN,-->
+<!--            FRST_RGSR_ID,-->
+<!--            FRST_RGSR_DTL_DTTM,-->
+<!--            LAST_CHNG_ID,-->
+<!--            LAST_CHNG_DTL_DTTM-->
+<!--        ) VALUES (-->
+<!--        #{attachmentId},-->
+<!--        #{attachmentName},-->
+<!--        #{projectId},-->
+<!--        'N',-->
+<!--        #{lastChngId},-->
+<!--        NOW(),-->
+<!--        #{lastChngId},-->
+<!--        NOW()-->
+<!--        )-->
+<!--    </insert>-->
 
     <!--  프로젝트 수정  -->
     <update id="updateProject" parameterType="com.okestro.app.project.ProjectVo">
@@ -348,19 +349,6 @@
         ORDER BY TEAM_MEMBER_NAME
     </select>
 
-    <!-- 팀원 삭제-->
-<!--    <update id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">-->
-<!--        UPDATE SCH_INCU.GROUP-->
-<!--        SET-->
-<!--        DEL_YN = 'Y',-->
-<!--        LAST_CHNG_ID = #{lastChngId},-->
-<!--        LAST_CHNG_DTL_DTTM = NOW()-->
-<!--        WHERE PROJECT_ID = #{projectId}-->
-<!--        <if test="teamMemberEmail != null and teamMemberEmail != ''">-->
-<!--            AND TEAM_MEMBER_EMAIL = #{teamMemberEmail}-->
-<!--        </if>-->
-<!--        AND DEL_YN = 'N'-->
-<!--    </update>-->
     <!-- 팀원 삭제 -->
     <update id="deleteTeamMember" parameterType="com.okestro.app.project.ProjectVo">
         UPDATE SCH_INCU.GROUP
