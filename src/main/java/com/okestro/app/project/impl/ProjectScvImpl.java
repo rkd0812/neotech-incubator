@@ -286,6 +286,12 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Transactional
     @Override
     public void updateProjectAndTeamMember(ProjectVo projectVo) {
+        ProjectVo existingProject = retrieveProjectDetail(projectVo.getProjectId());
+        String oldFilePath = existingProject.getFilePath();
+
+        // 파일 업로드, 파일 삭제, 유지
+        handleFileUpdateProcess(projectVo, oldFilePath);
+
         // 프로젝트 기본 정보 수정
         updateProject(projectVo);
 
@@ -313,20 +319,17 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     @Override
     public String saveFileAndGetPath(String fileData, String fileName) {
         try {
-            // Base64 디코딩
             byte[] decodedBytes = Base64.getDecoder().decode(fileData);
 
-            // 업로드 폴더가 없으면 생성
             File uploadDir = new File(UPLOAD_PATH);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            // 파일명 중복 방지를 위해 시간스탬프 추가
-            String newFileName = System.currentTimeMillis() + "_" + fileName;
+            // 시간스탬프 없이 원본 파일명만 사용
+            String newFileName = fileName;
             File targetFile = new File(UPLOAD_PATH + newFileName);
 
-            // 파일 저장
             try (FileOutputStream fos = new FileOutputStream(targetFile)) {
                 fos.write(decodedBytes);
             }
@@ -338,20 +341,14 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         }
     }
 
-
-
     // 파일 업로드 부분 검증
     private void handleFileUpload(ProjectVo projectVo) {
         String fileData = projectVo.getFileData();
         String fileName = projectVo.getFileName();
 
-        // 파일 데이터가 있으면 저장 처리
-        if (fileData != null && !fileData.trim().isEmpty() && fileName != null && !fileName.trim().isEmpty()) {
+        if (fileData != null && !fileData.trim().isEmpty() && fileName != null && !fileName.trim().isEmpty()) {  // fileName 조건 복구
             try {
-                // 파일 저장하고 경로 받기
-                String filePath = saveFileAndGetPath(fileData, fileName);
-
-                // VO에 파일 정보 설정
+                String filePath = saveFileAndGetPath(fileData, fileName);  // fileName 다시 전달
                 projectVo.setFilePath(filePath);
             } catch (Exception e) {
                 throw e;
@@ -359,6 +356,45 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         }
     }
 
+    private void handleFileUpdateProcess(ProjectVo projectVo, String oldFilePath) {
+        String fileData = projectVo.getFileData();
+        String fileName = projectVo.getFileName();
+        String deleteFile = projectVo.getDeleteFile();
+
+        // 새 파일이 선택된 경우 (파일 교체)
+        if (fileData != null && !fileData.trim().isEmpty() && fileName != null && !fileName.trim().isEmpty()) {
+            try {
+                // 새 파일 저장
+                String newFilePath = saveFileAndGetPath(fileData, fileName);
+                projectVo.setFilePath(newFilePath);
+
+                // 기존 파일 삭제
+                deleteOldFile(oldFilePath);
+
+            } catch (Exception e) {
+                throw new RuntimeException("새 파일 저장 실패: " + e.getMessage());
+            }
+        }
+        // 파일 삭제만 체크된 경우 (파일 삭제)
+        else if ("true".equals(deleteFile)) {
+            projectVo.setFilePath(null);  // DB에서 파일 경로 제거
+            deleteOldFile(oldFilePath);   // 실제 파일 삭제
+        }
+    }
+
+    // 기존 파일 삭제
+    private void deleteOldFile(String filePath) {
+        if (filePath != null && !filePath.trim().isEmpty()) {
+            try {
+                File oldFile = new File(filePath);
+                if (oldFile.exists()) {
+                    oldFile.delete();
+                }
+            } catch (Exception e) {
+                // 파일 삭제 실패해도 DB 작업은 계속 진행
+            }
+        }
+    }
 
 //    // 첨부파일 정보 업데이트
 //    private void updateAttachmentInfo(ProjectVo projectVo) {

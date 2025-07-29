@@ -111,7 +111,7 @@
                 <td colspan="2">
                     <c:choose>
                         <c:when test="${project.hasFile()}">
-                            <span class="attachment-name">${project.fileName}</span>
+                            <span class="attachment-name">${project.displayFileName}</span>
                         </c:when>
                         <c:otherwise>
                             <span class="no-content">첨부파일이 없습니다.</span>

@@ -316,7 +316,7 @@ public class ProjectCtr {
 
                 if (file.exists()) {
                     // 다운로드 헤더 설정
-                    String encodedFileName = URLEncoder.encode(project.getFileName(), "UTF-8").replaceAll("\\+", "%20");
+                    String encodedFileName = URLEncoder.encode(project.getDisplayFileName(), "UTF-8");
                     response.setContentType("application/octet-stream");
                     response.setHeader("Content-Disposition", "attachment; filename=\"" + encodedFileName + "\"");
 

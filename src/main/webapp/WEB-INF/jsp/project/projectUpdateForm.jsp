@@ -95,19 +95,40 @@
                     </td>
                 </tr>
 
+                <!-- 첨부파일 부분을 이렇게 수정 -->
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
+                        <!-- 현재 파일 표시 및 삭제 -->
                         <c:choose>
                             <c:when test="${project.hasFile()}">
-                                <span class="attachment-name">${project.fileName}</span>
-                                <button type="button" onclick="downloadFile('${project.projectId}')">다운로드</button>
-                                <small style="display: block; margin-top: 5px;">* 첨부파일 수정은 별도 문의 바랍니다.</small>
+                                <div style="display: flex; align-items: center; margin-bottom: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
+                                    <span style="color: #007bff; font-weight: bold; margin-right: 15px;">${project.displayFileName}</span>
+                                    <button type="button" onclick="deleteCurrentFile()"
+                                            style="padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                                        삭제
+                                    </button>
+                                </div>
                             </c:when>
                             <c:otherwise>
-                                <span class="no-content">첨부파일이 없습니다.</span>
+                                <div style="color: #6c757d; font-style: italic; margin-bottom: 15px;">
+                                    현재 첨부된 파일이 없습니다.
+                                </div>
                             </c:otherwise>
                         </c:choose>
+
+                        <!-- 새 파일 업로드 -->
+                        <div>
+                            <label style="font-weight: bold; margin-bottom: 5px; display: block;">새 파일 추가:</label>
+                            <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip"
+                                   style="margin-bottom: 8px;" />
+                            <input type="hidden" id="fileData" name="fileData" />
+                            <input type="hidden" id="fileName" name="fileName" />
+                            <input type="hidden" id="deleteFile" name="deleteFile" value="false" />
+                            <div id="fileInfo" style="color: #666; font-size: 12px;">
+                                파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)
+                            </div>
+                        </div>
                     </td>
                 </tr>
 

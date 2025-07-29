@@ -65,6 +65,7 @@ public class ProjectVo extends PaginationInfo {
 
     private String fileData;
     private String fileName;
+    private String deleteFile;
 
     public String getEvaStartDtString() {
         return evaStartDt != null ? evaStartDt.toLocalDate().toString() : "";
@@ -89,12 +90,13 @@ public class ProjectVo extends PaginationInfo {
         return "";
     }
 
-    public String getFileName() {
-        if (filePath == null || filePath.trim().isEmpty())
+    public String getDisplayFileName() {
+        if (filePath == null || filePath.trim().isEmpty()) {
             return "";
+        }
 
         String fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
-        return fileName.contains("_") ? fileName.substring(fileName.indexOf("_") + 1) : fileName;
+        return fileName;
     }
     public boolean hasFile() {
         return filePath != null && !filePath.trim().isEmpty();

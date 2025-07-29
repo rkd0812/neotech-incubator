@@ -21,6 +21,51 @@ $(function () {
         }
     });
 
+    $('#fileInput').on('change', function() {
+        handleFileSelect();
+    });
+
+    function handleFileSelect() {
+        var fileInput = $('#fileInput')[0];
+        var file = fileInput.files[0];
+
+        if (file) {
+            var maxSize = 50 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('파일 크기는 50MB 이하만 가능합니다.');
+                $('#fileInput').val('');
+                $('#fileInfo').text('파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)');
+                return;
+            }
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var base64Data = e.target.result.split(',')[1];
+                $('#fileData').val(base64Data);
+                $('#fileName').val(file.name);
+                $('#deleteFile').val('false');
+
+                var fileSize = getFileSizeText(file.size);
+                $('#fileInfo').html('<span style="color: #007bff; font-weight: bold;">' + file.name + '</span> (' + fileSize + ') <span style="color: #28a745;">- 새 파일로 교체됩니다</span>');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            $('#fileData').val('');
+            $('#fileName').val('');
+            $('#fileInfo').text('파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)');
+        }
+    }
+
+    function getFileSizeText(bytes) {
+        if (bytes < 1024) {
+            return bytes + ' B';
+        } else if (bytes < 1024 * 1024) {
+            return (bytes / 1024).toFixed(1) + ' KB';
+        } else {
+            return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+        }
+    }
+
     // 폼 제출 함수
     function submitForm() {
         var form = $('#projectForm');
@@ -28,6 +73,22 @@ $(function () {
         form.submit();
     }
 });
+
+// 현재 파일 삭제 함수
+function deleteCurrentFile() {
+    if (confirm('현재 파일을 삭제하시겠습니까?')) {
+        $('#deleteFile').val('true');  // 삭제 플래그 설정
+        $('#fileInput').val('');       // 새 파일 선택 초기화
+        $('#fileData').val('');
+        $('#fileName').val('');
+
+        // 화면에서 파일 정보 숨기기
+        $('.current-file-display').hide();
+        $('#fileInfo').html('<span style="color: #dc3545; font-weight: bold;">파일이 삭제됩니다.</span>');
+
+        alert('파일이 삭제 표시되었습니다. 수정 버튼을 눌러 저장해주세요.');
+    }
+}
 
 var selectedTeamMembers = [];
 
