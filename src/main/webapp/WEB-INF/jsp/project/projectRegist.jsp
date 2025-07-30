@@ -15,7 +15,7 @@
     </div>
 
     <div class="page-inner">
-        <form id="projectForm" method="post" action="/project/saveProject.do">
+        <form id="projectForm" method="post" action="/project/saveProject.do" enctype="multipart/form-data">
             <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" />
             <input type="hidden" id="teamMemberNames" name="teamMemberNames" />
 
@@ -69,9 +69,8 @@
                 <tr>
                     <th>첨부파일</th>
                     <td colspan="3">
-                        <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip" />
-                        <input type="hidden" id="fileData" name="fileData" />
-                        <input type="hidden" id="fileName" name="fileName" />
+                        <input type="file" id="fileInput" name="uploadFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip" />
+                        <button type="button" id="removeFileBtn" onclick="removeSelectedFile()" style="margin-left: 10px; display: none;">삭제</button>
                         <div id="fileInfo" style="margin-top: 5px; color: #666; font-size: 12px;">
                             파일을 선택해주세요. (최대 50MB)
                         </div>

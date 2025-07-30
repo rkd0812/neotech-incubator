@@ -58,13 +58,8 @@ public class ProjectVo extends PaginationInfo {
     private String groupId;                 // 그룹 ID
     private String groupCd;                 // 그룹 코드
 
+    private MultipartFile uploadFile;
 
-
-    // 파일 업로드를 위한 필드
-//    private MultipartFile uploadFile;
-
-    private String fileData;
-    private String fileName;
     private String deleteFile;
 
     public String getEvaStartDtString() {

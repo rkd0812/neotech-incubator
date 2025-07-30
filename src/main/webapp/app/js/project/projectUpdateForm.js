@@ -34,25 +34,18 @@ $(function () {
             if (file.size > maxSize) {
                 alert('파일 크기는 50MB 이하만 가능합니다.');
                 $('#fileInput').val('');
-                $('#fileInfo').text('파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)');
+                $('#fileInfo').text('파일을 선택해주세요. (최대 50MB)');
+                $('#removeNewFileBtn').hide();
                 return;
             }
 
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var base64Data = e.target.result.split(',')[1];
-                $('#fileData').val(base64Data);
-                $('#fileName').val(file.name);
-                $('#deleteFile').val('false');
-
-                var fileSize = getFileSizeText(file.size);
-                $('#fileInfo').html('<span style="color: #007bff; font-weight: bold;">' + file.name + '</span> (' + fileSize + ') <span style="color: #28a745;">- 새 파일로 교체됩니다</span>');
-            };
-            reader.readAsDataURL(file);
+            $('#deleteFile').val('false');
+            var fileSize = getFileSizeText(file.size);
+            $('#fileInfo').html('<strong>' + file.name + '</strong> (' + fileSize + ') - 업로드 준비완료');
+            $('#removeNewFileBtn').show();
         } else {
-            $('#fileData').val('');
-            $('#fileName').val('');
-            $('#fileInfo').text('파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)');
+            $('#fileInfo').text('파일을 선택해주세요. (최대 50MB)');
+            $('#removeNewFileBtn').hide();
         }
     }
 
@@ -76,20 +69,14 @@ $(function () {
 
 // 현재 파일 삭제 함수
 function deleteCurrentFile() {
-    if (confirm('현재 파일을 삭제하시겠습니까?')) {
-        $('#deleteFile').val('true');  // 삭제 플래그 설정
-        $('#fileInput').val('');       // 새 파일 선택 초기화
-        $('#fileData').val('');
-        $('#fileName').val('');
+    $('#deleteFile').val('true');
+    $('#fileInput').val('');
+    $('#removeNewFileBtn').hide();
 
-        // 화면에서 파일 정보 숨기기
-        $('.current-file-display').hide();
-        $('#fileInfo').html('<span style="color: #dc3545; font-weight: bold;">파일이 삭제됩니다.</span>');
-
-        alert('파일이 삭제 표시되었습니다. 수정 버튼을 눌러 저장해주세요.');
-    }
+    // 현재 파일 표시 영역 숨기기
+    $('#currentFileDisplay').hide();
+    $('#fileInfo').text('파일을 선택해주세요. (최대 50MB)');
 }
-
 var selectedTeamMembers = [];
 
 function loadExistingTeamMembers() {
@@ -199,4 +186,11 @@ function clearAllTeamMembers() {
         updateTeamMemberDisplay();
         alert('모든 팀원이 삭제되었습니다.');
     }
+}
+
+function removeSelectedFile() {
+    $('#fileInput').val('');
+    $('#fileInfo').text('파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)');
+    $('#removeNewFileBtn').hide();
+    $('#deleteFile').val('false');
 }

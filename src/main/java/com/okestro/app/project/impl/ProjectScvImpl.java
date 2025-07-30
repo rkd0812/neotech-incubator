@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -315,74 +315,63 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
         dao.update("project.deleteProject", projectVo);
     }
 
-    // 첨부파일 저장
-    @Override
-    public String saveFileAndGetPath(String fileData, String fileName) {
-        try {
-            byte[] decodedBytes = Base64.getDecoder().decode(fileData);
-
-            File uploadDir = new File(UPLOAD_PATH);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
-
-            // 시간스탬프 없이 원본 파일명만 사용
-            String newFileName = fileName;
-            File targetFile = new File(UPLOAD_PATH + newFileName);
-
-            try (FileOutputStream fos = new FileOutputStream(targetFile)) {
-                fos.write(decodedBytes);
-            }
-
-            return UPLOAD_PATH + newFileName;
-
-        } catch (Exception e) {
-            throw new RuntimeException("파일 저장 실패: " + e.getMessage());
+    private String saveMultipartFile(MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            return null;
         }
+
+        // 업로드 디렉토리 생성
+        File uploadDir = new File(UPLOAD_PATH);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
+
+        // 원본 파일명 사용
+        String originalFileName = file.getOriginalFilename();
+        File destinationFile = new File(UPLOAD_PATH + originalFileName);
+        file.transferTo(destinationFile);
+
+        return UPLOAD_PATH + originalFileName;
     }
+
 
     // 파일 업로드 부분 검증
     private void handleFileUpload(ProjectVo projectVo) {
-        String fileData = projectVo.getFileData();
-        String fileName = projectVo.getFileName();
+        MultipartFile uploadFile = projectVo.getUploadFile();
 
-        if (fileData != null && !fileData.trim().isEmpty() && fileName != null && !fileName.trim().isEmpty()) {  // fileName 조건 복구
+        if (uploadFile != null && !uploadFile.isEmpty()) {
             try {
-                String filePath = saveFileAndGetPath(fileData, fileName);  // fileName 다시 전달
+                String filePath = saveMultipartFile(uploadFile);
                 projectVo.setFilePath(filePath);
-            } catch (Exception e) {
-                throw e;
+            } catch (IOException e) {
+                throw new RuntimeException("파일 저장 중 오류가 발생했습니다: " + e.getMessage());
             }
         }
     }
 
     private void handleFileUpdateProcess(ProjectVo projectVo, String oldFilePath) {
-        String fileData = projectVo.getFileData();
-        String fileName = projectVo.getFileName();
+        MultipartFile uploadFile = projectVo.getUploadFile();
         String deleteFile = projectVo.getDeleteFile();
 
-        // 새 파일이 선택된 경우 (파일 교체)
-        if (fileData != null && !fileData.trim().isEmpty() && fileName != null && !fileName.trim().isEmpty()) {
+        // 새 파일이 업로드된 경우
+        if (uploadFile != null && !uploadFile.isEmpty()) {
             try {
-                // 새 파일 저장
-                String newFilePath = saveFileAndGetPath(fileData, fileName);
+                String newFilePath = saveMultipartFile(uploadFile);
                 projectVo.setFilePath(newFilePath);
-
-                // 기존 파일 삭제
                 deleteOldFile(oldFilePath);
-
-            } catch (Exception e) {
+            } catch (IOException e) {
                 throw new RuntimeException("새 파일 저장 실패: " + e.getMessage());
             }
         }
-        // 파일 삭제만 체크된 경우 (파일 삭제)
+        // 파일 삭제만 체크된 경우
         else if ("true".equals(deleteFile)) {
-            projectVo.setFilePath(null);  // DB에서 파일 경로 제거
-            deleteOldFile(oldFilePath);   // 실제 파일 삭제
+            projectVo.setFilePath(null);
+            deleteOldFile(oldFilePath);
         }
     }
 
-    // 기존 파일 삭제
+
+        // 기존 파일 삭제
     private void deleteOldFile(String filePath) {
         if (filePath != null && !filePath.trim().isEmpty()) {
             try {

@@ -17,7 +17,7 @@
     </div>
 
     <div class="page-inner">
-        <form id="projectForm" method="post" action="/project/insertProjectUpdate.do">
+        <form id="projectForm" method="post" action="/project/insertProjectUpdate.do" enctype="multipart/form-data">
             <input type="hidden" name="projectId" value="${project.projectId}" />
 
             <input type="hidden" id="teamMemberEmails" name="teamMemberEmails" value="${project.teamMemberEmails}" />
@@ -102,7 +102,7 @@
                         <!-- 현재 파일 표시 및 삭제 -->
                         <c:choose>
                             <c:when test="${project.hasFile()}">
-                                <div style="display: flex; align-items: center; margin-bottom: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
+                                <div id="currentFileDisplay" style="display: flex; align-items: center; margin-bottom: 15px; padding: 10px; background-color: #f8f9fa; border-radius: 4px;">
                                     <span style="color: #007bff; font-weight: bold; margin-right: 15px;">${project.displayFileName}</span>
                                     <button type="button" onclick="deleteCurrentFile()"
                                             style="padding: 5px 10px; background-color: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer;">
@@ -111,22 +111,22 @@
                                 </div>
                             </c:when>
                             <c:otherwise>
-                                <div style="color: #6c757d; font-style: italic; margin-bottom: 15px;">
+                                <div id="currentFileDisplay" style="color: #6c757d; font-style: italic; margin-bottom: 15px; display: none;">
                                     현재 첨부된 파일이 없습니다.
                                 </div>
                             </c:otherwise>
                         </c:choose>
 
-                        <!-- 새 파일 업로드 -->
+                        <!-- 파일 업로드 -->
                         <div>
-                            <label style="font-weight: bold; margin-bottom: 5px; display: block;">새 파일 추가:</label>
-                            <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip"
+                            <label style="font-weight: bold; margin-bottom: 5px; display: block;">파일 추가:</label>
+                            <input type="file" id="fileInput" name="uploadFile" accept=".pdf,.doc,.docx,.txt,.jpg,.jpeg,.png,.zip"
                                    style="margin-bottom: 8px;" />
-                            <input type="hidden" id="fileData" name="fileData" />
-                            <input type="hidden" id="fileName" name="fileName" />
+                            <button type="button" id="removeNewFileBtn" onclick="removeSelectedFile()"
+                                    style="margin-left: 10px; display: none;">삭제</button>
                             <input type="hidden" id="deleteFile" name="deleteFile" value="false" />
                             <div id="fileInfo" style="color: #666; font-size: 12px;">
-                                파일을 선택하면 기존 파일이 교체됩니다. (최대 50MB)
+                                파일을 선택해주세요. (최대 50MB)
                             </div>
                         </div>
                     </td>

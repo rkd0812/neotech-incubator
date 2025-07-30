@@ -88,7 +88,7 @@ public class ProjectCtr {
 
 
     @PostMapping("/project/saveProject.do")
-    public String insertProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+    public String insertProject(ProjectVo projectVo, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest request, RedirectAttributes redirectAttr) {
         try {
             // 인터셉터 사용
             HttpSession session = request.getSession();
@@ -101,6 +101,7 @@ public class ProjectCtr {
             projectVo.setUserEmail(userEmail);
             projectVo.setUserName(userName);
             projectVo.setLastChngId(userEmail);
+            projectVo.setUploadFile(uploadFile);
 
             // 프로젝트 등록 상태로 저장
             projectSvc.insertUserProject(projectVo);
@@ -212,7 +213,7 @@ public class ProjectCtr {
 
     // 프로젝트 수정 처리
     @PostMapping("/project/insertProjectUpdate.do")
-    public String updateProject(ProjectVo projectVo, HttpServletRequest request, RedirectAttributes redirectAttr) {
+    public String updateProject(ProjectVo projectVo, @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile, HttpServletRequest request, RedirectAttributes redirectAttr) {
         // 세션 확인
         HttpSession session = request.getSession();
         UserInfoVo loginUser = (UserInfoVo) session.getAttribute("loginUser");
@@ -235,6 +236,7 @@ public class ProjectCtr {
             projectVo.setLastChngId(loginUser.getUserEmail());
             projectVo.setUserEmail(loginUser.getUserEmail());
             projectVo.setUserName(loginUser.getUserName());
+            projectVo.setUploadFile(uploadFile);
             // 프로젝트와 팀원 수정
             projectSvc.updateProjectAndTeamMember(projectVo);
 
