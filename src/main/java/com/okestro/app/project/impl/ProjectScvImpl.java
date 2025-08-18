@@ -139,8 +139,11 @@ public class ProjectScvImpl extends EgovAccessServiceImpl implements ProjectSvc 
     private void saveOneTeamMember(String projectId, String groupId, String email, String name, String lastChngId) {
         // 기존 팀원 선택
         List<ProjectVo> currentMembers = selectProjectTeamMembers(projectId);
-        boolean existsActive = currentMembers.stream()
-                .anyMatch(member -> member.getTeamMemberEmail().equals(email));
+        boolean existsActive = currentMembers.stream().anyMatch(member -> member.getTeamMemberEmail().equals(email));
+
+        if (existsActive) {
+            return;
+        }
 
         // 팀원이였다가 삭제된 팀원 확인
         ProjectVo checkParam = new ProjectVo();

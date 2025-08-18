@@ -58,6 +58,9 @@ public class ProjectVo extends PaginationInfo {
     private String groupId;                 // 그룹 ID
     private String groupCd;                 // 그룹 코드
 
+    // 여러 파일을 올릴 수 에는 MultiparFile 뒤에 [] 사용
+//    private MultipartFile[] uploadFile;
+
     private MultipartFile uploadFile;
 
     private String deleteFile;
